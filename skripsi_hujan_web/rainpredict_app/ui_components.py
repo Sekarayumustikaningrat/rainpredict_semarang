@@ -59,10 +59,10 @@ def tabs():
 
     tab_home, tab_prediksi, tab_model, tab_about = st.tabs(["Home", "Prediksi", "Model", "About"])
 
-    # Tab Home: Pembuka skripsi dengan judul, pentingnya curah hujan, dll.
+# Tab Home: Pembuka skripsi dengan judul, pentingnya curah hujan, dll.
     with tab_home:
         # Menggunakan perbandingan kolom agar teks lebih luas dan gambar tetap proporsional
-        col1, col2 = st.columns([2, 0.45],gap="large") 
+        col1, col2 = st.columns([2, 0.45], gap="large") 
 
         with col1:
             st.markdown("""
@@ -87,18 +87,12 @@ def tabs():
 
         with col2:
             try:
-                from PIL import Image
-                from loaders import resolve_path  # Menggunakan pencari path pintar dari loaders.py
-        
-                # Melacak lokasi file 'logounnes.png' secara otomatis di seluruh folder repositori
+                # Melacak lokasi file 'logounnes.png' secara otomatis
                 logo_path = resolve_path("logounnes.png")
         
                 if logo_path and logo_path.exists():
                     image = Image.open(logo_path)
-                    st.image(
-                        image,
-                        use_container_width=True
-                    )
+                    st.image(image, use_container_width=True)
                 else:
                     st.warning("Logo belum ditemukan.")
         
@@ -1032,42 +1026,40 @@ st.divider()
             "MeanAbsSHAP": data["MeanAbsSHAP"][:n]
         })
 
-        col_left, col_right = st.columns([1,1.3])
-        with col_left:
-            # TAMPILAN TABEL
-            st.header(f"Global SHAP {mode} — {iterasi}")
-
-            st.dataframe(
-                df,
-                use_container_width=True,
-                hide_index=True,
-                column_config={
-                    "MeanAbsSHAP": st.column_config.NumberColumn(
-                        "Mean |SHAP|",
-                        format="%.6f"
-                    )
-                }
-            )
-
-        with col_right:
-            with st.container():
-                # TAMPILAN GAMBAR
-                st.subheader(f"Global SHAP {mode} — Summary Plot ({iterasi})")
-                from PIL import Image
-                from loaders import resolve_path  # Impor pencari lokasi file otomatis dari loaders.py
-        
-                try:
-                    # Mencari jalur file gambar secara fleksibel di seluruh folder
-                    img_path = resolve_path(data["Image"])
-        
-                    if img_path and img_path.exists():
-                        img = Image.open(img_path)
-                        img.thumbnail((1200, 1000))  # ← ukuran aman & proporsional
-                        st.image(img, use_container_width=True)
-                    else:
-                        st.error(f"Gambar '{data['Image']}' tidak ditemukan.")
-                except Exception as e:
-                    st.error(f"Gagal memuat gambar '{data['Image']}': {e}")
+        col_left, col_right = st.columns([1, 1.3])
+            with col_left:
+                # TAMPILAN TABEL
+                st.header(f"Global SHAP {mode} — {iterasi}")
+    
+                st.dataframe(
+                    df,
+                    use_container_width=True,
+                    hide_index=True,
+                    column_config={
+                        "MeanAbsSHAP": st.column_config.NumberColumn(
+                            "Mean |SHAP|",
+                            format="%.6f"
+                        )
+                    }
+                )
+    
+            with col_right:
+                with st.container():
+                    # TAMPILAN GAMBAR
+                    st.subheader(f"Global SHAP {mode} — Summary Plot ({iterasi})")
+                    
+                    try:
+                        # Mencari jalur file gambar secara fleksibel di seluruh folder
+                        img_path = resolve_path(data["Image"])
+            
+                        if img_path and img_path.exists():
+                            img = Image.open(img_path)
+                            img.thumbnail((1200, 1000))
+                            st.image(img, use_container_width=True)
+                        else:
+                            st.error(f"Gambar '{data['Image']}' tidak ditemukan.")
+                    except Exception as e:
+                        st.error(f"Gagal memuat gambar '{data['Image']}': {e}")
 
 
     # Tab About: Tentang sistem
