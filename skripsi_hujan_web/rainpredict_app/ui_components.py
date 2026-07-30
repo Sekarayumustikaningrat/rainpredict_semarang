@@ -92,13 +92,13 @@ def tabs():
                 logo_path = resolve_path("logounnes.png")
         
                 if logo_path and logo_path.exists():
-                    image = Image.open(logo_path)
-                    st.image(image, use_container_width=True)
+                    # Streamlit bisa membaca string path secara langsung tanpa PIL
+                    st.image(str(logo_path), use_container_width=True)
                 else:
-                    st.warning("Logo belum ditemukan.")
+                    st.warning(f"Logo tidak ditemukan di: {logo_path}")
         
-            except Exception:
-                st.warning("Logo belum ditemukan.")
+            except Exception as e:
+                st.error(f"Gagal memuat logo: {e}")
 
         st.divider()
 
