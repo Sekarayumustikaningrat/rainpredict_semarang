@@ -12,6 +12,7 @@ from PIL import Image
 from loaders import load_data, load_eval_metrics, load_feature_names, load_preprocessor, compute_best_iteration_for_mode
 from utils import ensure_date_index, create_future_dates, _maybe_preprocess, recursive_predict, generate_narration
 from config import MODEL_MAPPING, FEATURE_NAMES_MAP, SHAP_PATH_MAP, EVAL_PATH_MAP, PREPROCESSOR_PATH
+from loaders import resolve_path
 
 def sidebar():
     with st.sidebar:
@@ -62,7 +63,7 @@ def tabs():
     # Tab Home: Pembuka skripsi dengan judul, pentingnya curah hujan, dll.
     with tab_home:
         # Menggunakan perbandingan kolom agar teks lebih luas dan gambar tetap proporsional
-        col1, col2 = st.columns([2, 0.45],gap="large") 
+        col1, col2 = st.columns([2, 0.45], gap="large") 
 
         with col1:
             st.markdown("""
@@ -86,19 +87,17 @@ def tabs():
             """, unsafe_allow_html=True)
 
         with col2:
-            image_path = "logounnes.png"  # pastikan file ini satu folder dengan script
-
             try:
-                from PIL import Image
-                image = Image.open(image_path)
-                
-                # Gambar akan otomatis sejajar di tengah kolom kanan
-                st.image(
-                    image,
-                    use_container_width=True
-                )
-                
-            except:
+                # Melacak lokasi file 'logounnes.png' secara otomatis
+                logo_path = resolve_path("logounnes.png")
+        
+                if logo_path and logo_path.exists():
+                    image = Image.open(logo_path)
+                    st.image(image, use_container_width=True)
+                else:
+                    st.warning("Logo belum ditemukan.")
+        
+            except Exception:
                 st.warning("Logo belum ditemukan.")
 
         st.divider()
@@ -1026,7 +1025,7 @@ def tabs():
             "MeanAbsSHAP": data["MeanAbsSHAP"][:n]
         })
 
-        col_left, col_right = st.columns([1,1.3])
+        col_left, col_right = st.columns([1, 1.3])
         with col_left:
             # TAMPILAN TABEL
             st.header(f"Global SHAP {mode} — {iterasi}")
@@ -1047,13 +1046,19 @@ def tabs():
             with st.container():
                 # TAMPILAN GAMBAR
                 st.subheader(f"Global SHAP {mode} — Summary Plot ({iterasi})")
-                from PIL import Image
+                
                 try:
-                    img = Image.open(data["Image"])
-                    img.thumbnail((1200, 1000))  # ← ukuran aman & proporsional
-                    st.image(img, use_container_width=False)
-                except Exception:
-                    st.error(f"Gambar '{data['Image']}' tidak ditemukan.")
+                    # Mencari jalur file gambar secara fleksibel di seluruh folder
+                    img_path = resolve_path(data["Image"])
+        
+                    if img_path and img_path.exists():
+                        img = Image.open(img_path)
+                        img.thumbnail((1200, 1000))
+                        st.image(img, use_container_width=True)
+                    else:
+                        st.error(f"Gambar '{data['Image']}' tidak ditemukan.")
+                except Exception as e:
+                    st.error(f"Gagal memuat gambar '{data['Image']}': {e}")
 
 
     # Tab About: Tentang sistem
