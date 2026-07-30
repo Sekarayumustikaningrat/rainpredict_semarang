@@ -1027,7 +1027,7 @@ st.divider()
         })
 
         col_left, col_right = st.columns([1, 1.3])
-            with col_left:
+        with col_left:
                 # TAMPILAN TABEL
                 st.header(f"Global SHAP {mode} — {iterasi}")
     
