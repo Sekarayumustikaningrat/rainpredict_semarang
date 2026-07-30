@@ -88,16 +88,28 @@ def tabs():
 
         with col2:
             try:
-                # Melacak lokasi file 'logounnes.png' secara otomatis
-                logo_path = resolve_path("logounnes.png")
-        
+                from PIL import Image
+                from loaders import resolve_path
+
+                # 1. Cari file logo (cek jalur spesifik folder skripsi_hujan_web & jalur umum)
+                logo_path = resolve_path("skripsi_hujan_web/logounnes.png")
+                if not (logo_path and logo_path.exists()):
+                    logo_path = resolve_path("logounnes.png")
+
+                # 2. Tampilkan logo jika file ditemukan
                 if logo_path and logo_path.exists():
-                    # Streamlit bisa membaca string path secara langsung tanpa PIL
-                    st.image(str(logo_path), use_container_width=True)
+                    image = Image.open(logo_path)
+                    
+                    # Pengaman kompatibilitas versi Streamlit (baru vs lama)
+                    try:
+                        st.image(image, use_container_width=True)
+                    except TypeError:
+                        st.image(image, use_column_width=True)
                 else:
-                    st.warning(f"Logo tidak ditemukan di: {logo_path}")
-        
+                    st.warning("File logounnes.png tidak ditemukan.")
+
             except Exception as e:
+                # Menampilkan eror asli jika terjadi masalah teknis saat membuka gambar
                 st.error(f"Gagal memuat logo: {e}")
 
         st.divider()
