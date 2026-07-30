@@ -14,10 +14,51 @@ import streamlit as st
 from sklearn.preprocessing import OneHotEncoder
 
 # =====================================================
-# 🔹 PATH CONFIGURATION
+# 🔹 SMART PATH RESOLVER (PENCARI LOKASI FILE OTOMATIS)
 # =====================================================
-BASE_DIR = Path(__file__).resolve().parent
-DEFAULT_DATASET_PATH = BASE_DIR.parent / "data iklim harian - Semarang (2020-2023).xlsx"
+BASE_DIR = Path(__file__).resolve().parent                # /skripsi_hujan_web/rainpredict_app
+PROJECT_ROOT = BASE_DIR.parent                           # /skripsi_hujan_web
+REPO_ROOT = PROJECT_ROOT.parent                          # / (root repo)
+
+def resolve_path(path_input):
+    """
+    Mencari keberadaan file secara fleksibel di berbagai kemungkinan folder.
+    """
+    if path_input is None:
+        return None
+        
+    p = Path(path_input)
+    
+    # 1. Cek langsung dari path asal
+    if p.exists():
+        return p
+        
+    # 2. Cek di dalam folder skripsi_hujan_web
+    p_proj = PROJECT_ROOT / p
+    if p_proj.exists():
+        return p_proj
+        
+    p_proj_name = PROJECT_ROOT / p.name
+    if p_proj_name.exists():
+        return p_proj_name
+
+    # 3. Cek di dalam folder rainpredict_app
+    p_base = BASE_DIR / p
+    if p_base.exists():
+        return p_base
+        
+    p_base_name = BASE_DIR / p.name
+    if p_base_name.exists():
+        return p_base_name
+
+    # 4. Cek di root repo
+    p_repo = REPO_ROOT / p
+    if p_repo.exists():
+        return p_repo
+
+    return p
+
+DEFAULT_DATASET_PATH = PROJECT_ROOT / "data iklim harian - Semarang (2020-2023).xlsx"
 
 # =====================================================
 # 🔹 FIXED ROBUST PATCH (No NameError, No Recursion)
@@ -71,17 +112,18 @@ from config import (
 # =====================================================
 @st.cache_resource
 def load_pickle_robust(path):
-    if not os.path.exists(path):
+    resolved = resolve_path(path)
+    if not resolved.exists():
         return None, f"Missing: {path}"
 
     try:
-        with open(path, "rb") as f:
+        with open(resolved, "rb") as f:
             obj = pickle.load(f)
-        return obj, f"Loaded pickle: {path}"
+        return obj, f"Loaded pickle: {resolved}"
 
     except Exception:
         try:
-            with open(path, "rb") as f:
+            with open(resolved, "rb") as f:
                 class CompatUnpickler(pickle.Unpickler):
                     def find_class(self, module, name):
                         if module.startswith("numpy._core"):
@@ -89,21 +131,21 @@ def load_pickle_robust(path):
                         return super().find_class(module, name)
 
                 obj = CompatUnpickler(f).load()
-            return obj, f"Loaded with CompatUnpickler: {path}"
+            return obj, f"Loaded with CompatUnpickler: {resolved}"
 
         except Exception:
             if importlib.util.find_spec("joblib"):
                 try:
                     import joblib
-                    return joblib.load(path), f"Loaded with joblib: {path}"
+                    return joblib.load(resolved), f"Loaded with joblib: {resolved}"
                 except Exception:
                     pass
 
             if importlib.util.find_spec("dill"):
                 try:
                     import dill
-                    with open(path, "rb") as f:
-                        return dill.load(f), f"Loaded with dill: {path}"
+                    with open(resolved, "rb") as f:
+                        return dill.load(f), f"Loaded with dill: {resolved}"
                 except Exception:
                     pass
 
@@ -127,9 +169,10 @@ def load_eval_metrics(mode):
     metrics = {}
 
     for name, path in EVAL_PATH_MAP[mode].items():
-        if os.path.exists(path):
+        resolved = resolve_path(path)
+        if resolved.exists():
             try:
-                with open(path, "rb") as f:
+                with open(resolved, "rb") as f:
                     df_eval = pickle.load(f)
 
                 if isinstance(df_eval, pd.DataFrame):
@@ -155,9 +198,10 @@ def load_eval_metrics(mode):
 # =====================================================
 @st.cache_data
 def load_preprocessor(path=PREPROCESSOR_PATH):
-    if os.path.exists(path):
+    resolved = resolve_path(path)
+    if resolved.exists():
         try:
-            with open(path, "rb") as f:
+            with open(resolved, "rb") as f:
                 obj = pickle.load(f)
             if hasattr(obj, "transform"):
                 if hasattr(obj, 'named_transformers_'):
@@ -172,9 +216,10 @@ def load_preprocessor(path=PREPROCESSOR_PATH):
 
 @st.cache_data
 def load_feature_names(path):
-    if os.path.exists(path):
+    resolved = resolve_path(path)
+    if resolved.exists():
         try:
-            with open(path, "rb") as f:
+            with open(resolved, "rb") as f:
                 obj = pickle.load(f)
             return list(obj) if isinstance(obj, (list, tuple)) else None
         except Exception:
@@ -196,9 +241,10 @@ def load_data(uploaded_file=None):
             st.error(f"Error membaca file upload: {e}")
             return None
 
-    if os.path.exists(DATA_DEFAULT):
+    resolved_default = resolve_path(DATA_DEFAULT)
+    if resolved_default.exists():
         try:
-            return pd.read_excel(DATA_DEFAULT)
+            return pd.read_excel(resolved_default)
         except Exception as e:
             st.error(f"Gagal baca data default: {e}")
             return None
@@ -224,15 +270,16 @@ def load_all_for_mode(mode):
 # 🔹 GENERIC LOADER (ANY FORMAT)
 # =====================================================
 def load_any(path):
-    if path is None or not os.path.exists(path):
+    resolved = resolve_path(path)
+    if resolved is None or not resolved.exists():
         return None
 
     try:
         import joblib
-        return joblib.load(path)
+        return joblib.load(resolved)
     except Exception:
         try:
-            with open(path, "rb") as f:
+            with open(resolved, "rb") as f:
                 return pickle.load(f)
         except Exception:
             return None
@@ -246,10 +293,11 @@ def compute_best_iteration_for_mode(mode):
 
     for it_name, path in EVAL_PATH_MAP.get(mode, {}).items():
         try:
-            if not os.path.exists(path):
+            resolved = resolve_path(path)
+            if not resolved.exists():
                 continue
 
-            obj = load_any(path)
+            obj = load_any(resolved)
             r2 = None
 
             if isinstance(obj, pd.DataFrame):
@@ -329,8 +377,14 @@ def detect_date_and_rr(df):
 @st.cache_data
 def load_pkl_data(file_path):
     """Loader fleksibel untuk file .pkl (DataFrame / dict berisi DataFrame)."""
+    resolved = resolve_path(file_path)
+    
+    if not resolved.exists():
+        st.error(f"❌ File {file_path} tidak ditemukan.")
+        return None
+
     try:
-        data = pd.read_pickle(file_path)
+        data = pd.read_pickle(resolved)
 
         if isinstance(data, pd.DataFrame):
             df = data.copy()
@@ -357,21 +411,15 @@ def load_pkl_data(file_path):
 
         return df
 
-    except FileNotFoundError:
-        st.error(f"❌ File {file_path} tidak ditemukan.")
-        return None
     except Exception as e:
         st.error(f"❌ Error load {file_path}: {e}")
         return None
 
 
 # =====================================================
-# 🔹 CLEAN DATA FOR PREDICTION (FIX FOR ONEHOTENCODER ERRORS)
+# 🔹 CLEAN DATA FOR PREDICTION
 # =====================================================
 def clean_data_for_prediction(df, preprocessor):
-    """
-    Bersihkan data untuk prediksi agar cocok dengan preprocessor yang sudah di-fit.
-    """
     if preprocessor is None:
         return df
 
@@ -393,20 +441,21 @@ def clean_data_for_prediction(df, preprocessor):
 
 
 # =====================================================
-# 🔹 LOAD DATASET AMAN (SINGLE DEFINITION WITH CACHE)
+# 🔹 LOAD DATASET AMAN
 # =====================================================
 @st.cache_data
 def load_dataset(path=None):
     """
     Load dataset harian dan pastikan kolom numeric & kategori aman untuk scikit-learn.
     """
-    target_path = path if path is not None else DEFAULT_DATASET_PATH
+    target = path if path is not None else DEFAULT_DATASET_PATH
+    resolved = resolve_path(target)
     
-    if not os.path.exists(target_path):
-        st.error(f"File dataset tidak ditemukan di: {target_path}")
+    if not resolved.exists():
+        st.error(f"File dataset tidak ditemukan di: {resolved}")
         return None
 
-    df = pd.read_excel(target_path)
+    df = pd.read_excel(resolved)
     
     if 'Tanggal' in df.columns:
         df['Tanggal'] = pd.to_datetime(df['Tanggal'], format='%d-%m-%Y', errors='coerce')
