@@ -101,8 +101,6 @@ def tabs():
             except:
                 st.warning("Logo belum ditemukan.")
 
-st.divider()
-
         st.divider()
 
         # ============================================================
