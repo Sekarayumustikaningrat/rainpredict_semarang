@@ -399,8 +399,19 @@ def clean_data_for_prediction(df, preprocessor):
 # =====================================================
 # PRA-PROCESSING
 # =====================================================
-DATASET_PATH = r"F:\1. SKRIPSWEET\skripsi_hujan_web\data iklim harian - Semarang (2020-2023).xlsx"
+from pathlib import Path
+import pandas as pd
 
+# BASE_DIR menunjuk ke folder 'rainpredict_app'
+DATASET_PATH = Path(__file__).resolve().parent
+
+def load_dataset():
+    # Gunakan .parent untuk naik 1 tingkat ke folder 'skripsi_hujan_web'
+    path = DATASET_PATH.parent / "data iklim harian - Semarang (2020-2023).xlsx"
+    
+    df = pd.read_excel(path)
+    return df
+    
 # =====================================================
 # LOAD DATASET AMAN
 # =====================================================
