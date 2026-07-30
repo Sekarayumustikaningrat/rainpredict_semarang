@@ -59,10 +59,10 @@ def tabs():
 
     tab_home, tab_prediksi, tab_model, tab_about = st.tabs(["Home", "Prediksi", "Model", "About"])
 
-# Tab Home: Pembuka skripsi dengan judul, pentingnya curah hujan, dll.
+    # Tab Home: Pembuka skripsi dengan judul, pentingnya curah hujan, dll.
     with tab_home:
         # Menggunakan perbandingan kolom agar teks lebih luas dan gambar tetap proporsional
-        col1, col2 = st.columns([2, 0.45], gap="large") 
+        col1, col2 = st.columns([2, 0.45],gap="large") 
 
         with col1:
             st.markdown("""
@@ -86,17 +86,19 @@ def tabs():
             """, unsafe_allow_html=True)
 
         with col2:
+            image_path = "logounnes.png"  # pastikan file ini satu folder dengan script
+
             try:
-                # Melacak lokasi file 'logounnes.png' secara otomatis
-                logo_path = resolve_path("logounnes.png")
-        
-                if logo_path and logo_path.exists():
-                    image = Image.open(logo_path)
-                    st.image(image, use_container_width=True)
-                else:
-                    st.warning("Logo belum ditemukan.")
-        
-            except Exception:
+                from PIL import Image
+                image = Image.open(image_path)
+                
+                # Gambar akan otomatis sejajar di tengah kolom kanan
+                st.image(
+                    image,
+                    use_container_width=True
+                )
+                
+            except:
                 st.warning("Logo belum ditemukan.")
 
 st.divider()
