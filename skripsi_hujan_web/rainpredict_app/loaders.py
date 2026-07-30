@@ -7,10 +7,17 @@ dengan caching untuk performa yang lebih baik.
 import os
 import pickle
 import importlib
+from pathlib import Path
 import pandas as pd
 import numpy as np
 import streamlit as st
 from sklearn.preprocessing import OneHotEncoder
+
+# =====================================================
+# 🔹 PATH CONFIGURATION
+# =====================================================
+BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_DATASET_PATH = BASE_DIR.parent / "data iklim harian - Semarang (2020-2023).xlsx"
 
 # =====================================================
 # 🔹 FIXED ROBUST PATCH (No NameError, No Recursion)
@@ -30,28 +37,23 @@ if not hasattr(np, '_is_patched_v4'):
 # 2. Patch OneHotEncoder._transform dengan pengaman rekursi & import internal
 if not hasattr(OneHotEncoder, '_is_patched_final_v4'):
     try:
-        # Import internal secara langsung di dalam blok untuk mencegah NameError
         import sklearn.preprocessing._encoders as _encoders_module
         _REAL_FUNC = _encoders_module.OneHotEncoder._transform
         
         def _robust_patched_transform(self, X, *args, **kwargs):
             try:
-                # Gunakan fungsi asli yang kita simpan di _REAL_FUNC
                 return _REAL_FUNC(self, X, *args, **kwargs)
             except (ValueError, TypeError) as e:
                 msg = str(e).lower()
                 if 'invalid literal' in msg or 'could not convert' in msg:
-                    # Konversi ke object jika tipe data bermasalah (misal string masuk ke kolom float)
                     X_fix = X.astype(object) if hasattr(X, 'astype') else pd.DataFrame(X).astype(object)
                     return _REAL_FUNC(self, X_fix, *args, **kwargs)
                 raise e
 
-        # Terapkan patch
         OneHotEncoder._transform = _robust_patched_transform
         OneHotEncoder._is_patched_final_v4 = True
         
     except Exception as patch_error:
-        # Jika gagal patching, biarkan aplikasi berjalan dengan fungsi asli
         st.warning(f"Sistem patching otomatis dinonaktifkan: {patch_error}")
 
 from config import (
@@ -158,7 +160,6 @@ def load_preprocessor(path=PREPROCESSOR_PATH):
             with open(path, "rb") as f:
                 obj = pickle.load(f)
             if hasattr(obj, "transform"):
-                # Modify OneHotEncoder to handle unknown categories
                 if hasattr(obj, 'named_transformers_'):
                     for name, trans in obj.named_transformers_.items():
                         if hasattr(trans, 'handle_unknown'):
@@ -370,25 +371,20 @@ def load_pkl_data(file_path):
 def clean_data_for_prediction(df, preprocessor):
     """
     Bersihkan data untuk prediksi agar cocok dengan preprocessor yang sudah di-fit.
-    - Strip dan map kategori ke categories yang valid.
-    - Pastikan numeric columns aman.
     """
     if preprocessor is None:
         return df
 
-    # Ambil kategori dari OneHotEncoder di preprocessor
     cat_cols = []
     if hasattr(preprocessor, 'named_transformers_'):
         for name, trans in preprocessor.named_transformers_.items():
             if hasattr(trans, 'categories_') and len(trans.categories_) > 0:
                 cat_cols.append(name)
-                categories = list(trans.categories_[0])  # Asumsi single column per transformer
+                categories = list(trans.categories_[0])
                 if name in df.columns:
                     df[name] = df[name].astype(str).str.strip()
-                    # Map unknown ke kategori pertama (atau 'Unknown' jika ada)
                     df[name] = df[name].apply(lambda x: x if x in categories else (categories[0] if categories else 'Unknown'))
 
-    # Pastikan kolom numeric aman
     numeric_cols = [col for col in df.columns if col not in cat_cols + ['Tanggal']]
     for col in numeric_cols:
         df[col] = pd.to_numeric(df[col], errors='coerce')
@@ -397,40 +393,31 @@ def clean_data_for_prediction(df, preprocessor):
 
 
 # =====================================================
-# PRA-PROCESSING
+# 🔹 LOAD DATASET AMAN (SINGLE DEFINITION WITH CACHE)
 # =====================================================
-from pathlib import Path
-import pandas as pd
-
-# BASE_DIR menunjuk ke folder 'rainpredict_app'
-DATASET_PATH = Path(__file__).resolve().parent
-
-def load_dataset():
-    # Gunakan .parent untuk naik 1 tingkat ke folder 'skripsi_hujan_web'
-    path = DATASET_PATH.parent / "data iklim harian - Semarang (2020-2023).xlsx"
-    
-    df = pd.read_excel(path)
-    return df
-    
-# =====================================================
-# LOAD DATASET AMAN
-# =====================================================
-def load_dataset(path=DATASET_PATH):
+@st.cache_data
+def load_dataset(path=None):
     """
     Load dataset harian dan pastikan kolom numeric & kategori aman untuk scikit-learn.
     """
-    df = pd.read_excel(path)
-    df['Tanggal'] = pd.to_datetime(df['Tanggal'], format='%d-%m-%Y', errors='coerce')
-    df = df.sort_values('Tanggal').reset_index(drop=True)
+    target_path = path if path is not None else DEFAULT_DATASET_PATH
+    
+    if not os.path.exists(target_path):
+        st.error(f"File dataset tidak ditemukan di: {target_path}")
+        return None
 
-    # Pastikan numeric
+    df = pd.read_excel(target_path)
+    
+    if 'Tanggal' in df.columns:
+        df['Tanggal'] = pd.to_datetime(df['Tanggal'], format='%d-%m-%Y', errors='coerce')
+        df = df.sort_values('Tanggal').reset_index(drop=True)
+
     numeric_cols = ["Tn", "Tx", "Tavg", "RH_avg", "ss", "ff_x", "ddd_x", "ff_avg", "RR"]
     for col in numeric_cols:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # Pastikan kategori aman untuk OneHotEncoder
-    cat_cols = ['ddd_car']  # tambahkan kolom kategori lain jika ada
+    cat_cols = ['ddd_car']
     for col in cat_cols:
         if col in df.columns:
             df[col] = df[col].astype(str).str.strip().fillna('Unknown')
@@ -442,23 +429,14 @@ def load_dataset(path=DATASET_PATH):
 # MISSING VALUE HANDLING
 # =====================================================
 def handle_missing(df):
-    """
-    Penanganan missing value aman untuk scikit-learn:
-    - Interpolasi linear untuk kolom numeric smooth
-    - Imputasi musiman RR
-    - Imputasi modus ddd_car
-    """
-    # --- Numeric smooth
     numeric_cols = ["Tn", "Tx", "Tavg", "RH_avg", "ss", "ff_x", "ddd_x", "ff_avg"]
     df[numeric_cols] = df[numeric_cols].interpolate(method="linear", limit_direction="both")
 
-    # --- Imputasi musiman RR
     df['Bulan'] = df['Tanggal'].dt.month
     rr_monthly_median = df.groupby('Bulan')['RR'].transform(lambda x: x.fillna(x.median()))
     df['RR'] = df['RR'].fillna(rr_monthly_median)
     df['RR'] = df['RR'].interpolate(method="linear", limit_direction="both")
 
-    # --- Imputasi ddd_car
     df.loc[(df['ff_avg'] == 0) & (df['ddd_car'].isna()), 'ddd_car'] = 'C'
 
     def mode_impute(x):
@@ -471,12 +449,10 @@ def handle_missing(df):
 
     df.drop(columns='Bulan', inplace=True)
 
-    # --- Pastikan numeric
     for col in numeric_cols + ['RR']:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # --- Pastikan kategori aman untuk OneHotEncoder
-    cat_cols = ['ddd_car']  # tambahkan kolom kategori lain jika ada
+    cat_cols = ['ddd_car']
     for col in cat_cols:
         if col in df.columns:
             df[col] = df[col].astype(str).str.strip().fillna('Unknown')
@@ -504,7 +480,6 @@ def ensure_continuous(df):
     df = df.set_index('Tanggal').reindex(full_range).reset_index()
     df.rename(columns={'index': 'Tanggal'}, inplace=True)
     return df
-
 
 
 # =====================================================
