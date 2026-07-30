@@ -86,20 +86,26 @@ def tabs():
             """, unsafe_allow_html=True)
 
         with col2:
-            image_path = "logounnes.png"  # pastikan file ini satu folder dengan script
-
             try:
                 from PIL import Image
-                image = Image.open(image_path)
-                
-                # Gambar akan otomatis sejajar di tengah kolom kanan
-                st.image(
-                    image,
-                    use_container_width=True
-                )
-                
-            except:
+                from loaders import resolve_path  # Menggunakan pencari path pintar dari loaders.py
+        
+                # Melacak lokasi file 'logounnes.png' secara otomatis di seluruh folder repositori
+                logo_path = resolve_path("logounnes.png")
+        
+                if logo_path and logo_path.exists():
+                    image = Image.open(logo_path)
+                    st.image(
+                        image,
+                        use_container_width=True
+                    )
+                else:
+                    st.warning("Logo belum ditemukan.")
+        
+            except Exception:
                 st.warning("Logo belum ditemukan.")
+
+st.divider()
 
         st.divider()
 
@@ -1048,12 +1054,20 @@ def tabs():
                 # TAMPILAN GAMBAR
                 st.subheader(f"Global SHAP {mode} — Summary Plot ({iterasi})")
                 from PIL import Image
+                from loaders import resolve_path  # Impor pencari lokasi file otomatis dari loaders.py
+        
                 try:
-                    img = Image.open(data["Image"])
-                    img.thumbnail((1200, 1000))  # ← ukuran aman & proporsional
-                    st.image(img, use_container_width=False)
-                except Exception:
-                    st.error(f"Gambar '{data['Image']}' tidak ditemukan.")
+                    # Mencari jalur file gambar secara fleksibel di seluruh folder
+                    img_path = resolve_path(data["Image"])
+        
+                    if img_path and img_path.exists():
+                        img = Image.open(img_path)
+                        img.thumbnail((1200, 1000))  # ← ukuran aman & proporsional
+                        st.image(img, use_container_width=True)
+                    else:
+                        st.error(f"Gambar '{data['Image']}' tidak ditemukan.")
+                except Exception as e:
+                    st.error(f"Gagal memuat gambar '{data['Image']}': {e}")
 
 
     # Tab About: Tentang sistem
