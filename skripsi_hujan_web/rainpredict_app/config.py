@@ -1,3 +1,5 @@
+# config.py
+# jangan ubah apapun kecuali ganti warna — plus animasi header biar cute ✨
 """
 File ini berisi konfigurasi halaman misal: set_page_config, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
 """
@@ -41,10 +43,10 @@ def local_css():
         --drop-color-3: rgba(244, 114, 182, 0.15);
     }
 
-    /* FIX: Menghilangkan space kosong di atas header */
+    /* FIX: Menghilangkan space kosong di atas header dan beri ruang footer */
     .block-container {
         padding: 0 !important;
-        padding-bottom: 2rem !important; /* beri ruang untuk footer */
+        padding-bottom: 3rem !important;
     }
 
     /* App Background & Font */
@@ -96,7 +98,6 @@ def local_css():
         z-index: 0;
         /* 28 tetes air dengan bentuk oval/teardrop */
         background-image:
-            /* Baris 1 - tetes besar (6px) */
             radial-gradient(ellipse at 5% 10%, var(--drop-color-1) 0%, transparent 6px),
             radial-gradient(ellipse at 15% 30%, var(--drop-color-2) 0%, transparent 4px),
             radial-gradient(ellipse at 25% 5%, var(--drop-color-3) 0%, transparent 5px),
@@ -107,7 +108,6 @@ def local_css():
             radial-gradient(ellipse at 75% 40%, var(--drop-color-2) 0%, transparent 4px),
             radial-gradient(ellipse at 85% 25%, var(--drop-color-3) 0%, transparent 7px),
             radial-gradient(ellipse at 95% 60%, var(--drop-color-1) 0%, transparent 5px),
-            /* Baris 2 - tetes sedang (4px) */
             radial-gradient(ellipse at 8% 55%, var(--drop-color-2) 0%, transparent 4px),
             radial-gradient(ellipse at 18% 80%, var(--drop-color-3) 0%, transparent 3px),
             radial-gradient(ellipse at 28% 45%, var(--drop-color-1) 0%, transparent 4px),
@@ -118,7 +118,6 @@ def local_css():
             radial-gradient(ellipse at 78% 75%, var(--drop-color-3) 0%, transparent 4px),
             radial-gradient(ellipse at 88% 45%, var(--drop-color-1) 0%, transparent 3px),
             radial-gradient(ellipse at 98% 85%, var(--drop-color-2) 0%, transparent 4px),
-            /* Baris 3 - tetes kecil (2-3px) */
             radial-gradient(ellipse at 3% 90%, var(--drop-color-3) 0%, transparent 2px),
             radial-gradient(ellipse at 12% 20%, var(--drop-color-1) 0%, transparent 3px),
             radial-gradient(ellipse at 22% 65%, var(--drop-color-2) 0%, transparent 2px),
@@ -174,7 +173,7 @@ def local_css():
         100% { transform: translateY(120px) translateX(30px) rotate(-10deg); opacity: 0.10; }
     }
 
-    /* ===== LAYER 3: Elemen tambahan (glow & kilat) ===== */
+    /* ===== LAYER 3: Elemen tambahan (glow) ===== */
     .hero-header .rain-glow {
         position: absolute;
         top: 50%;
@@ -205,7 +204,6 @@ def local_css():
         gap: 16px;
     }
 
-    /* Kolom kiri: teks */
     .hero-text {
         display: flex;
         flex-direction: column;
@@ -214,7 +212,6 @@ def local_css():
         min-width: 200px;
     }
 
-    /* Kolom kanan: visual animasi (ikon) */
     .hero-visual {
         display: flex;
         align-items: center;
@@ -223,7 +220,6 @@ def local_css():
         flex-shrink: 0;
     }
 
-    /* Icon awan di kiri (dalam kolom kiri) */
     .hero-icon {
         font-size: 42px;
         color: var(--accent-primary);
@@ -239,7 +235,6 @@ def local_css():
         50% { transform: translateY(-6px) rotate(2deg); }
     }
 
-    /* Judul utama */
     .header-title {
         font-size: 2rem;
         font-weight: 700;
@@ -257,7 +252,6 @@ def local_css():
         75% { transform: rotate(-0.8deg); }
     }
 
-    /* Subtitle dengan gradasi bergerak dan garis air */
     .header-subtitle {
         font-size: 0.95rem;
         font-weight: 400;
@@ -296,13 +290,11 @@ def local_css():
         100% { background-position: 0% 50%; }
     }
 
-    /* ----- Visual animasi di kanan: ikon ----- */
     .hero-visual .material-symbols-rounded {
         font-size: 32px;
         transition: transform 0.3s;
     }
 
-    /* Awan besar di kanan */
     .hero-visual .cloud-big {
         color: rgba(167, 139, 250, 0.30);
         font-size: 52px;
@@ -314,7 +306,6 @@ def local_css():
         50% { transform: translateY(-6px) scale(1.04); }
     }
 
-    /* Petir berdenyut */
     .hero-visual .thunder-icon {
         color: rgba(244, 114, 182, 0.5);
         animation: thunderPulse 3s ease-in-out infinite;
@@ -344,7 +335,6 @@ def local_css():
         90% { opacity: 0; }
     }
 
-    /* Tetesan hujan (icon) */
     .hero-visual .rain-drop-icon {
         color: rgba(125, 211, 252, 0.35);
         font-size: 20px;
@@ -360,7 +350,7 @@ def local_css():
     }
 
     /* ===============================
-       NAVBAR / TABS — STICKY + GLASSMORPHISM (FIX)
+       NAVBAR / TABS — STICKY (FIX)
        =============================== */
     /* Target utama container tab agar sticky */
     .stTabs {
@@ -377,14 +367,12 @@ def local_css():
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
         transition: box-shadow 0.3s;
         width: 100%;
-        /* Pastikan tidak ada overflow yang memotong */
         overflow: visible !important;
     }
     .stTabs:hover {
         box-shadow: 0 4px 30px rgba(167, 139, 250, 0.15) !important;
     }
 
-    /* Tab list di dalamnya */
     .stTabs [data-baseweb="tab-list"] {
         background: rgba(167, 139, 250, 0.06) !important;
         padding: 6px !important;
@@ -421,7 +409,7 @@ def local_css():
     }
 
     /* ===============================
-       SIDEBAR – kontras dengan nuansa ungu kebiruan
+       SIDEBAR
        =============================== */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important;
@@ -456,7 +444,7 @@ def local_css():
     }
 
     /* ===============================
-       SIDEBAR CARD — soft glass
+       SIDEBAR CARD
        =============================== */
     .sidebar-card {
         background: linear-gradient(135deg, rgba(167, 139, 250, 0.12) 0%, rgba(125, 211, 252, 0.08) 100%) !important;
@@ -473,13 +461,13 @@ def local_css():
     }
 
     /* ===============================
-       ICON — lavender & sky
+       ICON
        =============================== */
     .material-icons-inline {
         color: var(--accent-primary);
     }
 
-    /* Buttons — soft gradient lavender → pink */
+    /* Buttons */
     .stButton > button {
         background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
         color: white;
@@ -496,7 +484,6 @@ def local_css():
         box-shadow: 0 6px 28px rgba(167, 139, 250, 0.50);
     }
 
-    /* Small text muted */
     .small-muted {
         color: var(--text-muted);
         font-size: 14px;
@@ -504,14 +491,14 @@ def local_css():
     }
 
     /* ===============================
-       FOOTER — pastikan muncul & rapi
+       FOOTER — pastikan muncul dan terbaca
        =============================== */
     .site-footer {
         margin-top: 48px;
         padding: 18px 2rem;
         text-align: center;
         font-size: 0.75rem;
-        color: var(--text-muted);
+        color: var(--text-muted) !important;
         border-top: 1px solid var(--border-soft);
         position: relative;
         clear: both;
@@ -520,18 +507,17 @@ def local_css():
 
     .footer-note {
         margin-top: 4px;
-        color: #C4B0F8;
+        color: #7DD3FC !important;
         font-weight: 500;
-        letter-spacing: 0.3px;
     }
 
-    /* Pastikan footer tidak terpotong oleh container */
+    /* Tambahan padding bawah agar footer tidak terpotong */
     .main .block-container {
-        padding-bottom: 3rem !important;
+        padding-bottom: 4rem !important;
     }
 
     /* ===============================
-       EXTRA — selectbox, slider, dll.
+       ELEMEN LAINNYA
        =============================== */
     .stSelectbox [data-baseweb="select"] {
         background: rgba(45, 27, 78, 0.5);
