@@ -1,5 +1,3 @@
-# config.py
-# jangan ubah apapun kecuali ganti warna — plus animasi header biar cute ✨
 """
 File ini berisi konfigurasi halaman misal: set_page_config, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
 """
@@ -41,14 +39,20 @@ def local_css():
         --drop-color-1: rgba(167, 139, 250, 0.25);
         --drop-color-2: rgba(125, 211, 252, 0.20);
         --drop-color-3: rgba(244, 114, 182, 0.15);
+        --footer-height: 70px;
     }
 
-    /* ============================================
-       CONTAINER UTAMA — padding kiri/kanan untuk konten
-       ============================================ */
+    /* ===============================
+       LAYOUT UTAMA — beri margin kiri-kanan
+       =============================== */
     .block-container {
-        padding: 0 2rem !important;   /* beri jarak kiri-kanan */
-        padding-bottom: 4rem !important;
+        padding: 0 3rem !important;      /* margin kiri-kanan */
+        padding-bottom: calc(var(--footer-height) + 2rem) !important; /* ruang untuk footer */
+    }
+
+    /* Untuk konten di dalam tab agar lebih rapi */
+    .stTabs [data-baseweb="tab-panel"] {
+        padding: 0.5rem 0.5rem !important;
     }
 
     /* App Background & Font */
@@ -59,7 +63,7 @@ def local_css():
     }
 
     /* ===============================
-       HERO HEADER — full-width dengan margin negatif
+       HERO HEADER — tanpa border bawah
        =============================== */
     .hero-header {
         background: var(--bg-primary);
@@ -67,17 +71,21 @@ def local_css():
         border-radius: 0;
         color: white;
         border-bottom: none;
-        margin: 0 -2rem 1rem -2rem;   /* full-width melewati padding container */
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
         position: relative;
+        width: 100%;
         box-shadow: 0 4px 30px rgba(167, 139, 250, 0.08);
         animation: softGlow 4s ease-in-out infinite alternate;
         transition: box-shadow 0.3s ease;
         overflow: hidden;
         min-height: 120px;
-        width: auto; /* biar mengikuti lebar container */
+        margin-left: -3rem;  /* offset karena container padding */
+        padding-left: 3rem;
+        padding-right: 3rem;
+        width: calc(100% + 6rem);
     }
     .hero-header:hover {
         box-shadow: 0 6px 40px rgba(167, 139, 250, 0.25);
@@ -88,7 +96,7 @@ def local_css():
         100% { box-shadow: 0 4px 50px rgba(167, 139, 250, 0.20); }
     }
 
-    /* ===== LAYER 1: Efek hujan (tetesan air detail) ===== */
+    /* ===== LAYER 1: Efek hujan ===== */
     .hero-header::before {
         content: '';
         position: absolute;
@@ -147,7 +155,7 @@ def local_css():
                                    0 38px, 0 45px, 0 30px, 0 40px, 0 35px; }
     }
 
-    /* ===== LAYER 2: Daun/bunga berjatuhan ===== */
+    /* ===== LAYER 2: Daun/bunga ===== */
     .hero-header::after {
         content: '🌸 🍃 🌸 🍃 🌸 🍃 🌸 🍃 🌸 🍃';
         position: absolute;
@@ -174,7 +182,7 @@ def local_css():
         100% { transform: translateY(120px) translateX(30px) rotate(-10deg); opacity: 0.10; }
     }
 
-    /* ===== LAYER 3: Elemen tambahan (glow) ===== */
+    /* ===== LAYER 3: Glow ===== */
     .hero-header .rain-glow {
         position: absolute;
         top: 50%;
@@ -193,7 +201,7 @@ def local_css():
         100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
     }
 
-    /* ===== Konten header (di atas efek) ===== */
+    /* ===== Konten header ===== */
     .hero-content {
         position: relative;
         z-index: 2;
@@ -351,7 +359,7 @@ def local_css():
     }
 
     /* ===============================
-       NAVBAR / TABS — sticky hanya tab-list, full-width
+       NAVBAR / TABS — STICKY HANYA TAB LIST
        =============================== */
     .stTabs {
         margin: 0 !important;
@@ -362,7 +370,6 @@ def local_css():
         overflow: visible !important;
     }
 
-    /* Tab list — sticky dengan margin negatif untuk full-width */
     .stTabs [data-baseweb="tab-list"] {
         position: -webkit-sticky !important;
         position: sticky !important;
@@ -371,22 +378,21 @@ def local_css():
         background: rgba(26, 20, 47, 0.80) !important;
         backdrop-filter: blur(14px) !important;
         -webkit-backdrop-filter: blur(14px) !important;
-        padding: 6px 2rem !important;
+        padding: 6px 0 !important;
         border-radius: 0 !important;
         display: flex !important;
         gap: 6px !important;
         align-items: center !important;
         border-bottom: 1px solid var(--border-soft) !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-        width: auto !important;
-        margin: 0 -2rem !important;   /* full-width melewati padding */
+        width: 100% !important;
+        margin: 0 !important;
         transition: box-shadow 0.3s;
     }
     .stTabs [data-baseweb="tab-list"]:hover {
         box-shadow: 0 4px 30px rgba(167, 139, 250, 0.15) !important;
     }
 
-    /* Tab buttons */
     .stTabs [data-baseweb="tab"] {
         padding: 8px 18px !important;
         border-radius: 12px !important;
@@ -493,25 +499,58 @@ def local_css():
     }
 
     /* ===============================
-       FOOTER — rapi dengan padding dan margin
+       FOOTER — menempel di paling bawah (fixed)
        =============================== */
     .site-footer {
-        margin: 48px -2rem 0 -2rem;   /* full-width, melewati padding */
-        padding: 1.5rem 2rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 10px 2rem;
         text-align: center;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         color: var(--text-muted) !important;
         border-top: 1px solid var(--border-soft);
-        background: rgba(26, 20, 47, 0.3);
-        backdrop-filter: blur(4px);
-        clear: both;
+        background: rgba(26, 20, 47, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+    }
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .footer-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
     }
 
     .footer-note {
-        margin-top: 6px;
         color: #7DD3FC !important;
         font-weight: 500;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
+    }
+
+    .footer-divider {
+        color: var(--border-soft);
+        opacity: 0.5;
+    }
+
+    /* Tambahan padding bawah pada konten agar tidak tertutup footer */
+    .main .block-container {
+        padding-bottom: calc(var(--footer-height) + 2rem) !important;
     }
 
     /* ===============================
