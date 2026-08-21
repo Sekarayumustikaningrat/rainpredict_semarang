@@ -94,28 +94,31 @@ def tabs():
                 """, unsafe_allow_html=True)
         
             with col2:
-                    # Lottie Animation - Rain Weather
-                    st.markdown("""
-                    <div style="
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        margin-top: 10px;
-                        background: rgba(255,255,255,0.03);
-                        border-radius: 24px;
-                        padding: 12px;
-                    ">
-                        <lottie-player 
-                            src="https://assets10.lottiefiles.com/packages/lf20_2b9f3b1a.json" 
-                            background="transparent" 
-                            speed="1" 
-                            style="width: 280px; height: 280px;"
-                            loop 
-                            autoplay>
-                        </lottie-player>
-                    </div>
-                    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                    """, unsafe_allow_html=True)
+                # Animasi bertema curah hujan dari GIPHY (gerak terus)
+                st.markdown("""
+                <div style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 10px;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    background: rgba(255,255,255,0.05);
+                    padding: 8px;
+                ">
+                    <img 
+                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzNlMTQyZjM4YzJkY2E2ZGYzYzE5YzU4N2Y5ZGM1NjE4ZjkzY2E4NyZlcD12MV9pbnRlcm5hbF9naWZzX2dpZiZjdD1n/3o6Zt1fG5gK5eU1h4g/giphy.gif"
+                        alt="Rain animation"
+                        style="
+                            width: 100%;
+                            max-width: 300px;
+                            height: auto;
+                            border-radius: 16px;
+                            display: block;
+                        "
+                    />
+                </div>
+                """, unsafe_allow_html=True)
         
             st.divider()
 
