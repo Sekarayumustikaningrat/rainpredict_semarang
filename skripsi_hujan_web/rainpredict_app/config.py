@@ -44,6 +44,7 @@ def local_css():
     /* FIX: Menghilangkan space kosong di atas header */
     .block-container {
         padding: 0 !important;
+        padding-bottom: 2rem !important; /* beri ruang untuk footer */
     }
 
     /* App Background & Font */
@@ -359,57 +360,64 @@ def local_css():
     }
 
     /* ===============================
-       NAVBAR / TABS — STICKY + GLASSMORPHISM
+       NAVBAR / TABS — STICKY + GLASSMORPHISM (FIX)
        =============================== */
-
+    /* Target utama container tab agar sticky */
     .stTabs {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: rgba(26, 20, 47, 0.75);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        padding: 0.5rem 2rem;
-        margin-top: -0.75rem;
-        border-bottom: 1px solid var(--border-soft);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 999 !important;
+        background: rgba(26, 20, 47, 0.80) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        padding: 0.6rem 2rem !important;
+        margin: 0 !important;
+        border-bottom: 1px solid var(--border-soft) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
         transition: box-shadow 0.3s;
+        width: 100%;
+        /* Pastikan tidak ada overflow yang memotong */
+        overflow: visible !important;
     }
     .stTabs:hover {
-        box-shadow: 0 4px 30px rgba(167, 139, 250, 0.10);
+        box-shadow: 0 4px 30px rgba(167, 139, 250, 0.15) !important;
     }
 
+    /* Tab list di dalamnya */
     .stTabs [data-baseweb="tab-list"] {
-        background: rgba(167, 139, 250, 0.06);
-        padding: 6px;
-        border-radius: 14px;
-        display: flex;
-        gap: 6px;
-        align-items: center;
-        border-bottom: none; /* hilangkan border bawah karena sudah ada di container */
+        background: rgba(167, 139, 250, 0.06) !important;
+        padding: 6px !important;
+        border-radius: 14px !important;
+        display: flex !important;
+        gap: 6px !important;
+        align-items: center !important;
+        border-bottom: none !important;
+        width: fit-content;
+        margin: 0 auto; /* center tab */
     }
 
     .stTabs [data-baseweb="tab"] {
-        padding: 8px 18px;
-        border-radius: 12px;
-        font-weight: 500;
-        color: var(--text-muted);
-        background: transparent;
-        transition: all 0.2s ease;
+        padding: 8px 18px !important;
+        border-radius: 12px !important;
+        font-weight: 500 !important;
+        color: var(--text-muted) !important;
+        background: transparent !important;
+        transition: all 0.2s ease !important;
     }
 
     .stTabs [data-baseweb="tab"]:hover {
-        background: rgba(167, 139, 250, 0.10);
-        color: var(--text-primary);
+        background: rgba(167, 139, 250, 0.10) !important;
+        color: var(--text-primary) !important;
     }
 
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, var(--accent-primary), #8B6FE8);
+        background: linear-gradient(135deg, var(--accent-primary), #8B6FE8) !important;
         color: white !important;
-        padding: 9px 20px;
-        border-radius: 14px;
-        box-shadow: 0 4px 20px rgba(167, 139, 250, 0.40);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 9px 20px !important;
+        border-radius: 14px !important;
+        box-shadow: 0 4px 20px rgba(167, 139, 250, 0.40) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
     }
 
     /* ===============================
@@ -496,15 +504,18 @@ def local_css():
     }
 
     /* ===============================
-       FOOTER — soft lavender line
+       FOOTER — pastikan muncul & rapi
        =============================== */
     .site-footer {
         margin-top: 48px;
-        padding: 18px;
+        padding: 18px 2rem;
         text-align: center;
         font-size: 0.75rem;
         color: var(--text-muted);
         border-top: 1px solid var(--border-soft);
+        position: relative;
+        clear: both;
+        background: transparent;
     }
 
     .footer-note {
@@ -512,6 +523,11 @@ def local_css():
         color: #C4B0F8;
         font-weight: 500;
         letter-spacing: 0.3px;
+    }
+
+    /* Pastikan footer tidak terpotong oleh container */
+    .main .block-container {
+        padding-bottom: 3rem !important;
     }
 
     /* ===============================
