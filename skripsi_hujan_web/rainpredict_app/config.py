@@ -1,5 +1,4 @@
 "File ini berisi konfigurasi halaman misal:set_page_cofig, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna)."
-
 # config.py
 import streamlit as st
 import os
@@ -21,30 +20,27 @@ def local_css():
     st.markdown("""
     <style>
     :root {
-        /* TEMA DARK SOFT – KONTRA DENGAN AKSEN EMAS/ORANYE */
-        --bg-primary: linear-gradient(145deg, #0a1628 0%, #132b44 45%, #1a3a55 100%);
-        --bg-secondary: #152b3f;
-        --accent-primary: #F4A261;      /* soft gold/orange */
-        --accent-secondary: #E76F51;    /* coral */
-        --card-bg: rgba(18, 34, 50, 0.8);
+        /* TEMA DARK SOFT – HUJAN ELEGAN DENGAN KONTRAS TINGGI */
+        --bg-primary: linear-gradient(145deg, #0f1f2d 0%, #1a3345 100%);
+        --bg-secondary: #1c2f3f;
+        --accent-primary: #4fc3f7;      /* biru cerah */
+        --accent-secondary: #26c6da;    /* teal cerah */
+        --card-bg: rgba(24, 44, 60, 0.75);
         --text-primary: #f0f6fc;
-        --text-muted: #b0c8dd;
-
-        /* Sidebar – lebih terang dari utama agar kontras */
-        --sidebar-bg-start: #1a334a;
-        --sidebar-bg-end: #2b4a66;
-        --sidebar-border: #4a6f8f;
-        --sidebar-heading: #f4c9a0;     /* emas lembut */
-        --sidebar-text: #e0edf7;
-        --sidebar-link: #fad6b3;
-        --sidebar-link-hover: #ffe3c4;
-        --sidebar-card-bg: linear-gradient(145deg, #2b4a66, #3a6080);
-        --sidebar-card-border: #f4c9a0;
-
-        --footer-accent: #f4c9a0;
-        --tab-active-shadow: rgba(244, 162, 97, 0.4);
-        --button-shadow: rgba(244, 162, 97, 0.35);
-        --button-hover-shadow: rgba(244, 162, 97, 0.6);
+        --text-muted: #a0bccd;
+        --sidebar-bg-start: #0a1a2b;
+        --sidebar-bg-end: #1a3a55;
+        --sidebar-border: #2a4a6a;
+        --sidebar-heading: #8ecae6;
+        --sidebar-text: #d4e8f5;
+        --sidebar-link: #b0d0e6;
+        --sidebar-link-hover: #cce4f5;
+        --sidebar-card-bg: linear-gradient(145deg, #1a3a55, #2a5a7a);
+        --sidebar-card-border: #8ecae6;
+        --footer-accent: #8ecae6;
+        --tab-active-shadow: rgba(79, 195, 247, 0.35);
+        --button-shadow: rgba(79, 195, 247, 0.3);
+        --button-hover-shadow: rgba(79, 195, 247, 0.5);
     }
 
     .block-container {
@@ -71,6 +67,7 @@ def local_css():
         position: relative;
         width: 100%;
     }
+
     .hero-header::after {
         content: 'cloudy_snowing';
         font-family: 'Material Symbols Rounded';
@@ -88,8 +85,9 @@ def local_css():
         margin-top: -0.75rem;
         padding: 0 2rem;
     }
+
     .stTabs [data-baseweb="tab-list"] {
-        background: rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.05);
         padding: 6px;
         border-radius: 14px;
         display: flex;
@@ -97,6 +95,7 @@ def local_css():
         align-items: center;
         border-bottom: 1px solid rgba(255,255,255,0.06);
     }
+
     .stTabs [data-baseweb="tab"] {
         padding: 8px 18px;
         border-radius: 12px;
@@ -105,28 +104,31 @@ def local_css():
         background: transparent;
         transition: all 0.2s ease;
     }
+
     .stTabs [data-baseweb="tab"]:hover {
-        background: rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.06);
         color: var(--text-primary);
     }
+
     .stTabs [aria-selected="true"] {
         background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        color: #0a1628 !important;  /* gelap agar kontras dengan latar terang */
+        color: white !important;
         padding: 9px 20px;
         border-radius: 14px;
         box-shadow: 0 4px 12px var(--tab-active-shadow);
-        border: 1px solid rgba(255,255,255,0.2);
-        font-weight: 600;
+        border: 1px solid rgba(255,255,255,0.12);
     }
 
-    /* SIDEBAR – kontras dengan latar utama */
+    /* SIDEBAR – selaras dengan UNNES (biru tua) */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%) !important;
-        border-right: 2px solid var(--sidebar-border) !important;
+        border-right: 1px solid var(--sidebar-border) !important;
     }
+
     [data-testid="stSidebar"] * {
         color: var(--sidebar-text) !important;
     }
+
     [data-testid="stSidebar"] h1,
     [data-testid="stSidebar"] h2,
     [data-testid="stSidebar"] h3,
@@ -134,11 +136,13 @@ def local_css():
     [data-testid="stSidebar"] h5 {
         color: var(--sidebar-heading) !important;
     }
+
     [data-testid="stSidebar"] p,
     [data-testid="stSidebar"] span,
     [data-testid="stSidebar"] label {
         color: var(--sidebar-text) !important;
     }
+
     [data-testid="stSidebar"] a {
         color: var(--sidebar-link) !important;
     }
@@ -151,8 +155,6 @@ def local_css():
         background: var(--sidebar-card-bg) !important;
         border-left: 5px solid var(--sidebar-card-border);
         color: var(--sidebar-text);
-        border-radius: 8px;
-        padding: 12px 16px;
     }
     .sidebar-card p {
         color: var(--sidebar-text) !important;
@@ -169,25 +171,19 @@ def local_css():
     /* BUTTONS – kontras tinggi */
     .stButton > button {
         background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        color: #0a1628 !important;
+        color: #0a1a2b !important;  /* teks gelap agar kontras */
         border: none;
-        padding: 12px 24px;
-        border-radius: 30px;
+        padding: 12px 20px;
+        border-radius: 12px;
         font-weight: 600;
         box-shadow: 0 4px 15px var(--button-shadow);
         transition: transform 0.2s, box-shadow 0.2s;
     }
-    .stButton > button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px var(--button-hover-shadow);
-    }
 
-    /* METRIK & ANGKA */
-    .stMetric {
-        background: rgba(255,255,255,0.05);
-        border-radius: 12px;
-        padding: 12px;
-        border-left: 4px solid var(--accent-primary);
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px var(--button-hover-shadow);
+        color: #0a1a2b !important;
     }
 
     .small-muted {
@@ -204,21 +200,14 @@ def local_css():
         color: var(--text-muted);
         border-top: 1px solid rgba(255,255,255,0.06);
     }
+
     .footer-note {
         margin-top: 4px;
         color: var(--footer-accent);
         font-weight: 500;
     }
-
-    /* ELEMEN LAINNYA (opsional) */
-    .stSelectbox, .stNumberInput, .stDateInput {
-        background: var(--card-bg);
-        border-radius: 10px;
-        padding: 4px 8px;
-    }
     </style>
     """, unsafe_allow_html=True)
-
 
 # ------------------------------------------------------------
 # Satu definisi initialize_session_state (lengkap)
@@ -253,7 +242,7 @@ def initialize_session_state():
     os.makedirs("predictions", exist_ok=True)
 
 # ------------------------------------------------------------
-# MAPPINGS & KONSTANTA (tidak diubah)
+# MAPPINGS & KONSTANTA (tetap)
 # ------------------------------------------------------------
 MODEL_MAPPING = {
     "Harian": {
