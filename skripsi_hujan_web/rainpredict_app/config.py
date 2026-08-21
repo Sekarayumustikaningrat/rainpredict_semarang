@@ -1,4 +1,3 @@
-jangan ubah apapun kecuali ganti warna
 "File ini berisi konfigurasi halaman misal:set_page_cofig, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna)."
 
 import streamlit as st
