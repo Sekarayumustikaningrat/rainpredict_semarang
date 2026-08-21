@@ -359,12 +359,24 @@ def local_css():
     }
 
     /* ===============================
-       NAVBAR / TABS (DIRAPIKAN)
+       NAVBAR / TABS — STICKY + GLASSMORPHISM
        =============================== */
 
     .stTabs {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(26, 20, 47, 0.75);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 0.5rem 2rem;
         margin-top: -0.75rem;
-        padding: 0 2rem;
+        border-bottom: 1px solid var(--border-soft);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s;
+    }
+    .stTabs:hover {
+        box-shadow: 0 4px 30px rgba(167, 139, 250, 0.10);
     }
 
     .stTabs [data-baseweb="tab-list"] {
@@ -374,7 +386,7 @@ def local_css():
         display: flex;
         gap: 6px;
         align-items: center;
-        border-bottom: 1px solid var(--border-soft);
+        border-bottom: none; /* hilangkan border bawah karena sudah ada di container */
     }
 
     .stTabs [data-baseweb="tab"] {
