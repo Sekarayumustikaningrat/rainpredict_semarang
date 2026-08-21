@@ -88,29 +88,25 @@ def tabs():
 
         with col2:
             try:
-                from PIL import Image
-                from loaders import resolve_path
-
-                # 1. Cari file logo (cek jalur spesifik folder skripsi_hujan_web & jalur umum)
-                logo_path = resolve_path("skripsi_hujan_web/logounnes.png")
-                if not (logo_path and logo_path.exists()):
-                    logo_path = resolve_path("logounnes.png")
-
-                # 2. Tampilkan logo jika file ditemukan
-                if logo_path and logo_path.exists():
-                    image = Image.open(logo_path)
-                    
-                    # Pengaman kompatibilitas versi Streamlit (baru vs lama)
-                    try:
-                        st.image(image, use_container_width=True)
-                    except TypeError:
-                        st.image(image, use_column_width=True)
-                else:
-                    st.warning("File logounnes.png tidak ditemukan.")
-
-            except Exception as e:
-                # Menampilkan eror asli jika terjadi masalah teknis saat membuka gambar
-                st.error(f"Gagal memuat logo: {e}")
+                # Bungkus logo dengan div class "logo-card"
+                st.markdown('<div class="logo-card">', unsafe_allow_html=True)
+                try:
+                    from PIL import Image
+                    from loaders import resolve_path
+                    logo_path = resolve_path("skripsi_hujan_web/logounnes.png")
+                    if not (logo_path and logo_path.exists()):
+                        logo_path = resolve_path("logounnes.png")
+                    if logo_path and logo_path.exists():
+                        image = Image.open(logo_path)
+                        try:
+                            st.image(image, use_container_width=True)
+                        except TypeError:
+                            st.image(image, use_column_width=True)
+                    else:
+                        st.warning("File logounnes.png tidak ditemukan.")
+                except Exception as e:
+                    st.error(f"Gagal memuat logo: {e}")
+                st.markdown('</div>', unsafe_allow_html=True)
 
         st.divider()
 
