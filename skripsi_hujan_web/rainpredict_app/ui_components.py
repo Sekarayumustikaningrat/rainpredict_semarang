@@ -385,94 +385,139 @@ def tabs():
 
     # Tab Model: Metode dan hasil
     with tab_model:
-        st.markdown('<div class="card"><h3>Informasi Dataset</h3></div>', unsafe_allow_html=True)
-        # 1. Kolom kiri: grafik historis curah hujan
-        # Kolom kanan: rata-rata curah hujan dan menampilkan preview dataset
-        col_left, col_right = st.columns([2, 1])
+        # ============================================================
+        # INFORMASI DATASET
+        # ============================================================
+        st.markdown("""
+        <div class="model-card">
+            <h3><span class="icon">📊</span> Informasi Dataset</h3>
+        </div>
+        """, unsafe_allow_html=True)
+    
+        col_left, col_right = st.columns([2, 1], gap="large")
+    
         with col_left:
             if df_raw is not None:
                 df_idx = ensure_date_index(df_raw)
                 if df_idx is not None:
-                    st.markdown("### Ringkasan Dataset")
-                    with st.expander("Detail Dataset", expanded=True):
-                        try:
-                            min_date = df_idx.index.min().strftime('%d %B %Y')
-                            max_date = df_idx.index.max().strftime('%d %B %Y')
-                            st.success(f"**Periode Data:** {min_date} → {max_date}")
-                        except Exception:
-                            st.warning("**Periode:** Tidak dapat dibaca (format tanggal tidak valid)")
-                        st.info(f"**Jumlah Data:** {len(df_idx):,} baris")
-                        st.info(f"**Sumber Data:** Kaggle (Public Dataset)")
-
-                    # --- Membuat Grafik Historis Curah Hujan berdasarkan dataset ---
-                    # choose RR column
+                    st.markdown("""
+                    <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
+                    """, unsafe_allow_html=True)
+    
+                    try:
+                        min_date = df_idx.index.min().strftime('%d %B %Y')
+                        max_date = df_idx.index.max().strftime('%d %B %Y')
+                        st.markdown(f"""
+                        <div class="dataset-info-item">
+                            <div class="label">📅 Periode Data</div>
+                            <div class="value">{min_date} → {max_date}</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    except Exception:
+                        st.warning("Periode: Tidak dapat dibaca (format tanggal tidak valid)")
+    
+                    st.markdown(f"""
+                    <div class="dataset-info-item">
+                        <div class="label">📋 Jumlah Data</div>
+                        <div class="value">{len(df_idx):,} baris</div>
+                    </div>
+                    <div class="dataset-info-item">
+                        <div class="label">🏛️ Sumber Data</div>
+                        <div class="value">Kaggle (Public Dataset)</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+    
+                    st.markdown("</div>", unsafe_allow_html=True)
+    
+                    # --- Grafik Historis Curah Hujan ---
                     rr_candidates = [c for c in df_idx.columns if any(w in c.lower() for w in ["rr", "curah", "precip"])]
                     rr_col = rr_candidates[0] if rr_candidates else df_idx.columns[0]
-
-                    st.markdown("### Historis Curah Hujan")
+    
+                    st.markdown(f"""
+                    <div style="margin: 16px 0 8px 0;">
+                        <span style="font-size:1.1rem; font-weight:600; color:var(--text-primary);">
+                            📈 Historis Curah Hujan
+                        </span>
+                    </div>
+                    """, unsafe_allow_html=True)
+    
                     if st.session_state.mode == "Bulanan":
                         df_idx['month'] = df_idx.index.to_period('M').to_timestamp()
                         df_hist = df_idx.groupby('month')[rr_col].sum().reset_index().set_index('month')
-                        x = df_hist.index; y = df_hist[rr_col].values; title = "Historis Curah Hujan Bulanan (Akumulasi)"
+                        x = df_hist.index; y = df_hist[rr_col].values
+                        title = "Historis Curah Hujan Bulanan (Akumulasi)"
                         y_title = "mm/bulan"
                         total_rain = float(df_hist[rr_col].sum())
                         avg_rain = float(df_hist[rr_col].mean())
                     else:
-                        x = df_idx.index; y = df_idx[rr_col].values; title = "Historis Curah Hujan Harian"
+                        x = df_idx.index; y = df_idx[rr_col].values
+                        title = "Historis Curah Hujan Harian"
                         y_title = "mm/hari"
                         total_rain = float(df_idx[rr_col].sum())
                         avg_rain = float(df_idx[rr_col].mean())
-
+    
                     fig = go.Figure()
                     fig.add_trace(go.Scatter(
                         x=x, y=y, mode='lines',
-                        name='Actual RR', line=dict(color='#0369a1', width=2)))
+                        name='Actual RR', line=dict(color='#A78BFA', width=2.5)))
                     fig.update_layout(
                         title=title,
                         xaxis_title="Tanggal",
                         yaxis_title=y_title,
-                        template="plotly_white",
-                        height=280)
+                        template="plotly_dark",
+                        height=300,
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        font=dict(color='#D4CCE8')
+                    )
                     st.plotly_chart(fig, use_container_width=True)
-
-                    # simpan hasil ke session_state agar bisa digunakan di bagian statistik
+    
                     st.session_state.total_rain = total_rain
                     st.session_state.avg_rain = avg_rain
-
-                    # simpan ringkasan
-                    st.info(f"**Kolom Curah Hujan Digunakan:** `{rr_col}`")
-                    st.caption("*Grafik interaktif: Hover untuk detail, zoom/pan untuk eksplorasi. Data diisi 0 untuk missing values.*")
-
+    
+                    st.caption(f"📌 **Kolom Curah Hujan Digunakan:** `{rr_col}`")
+    
         with col_right:
-            with st.container():
-                st.markdown("Preview Dataset")
-                try:
-                    st.dataframe(df_idx.head(5), use_container_width=True, height=220)
-                except Exception:
-                    st.error("Gagal menampilkan preview dataset.")
-
-                st.markdown("Statistik Curah Hujan")
-                # pastikan nilai total dan rata-rata sudah disimpan di session_state
-                if all(k in st.session_state for k in ['total_rain', 'avg_rain', 'mode']):
-                    total_rain = float(st.session_state.total_rain)
-                    avg_rain = float(st.session_state.avg_rain)
-                    mode = st.session_state.mode
-
-                    # tentukan satuan waktu
-                    unit = 'hari' if mode.lower() == 'harian' else 'bulan'
-
-                    # tampilkan metrik
-                    st.metric(
-                        label="Total Curah Hujan",
-                        value=f"{total_rain:.1f} mm",
-                        delta=f"Rata-rata: {avg_rain:.1f} mm/{unit}"
-                    )
-                else:
-                    st.info("Statistik curah hujan belum tersedia. Silakan buat grafik historis terlebih dahulu.")
+            st.markdown("""
+            <div style="background: rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft);">
+                <p style="font-weight:600; color:var(--text-primary); margin-top:0;">📋 Preview Dataset</p>
+            """, unsafe_allow_html=True)
+            try:
+                st.dataframe(df_idx.head(5), use_container_width=True, height=200)
+            except Exception:
+                st.error("Gagal menampilkan preview dataset.")
+            st.markdown("</div>", unsafe_allow_html=True)
+    
+            st.markdown("""
+            <div style="background: rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft); margin-top:12px;">
+                <p style="font-weight:600; color:var(--text-primary); margin-top:0;">📊 Statistik Curah Hujan</p>
+            """, unsafe_allow_html=True)
+            if all(k in st.session_state for k in ['total_rain', 'avg_rain', 'mode']):
+                total_rain = float(st.session_state.total_rain)
+                avg_rain = float(st.session_state.avg_rain)
+                mode = st.session_state.mode
+                unit = 'hari' if mode.lower() == 'harian' else 'bulan'
+                st.metric(
+                    label="Total Curah Hujan",
+                    value=f"{total_rain:.1f} mm",
+                    delta=f"Rata-rata: {avg_rain:.1f} mm/{unit}"
+                )
+            else:
+                st.info("Statistik belum tersedia.")
+            st.markdown("</div>", unsafe_allow_html=True)
+    
         st.markdown("---")
-
-        # PRE-PROCESSING
-        st.markdown('<div class="card"><h3>Pra-Pemrosesan Data Curah Hujan</h3></div>', unsafe_allow_html=True)
+    
+        # ============================================================
+        # PRA-PEMROSESAN DATA
+        # ============================================================
+        st.markdown("""
+        <div class="model-card">
+            <h3><span class="icon">🔧</span> Pra-Pemrosesan Data Curah Hujan</h3>
+            <p>Langkah-langkah teknis untuk memastikan data siap digunakan dalam pemodelan.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
         from loaders import (
             load_dataset,
             validate_timeseries,
@@ -483,409 +528,306 @@ def tabs():
             add_lag_rolling,
             time_based_split
         )
-
-        #st.set_page_config(layout="wide")
-        #st.title("Pra-Pemrosesan Data Curah Hujan Harian")
-
-        # =====================================================
-        # LOAD AWAL
-        # =====================================================
+    
         df = load_dataset()
-
+    
         tabs = st.tabs([
-            "Validasi Data",
-            "Missing Value",
-            "Outlier",
-            "Feature Engineering",
-            "Split Data"
+            "✅ Validasi Data",
+            "🔍 Missing Value",
+            "📊 Outlier",
+            "⚙️ Feature Engineering",
+            "📂 Split Data"
         ])
-
+    
         # ================= TAB 0 =================
         with tabs[0]:
-            st.subheader("Validasi Time Series")
+            st.markdown("""
+            <div style="background:rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft);">
+                <h4 style="color:var(--text-primary); margin-top:0;">📋 Validasi Time Series</h4>
+            """, unsafe_allow_html=True)
             result = validate_timeseries(df)
-
+    
             c1, c2, c3 = st.columns(3)
-            c1.metric("Tanggal Terurut", "Ya" if result['is_sorted'] else "Tidak")
-            c2.metric("Tanggal Duplikat", "Tidak" if result['duplicate_dates'].empty else "Ada")
-            c3.metric("Hari Hilang", len(result['missing_days']))
-
-            with st.expander("Detail Hari Hilang"):
+            c1.metric("📅 Tanggal Terurut", "✅ Ya" if result['is_sorted'] else "❌ Tidak")
+            c2.metric("🔄 Tanggal Duplikat", "✅ Tidak" if result['duplicate_dates'].empty else "⚠️ Ada")
+            c3.metric("📆 Hari Hilang", len(result['missing_days']))
+    
+            with st.expander("📋 Detail Hari Hilang"):
                 st.write(result['missing_days'])
-
+            st.markdown("</div>", unsafe_allow_html=True)
+    
         # ================= TAB 1 =================
         with tabs[1]:
-            st.subheader("Penanganan Missing Value")
-
+            st.markdown("""
+            <div style="background:rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft);">
+                <h4 style="color:var(--text-primary); margin-top:0;">🔍 Penanganan Missing Value</h4>
+            """, unsafe_allow_html=True)
+    
             df = ensure_continuous(df)
             before = df.copy()
             df = handle_missing(df)
-
+    
             col_left, col_right = st.columns([1,1])
             with col_left:
-                st.markdown("**Jumlah missing value sebelum imputasi:**")
-                st.dataframe(before.isna().sum())
-
+                st.markdown("**📉 Sebelum imputasi:**")
+                st.dataframe(before.isna().sum(), use_container_width=True)
+    
             with col_right:
-                with st.container():
-                    st.markdown("**Jumlah missing value sesudah imputasi:**")
-                    st.dataframe(df.isna().sum())
-
+                st.markdown("**📈 Sesudah imputasi:**")
+                st.dataframe(df.isna().sum(), use_container_width=True)
+    
+            st.markdown("</div>", unsafe_allow_html=True)
+    
         # ================= TAB 2 =================
         with tabs[2]:
-            st.subheader("Penanganan Outlier")
-
-            # Jalankan proses outlier (inti tetap)
+            st.markdown("""
+            <div style="background:rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft);">
+                <h4 style="color:var(--text-primary); margin-top:0;">📊 Penanganan Outlier</h4>
+            """, unsafe_allow_html=True)
+    
             _, df = handle_outlier(df)
-
-            st.subheader("Perbandingan Outlier Sebelum dan Sesudah Penanganan")
-
-            # Path gambar hasil visualisasi IQR
-            image_path = "IQR.png"  # sesuaikan dengan lokasi file kamu
-
+    
+            st.markdown("**🔄 Perbandingan Outlier Sebelum dan Sesudah Penanganan**")
+    
+            image_path = "IQR.png"
             try:
                 from PIL import Image
                 image = Image.open(image_path)
-
                 st.image(
                     image,
-                    caption="Boxplot variabel cuaca sebelum (merah) dan sesudah (biru) penanganan outlier",
+                    caption="📊 Boxplot variabel cuaca sebelum (merah) dan sesudah (biru) penanganan outlier",
                     use_container_width=True
                 )
-
             except FileNotFoundError:
-                st.error(f"Gambar '{image_path}' tidak ditemukan. Pastikan file ada di folder assets.")
-
+                st.error(f"❌ Gambar '{image_path}' tidak ditemukan.")
+    
             st.markdown("""
-            Visualisasi ini menunjukkan dampak penanganan outlier menggunakan metode
-            **Interquartile Range (IQR)**.  
-            Baris atas merepresentasikan distribusi data **sebelum** dilakukan capping outlier,
-            sedangkan baris bawah menunjukkan distribusi data **setelah** penanganan outlier.
-            """)
-
-            st.info(
-                "Outlier ditangani menggunakan metode Interquartile Range (IQR). "
-                "Khusus variabel curah hujan (RR), diterapkan transformasi logaritmik "
-                "untuk mengurangi skewness sehingga distribusi data menjadi lebih stabil "
-                "dan representatif untuk pemodelan machine learning."
-            )
-
+            <div style="background:rgba(167,139,250,0.06); border-radius:12px; padding:12px 16px; margin-top:12px; border-left:3px solid var(--accent-primary);">
+                <p style="margin:0; color:var(--text-muted);">
+                    💡 Outlier ditangani menggunakan metode <strong>Interquartile Range (IQR)</strong>.
+                    Khusus variabel curah hujan (RR), diterapkan transformasi logaritmik untuk mengurangi skewness.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+    
+            st.markdown("</div>", unsafe_allow_html=True)
+    
         # ================= TAB 3 =================
         with tabs[3]:
-            st.subheader("Feature Engineering")
-
             st.markdown("""
-            Feature engineering dilakukan untuk menangkap pola musiman dan
-            ketergantungan temporal pada data curah hujan harian.
-            """)
-
-            st.markdown("### Fitur Waktu")
+            <div style="background:rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft);">
+                <h4 style="color:var(--text-primary); margin-top:0;">⚙️ Feature Engineering</h4>
+                <p style="color:var(--text-muted);">Feature engineering dilakukan untuk menangkap pola musiman dan ketergantungan temporal.</p>
+            """, unsafe_allow_html=True)
+    
             st.markdown("""
-            - **Tahun & Bulan**: menangkap tren dan musim tahunan  
-            - **Month_sin & Month_cos**: representasi siklus bulan secara kontinu
-            """)
-
-            st.markdown("### Fitur Lag Curah Hujan")
-            st.markdown("""
-            - RR_lag1: pengaruh 1 hari sebelumnya  
-            - RR_lag3: pengaruh jangka pendek  
-            - RR_lag7: pengaruh mingguan
-            """)
-
-            st.markdown("### Fitur Rolling Statistik")
-            st.markdown("""
-            - RR_roll_mean_3: rata-rata hujan 3 hari terakhir  
-            - RR_roll_std_3: variasi hujan 3 hari terakhir
-            """)
-
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0;">
+                <div style="background:rgba(255,255,255,0.03); border-radius:12px; padding:12px 16px; border:1px solid var(--border-soft);">
+                    <strong style="color:var(--text-primary);">⏰ Fitur Waktu</strong>
+                    <ul style="color:var(--text-muted); margin:6px 0 0 0; padding-left:20px;">
+                        <li>Tahun & Bulan – tren dan musim</li>
+                        <li>Month_sin & Month_cos – siklus kontinu</li>
+                    </ul>
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border-radius:12px; padding:12px 16px; border:1px solid var(--border-soft);">
+                    <strong style="color:var(--text-primary);">⏳ Fitur Lag</strong>
+                    <ul style="color:var(--text-muted); margin:6px 0 0 0; padding-left:20px;">
+                        <li>RR_lag1, RR_lag3, RR_lag7</li>
+                    </ul>
+                </div>
+                <div style="background:rgba(255,255,255,0.03); border-radius:12px; padding:12px 16px; border:1px solid var(--border-soft); grid-column:1/-1;">
+                    <strong style="color:var(--text-primary);">📊 Fitur Rolling Statistik</strong>
+                    <ul style="color:var(--text-muted); margin:6px 0 0 0; padding-left:20px;">
+                        <li>RR_roll_mean_3 – rata-rata 3 hari terakhir</li>
+                        <li>RR_roll_std_3 – variasi 3 hari terakhir</li>
+                    </ul>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+    
             df = add_time_features(df)
             df = add_lag_rolling(df)
-
-            with st.expander("Daftar fitur akhir"):
+    
+            with st.expander("📋 Daftar fitur akhir"):
                 st.code(df.columns.tolist())
-
+    
+            st.markdown("</div>", unsafe_allow_html=True)
+    
         # ================= TAB 4 =================
         with tabs[4]:
-            st.subheader("Pembagian Data Train dan Test")
-
             st.markdown("""
-            Data dibagi berdasarkan urutan waktu (*time-based split*)
-            untuk menghindari kebocoran data (*data leakage*).
-            """)
-
+            <div style="background:rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft);">
+                <h4 style="color:var(--text-primary); margin-top:0;">📂 Pembagian Data Train dan Test</h4>
+                <p style="color:var(--text-muted);">Data dibagi berdasarkan urutan waktu untuk menghindari kebocoran data.</p>
+            """, unsafe_allow_html=True)
+    
             train_df, test_df = time_based_split(df)
-
+    
             c1, c2 = st.columns(2)
-            c1.metric("Data Train (2020–2022)", len(train_df))
-            c2.metric("Data Test (2023)", len(test_df))
-
-            with st.expander("Preview Data Train"):
-                st.dataframe(train_df.head())
-
-            with st.expander("Preview Data Test"):
-                st.dataframe(test_df.head())
-
-            st.success("Pra-pemrosesan selesai. Dataset siap untuk tahap pemodelan.")
-
+            c1.metric("📚 Data Train (2020–2022)", len(train_df))
+            c2.metric("📝 Data Test (2023)", len(test_df))
+    
+            col_train, col_test = st.columns(2)
+            with col_train:
+                with st.expander("📚 Preview Data Train"):
+                    st.dataframe(train_df.head(), use_container_width=True)
+            with col_test:
+                with st.expander("📝 Preview Data Test"):
+                    st.dataframe(test_df.head(), use_container_width=True)
+    
+            st.success("✅ Pra-pemrosesan selesai. Dataset siap untuk tahap pemodelan.")
+            st.markdown("</div>", unsafe_allow_html=True)
+    
         st.markdown("---")
+    
         # ============================================================
-        # HASIL AKURASI & EVALUASI MODEL
+        # KONFIGURASI MODEL
         # ============================================================
-
-        st.markdown(
-            '<div class="card"><h3>Konfigurasi Model Prediksi Curah Hujan</h3></div>',
-            unsafe_allow_html=True
-        )
-        st.caption(
-            "Halaman ini menjelaskan alur eksperimen penelitian, konfigurasi model, "
-            "serta strategi tuning hyperparameter yang diterapkan pada setiap iterasi."
-        )
-
         st.markdown("""
-        **Metode yang Digunakan**  
-        Penelitian ini menerapkan pendekatan **Stacking Ensemble**, yang mengombinasikan
-        beberapa *base learner* (Random Forest dan Support Vector Regression) dengan
-        **XGBoost Regressor** sebagai *meta learner*.
-
-        Pendekatan ini bertujuan untuk meningkatkan akurasi prediksi dengan
-        memanfaatkan keunggulan masing-masing model.  
-        Interpretabilitas model dianalisis menggunakan **SHAP**, yang memberikan
-        penjelasan global terkait kontribusi setiap fitur terhadap hasil prediksi,
-        misalnya pengaruh curah hujan pada hari sebelumnya (*lag feature*).
-        """)
-
+        <div class="model-card">
+            <h3><span class="icon">⚙️</span> Konfigurasi Model Prediksi Curah Hujan</h3>
+            <p>Alur eksperimen penelitian, konfigurasi model, serta strategi tuning hyperparameter.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
         st.markdown("""
-        Perancangan model ini berdasarkan dataset:
-
-         *data iklim harian – Semarang (2020–2023).xlsx*
-
-        Data dianalisis dalam dua skema waktu, yaitu **Harian** dan **Bulanan**,
-        sesuai dengan konteks dan kebutuhan prediksi curah hujan.
-        """)
-        st.markdown("---")
-        # ALUR UMUM PENELITIAN
-        st.header("Alur Umum Penelitian")
-
+        <div style="background:rgba(45,27,78,0.3); border-radius:16px; padding:20px 24px; border:1px solid var(--border-soft); margin-bottom:16px;">
+            <h4 style="color:var(--text-primary); margin-top:0;">🧠 Metode yang Digunakan</h4>
+            <p style="color:var(--text-muted);">
+                Penelitian ini menerapkan pendekatan <strong>Stacking Ensemble</strong>, yang mengombinasikan
+                <em>base learner</em> (Random Forest dan Support Vector Regression) dengan
+                <strong>XGBoost Regressor</strong> sebagai <em>meta learner</em>.
+            </p>
+            <p style="color:var(--text-muted);">
+                Interpretabilitas model dianalisis menggunakan <strong>SHAP</strong>, yang memberikan
+                penjelasan global terkait kontribusi setiap fitur terhadap hasil prediksi.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+        # --- ALUR UMUM ---
         st.markdown("""
-        Penelitian ini menggunakan pendekatan **Stacking Ensemble Learning**
-        untuk memprediksi curah hujan harian dan bulanan melalui tahapan berikut:
-
-        1. **Pra-pemrosesan Data**  
-        Data iklim disusun dalam bentuk deret waktu (*time series*),
-        kemudian dibagi menjadi data latih dan data uji.
-
-        2. **Pelatihan Base Learners**  
-        Model dasar yang digunakan adalah **Random Forest Regressor (RF)**
-        dan **Support Vector Regression (SVR)**.
-
-        3. **Pembentukan Stacking Ensemble**  
-        Output dari base learner digabungkan dan dipelajari kembali oleh
-        **XGBoost Regressor** sebagai *meta learner*.
-
-        4. **Eksperimen Bertahap (Iteratif)**  
-        Proses eksperimen dilakukan dalam tiga iterasi untuk mengevaluasi
-        dampak tuning parameter terhadap performa model.
-        """)
-        st.markdown("---")
-        # ITERASI 1
-        st.header("Iterasi 1 — Model Baseline (Tanpa Tuning)")
-
+        <div class="model-section-title">
+            <span class="icon">📋</span> Alur Umum Penelitian
+        </div>
+        """, unsafe_allow_html=True)
+    
         st.markdown("""
-        **Tujuan Iterasi 1**  
-        Iterasi ini bertujuan untuk menetapkan **baseline performa model**
-        dengan menggunakan parameter default (tanpa proses tuning).
-        Hasil dari iterasi ini digunakan sebagai acuan pembanding
-        pada iterasi selanjutnya.
-        """)
-
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+            <div style="background:rgba(167,139,250,0.06); border-radius:12px; padding:14px 18px; border:1px solid var(--border-soft);">
+                <span style="font-size:24px;">📊</span>
+                <h5 style="color:var(--text-primary); margin:4px 0 2px 0;">Pra-pemrosesan Data</h5>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin:0;">Data disusun dalam deret waktu, dibagi latih dan uji.</p>
+            </div>
+            <div style="background:rgba(167,139,250,0.06); border-radius:12px; padding:14px 18px; border:1px solid var(--border-soft);">
+                <span style="font-size:24px;">🌲</span>
+                <h5 style="color:var(--text-primary); margin:4px 0 2px 0;">Pelatihan Base Learners</h5>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin:0;">Random Forest Regressor dan SVR.</p>
+            </div>
+            <div style="background:rgba(167,139,250,0.06); border-radius:12px; padding:14px 18px; border:1px solid var(--border-soft);">
+                <span style="font-size:24px;">⚡</span>
+                <h5 style="color:var(--text-primary); margin:4px 0 2px 0;">Stacking Ensemble</h5>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin:0;">Output base learner dipelajari XGBoost sebagai meta learner.</p>
+            </div>
+            <div style="background:rgba(167,139,250,0.06); border-radius:12px; padding:14px 18px; border:1px solid var(--border-soft);">
+                <span style="font-size:24px;">🔄</span>
+                <h5 style="color:var(--text-primary); margin:4px 0 2px 0;">Eksperimen Bertahap</h5>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin:0;">Tiga iterasi untuk evaluasi tuning parameter.</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+        # --- ITERASI 1 ---
+        st.markdown("""
+        <div class="iteration-card">
+            <h4>🔵 Iterasi 1 — Model Baseline (Tanpa Tuning)</h4>
+            <p style="color:var(--text-muted);">
+                <strong>Tujuan:</strong> Menetapkan baseline performa model dengan parameter default. Hasil ini digunakan sebagai acuan pembanding.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
         df_iter1 = pd.DataFrame([
-            {
-                "Komponen": "Random Forest",
-                "Parameter Utama": "n_estimators=200, max_depth=10, min_samples_leaf=5",
-                "Keterangan": "Base learner tanpa tuning"
-            },
-            {
-                "Komponen": "SVR",
-                "Parameter Utama": "C=1.0, epsilon=0.1, gamma=scale",
-                "Keterangan": "Base learner tanpa tuning"
-            },
-            {
-                "Komponen": "XGBoost",
-                "Parameter Utama": "n_estimators=100, max_depth=3, learning_rate=0.05",
-                "Keterangan": "Meta learner tanpa tuning"
-            },
-            {
-                "Komponen": "Stacking",
-                "Parameter Utama": "cv=5, passthrough=True",
-                "Keterangan": "Baseline ensemble"
-            }
+            {"Komponen": "Random Forest", "Parameter Utama": "n_estimators=200, max_depth=10, min_samples_leaf=5", "Keterangan": "Base learner tanpa tuning"},
+            {"Komponen": "SVR", "Parameter Utama": "C=1.0, epsilon=0.1, gamma=scale", "Keterangan": "Base learner tanpa tuning"},
+            {"Komponen": "XGBoost", "Parameter Utama": "n_estimators=100, max_depth=3, learning_rate=0.05", "Keterangan": "Meta learner tanpa tuning"},
+            {"Komponen": "Stacking", "Parameter Utama": "cv=5, passthrough=True", "Keterangan": "Baseline ensemble"}
         ])
-
-        st.subheader("Konfigurasi Model Iterasi 1")
-        st.dataframe(df_iter1, use_container_width=True)
-
-        st.info("""
-        Catatan:
-        - Iterasi ini berfungsi sebagai **titik awal perbandingan**
-        - Tidak dilakukan optimasi parameter
-        - Digunakan untuk mengamati efek stacking secara murni
-        """)
-
-        # ITERASI 2
-        st.header("Iterasi 2 — Tuning Meta Learner")
-
+        st.dataframe(df_iter1, use_container_width=True, hide_index=True)
+    
+        # --- ITERASI 2 ---
         st.markdown("""
-        **Tujuan Iterasi 2**  
-        Pada iterasi ini, konfigurasi *base learner* dipertahankan sama
-        dengan Iterasi 1, sementara **meta learner (XGBoost)** dilakukan
-        hyperparameter tuning.
-
-        Pendekatan ini bertujuan untuk mengisolasi dan mengevaluasi
-        kontribusi meta learner terhadap peningkatan performa model.
-        """)
-
+        <div class="iteration-card">
+            <h4>🟣 Iterasi 2 — Tuning Meta Learner</h4>
+            <p style="color:var(--text-muted);">
+                <strong>Tujuan:</strong> Base learner dipertahankan, meta learner (XGBoost) dilakukan hyperparameter tuning untuk mengisolasi kontribusinya.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
         df_iter2 = pd.DataFrame([
-            {
-                "Komponen": "Random Forest",
-                "Parameter Utama": "Sama dengan Iterasi 1",
-                "Keterangan": "Tanpa tuning"
-            },
-            {
-                "Komponen": "SVR",
-                "Parameter Utama": "Sama dengan Iterasi 1",
-                "Keterangan": "Tanpa tuning"
-            },
-            {
-                "Komponen": "XGBoost (Meta)",
-                "Parameter Utama": (
-                    "n_estimators=[50,100,200], "
-                    "max_depth=[2,3,4,6], "
-                    "learning_rate=[0.01–0.1], "
-                    "reg_alpha=[0,0.1,0.5], "
-                    "reg_lambda=[0.5,1,2]"
-                ),
-                "Keterangan": "RandomizedSearchCV"
-            },
-            {
-                "Komponen": "Validasi",
-                "Parameter Utama": "5-Fold CV, scoring=RMSE",
-                "Keterangan": "Optimasi meta learner"
-            }
+            {"Komponen": "Random Forest", "Parameter Utama": "Sama dengan Iterasi 1", "Keterangan": "Tanpa tuning"},
+            {"Komponen": "SVR", "Parameter Utama": "Sama dengan Iterasi 1", "Keterangan": "Tanpa tuning"},
+            {"Komponen": "XGBoost (Meta)", "Parameter Utama": "n_estimators=[50,100,200], max_depth=[2,3,4,6], learning_rate=[0.01–0.1], reg_alpha=[0,0.1,0.5], reg_lambda=[0.5,1,2]", "Keterangan": "RandomizedSearchCV"},
+            {"Komponen": "Validasi", "Parameter Utama": "5-Fold CV, scoring=RMSE", "Keterangan": "Optimasi meta learner"}
         ])
-
-        st.subheader("Konfigurasi Model Iterasi 2")
-        st.dataframe(df_iter2, use_container_width=True)
-
-        st.info("""
-        Catatan:
-        - Base learner dikunci untuk menjaga konsistensi eksperimen
-        - Tuning hanya dilakukan pada meta learner
-        - Iterasi ini menunjukkan peran meta learner terhadap performa akhir
-        """)
-
-        # ITERASI 3
-        st.header("Iterasi 3 — Tuning Base Learners dan Meta Learner")
-
+        st.dataframe(df_iter2, use_container_width=True, hide_index=True)
+    
+        # --- ITERASI 3 ---
         st.markdown("""
-        **Tujuan Iterasi 3**  
-        Iterasi ini merupakan konfigurasi **paling komprehensif**,
-        di mana seluruh komponen model, baik *base learner* maupun
-        *meta learner*, dilakukan hyperparameter tuning
-        untuk memperoleh performa optimal.
-        """)
-
+        <div class="iteration-card">
+            <h4>🟢 Iterasi 3 — Tuning Base Learners dan Meta Learner</h4>
+            <p style="color:var(--text-muted);">
+                <strong>Tujuan:</strong> Seluruh komponen model (base learner dan meta learner) dilakukan tuning untuk performa optimal.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
         df_iter3 = pd.DataFrame([
-            {
-                "Komponen": "Random Forest",
-                "Parameter Utama": (
-                    "n_estimators=[100,200,300], "
-                    "max_depth=[3,5,10], "
-                    "min_samples_leaf=[1,2,4], "
-                    "max_features=[sqrt,log2]"
-                ),
-                "Keterangan": "RandomizedSearchCV"
-            },
-            {
-                "Komponen": "SVR",
-                "Parameter Utama": "C=[0.1,1,10], epsilon=[0.01,0.1,0.2], gamma=[scale,auto]",
-                "Keterangan": "RandomizedSearchCV"
-            },
-            {
-                "Komponen": "XGBoost (Meta)",
-                "Parameter Utama": (
-                    "n_estimators=[50,100,200], "
-                    "max_depth=[2,3,4,6], "
-                    "learning_rate=[0.01–0.1]"
-                ),
-                "Keterangan": "RandomizedSearchCV"
-            },
-            {
-                "Komponen": "Validasi",
-                "Parameter Utama": "5-Fold CV, scoring=RMSE",
-                "Keterangan": "Full tuning"
-            }
+            {"Komponen": "Random Forest", "Parameter Utama": "n_estimators=[100,200,300], max_depth=[3,5,10], min_samples_leaf=[1,2,4], max_features=[sqrt,log2]", "Keterangan": "RandomizedSearchCV"},
+            {"Komponen": "SVR", "Parameter Utama": "C=[0.1,1,10], epsilon=[0.01,0.1,0.2], gamma=[scale,auto]", "Keterangan": "RandomizedSearchCV"},
+            {"Komponen": "XGBoost (Meta)", "Parameter Utama": "n_estimators=[50,100,200], max_depth=[2,3,4,6], learning_rate=[0.01–0.1]", "Keterangan": "RandomizedSearchCV"},
+            {"Komponen": "Validasi", "Parameter Utama": "5-Fold CV, scoring=RMSE", "Keterangan": "Full tuning"}
         ])
-
-        st.subheader("Konfigurasi Model Iterasi 3")
-        st.dataframe(df_iter3, use_container_width=True)
-
-        st.success("""
-        Kesimpulan Iterasi 3:
-        - Seluruh model dioptimasi secara sistematis
-        - Risiko overfitting dikendalikan melalui cross-validation
-        """)
-
-        # RINGKASAN ANTAR ITERASI
-        st.header("Ringkasan Perbandingan Antar Iterasi")
-
+        st.dataframe(df_iter3, use_container_width=True, hide_index=True)
+    
+        # --- RINGKASAN ---
+        st.markdown("""
+        <div class="model-section-title">
+            <span class="icon">📊</span> Ringkasan Perbandingan Antar Iterasi
+        </div>
+        """, unsafe_allow_html=True)
+    
         df_summary = pd.DataFrame([
-            {
-                "Iterasi": "Iterasi 1",
-                "Base Learner": "Tanpa tuning",
-                "Meta Learner": "Tanpa tuning",
-                "Tujuan": "Baseline"
-            },
-            {
-                "Iterasi": "Iterasi 2",
-                "Base Learner": "Tanpa tuning",
-                "Meta Learner": "Tuning",
-                "Tujuan": "Evaluasi kontribusi meta learner"
-            },
-            {
-                "Iterasi": "Iterasi 3",
-                "Base Learner": "Tuning",
-                "Meta Learner": "Tuning",
-                "Tujuan": "Model terbaik"
-            }
+            {"Iterasi": "Iterasi 1", "Base Learner": "Tanpa tuning", "Meta Learner": "Tanpa tuning", "Tujuan": "Baseline"},
+            {"Iterasi": "Iterasi 2", "Base Learner": "Tanpa tuning", "Meta Learner": "Tuning", "Tujuan": "Evaluasi kontribusi meta learner"},
+            {"Iterasi": "Iterasi 3", "Base Learner": "Tuning", "Meta Learner": "Tuning", "Tujuan": "Model terbaik"}
         ])
-
-        st.dataframe(df_summary, use_container_width=True)
-
-        st.caption(
-            "Struktur eksperimen ini dirancang untuk memastikan evaluasi model "
-            "yang adil, transparan, dan dapat direplikasi."
-        )
+        st.dataframe(df_summary, use_container_width=True, hide_index=True)
+    
+        st.caption("Struktur eksperimen ini dirancang untuk memastikan evaluasi model yang adil, transparan, dan dapat direplikasi.")
+    
         st.divider()
-
-        # DAFTAR FILE PKL EVALUASI
+    
+        # ============================================================
+        # EVALUASI MODEL
+        # ============================================================
+        st.markdown("""
+        <div class="model-card">
+            <h3><span class="icon">📈</span> Evaluasi Model</h3>
+            <p>Pilih mode dan iterasi untuk melihat tabel evaluasi dan grafik perbandingan prediksi.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
         from loaders import load_pkl_data
-        all_pkl_files = [
-            "eval_harian_iter1.pkl", "eval_harian_iter2.pkl", "eval_harian_iter3.pkl",
-            "eval_bulanan_iter1.pkl", "eval_bulanan_iter2.pkl", "eval_bulanan_iter3.pkl"
-        ]
-
-        harian_files = sorted([f for f in all_pkl_files if f.startswith("eval_harian")])
-        bulanan_files = sorted([f for f in all_pkl_files if f.startswith("eval_bulanan")])
-
-        # ===============================
-        # 🔽 DROPDOWN UNTUK PILIHAN USER
-        # ===============================
+    
+        # --- DROPDOWN ---
         col1, col2 = st.columns([1, 1])
         with col1:
-            mode = st.selectbox("Pilih Mode Analisis:", ["Harian", "Bulanan"])
+            mode = st.selectbox("📌 Pilih Mode Analisis:", ["Harian", "Bulanan"])
         with col2:
-            iterasi = st.selectbox("Pilih Iterasi:", ["Iterasi 1", "Iterasi 2", "Iterasi 3"])
-
+            iterasi = st.selectbox("🔄 Pilih Iterasi:", ["Iterasi 1", "Iterasi 2", "Iterasi 3"])
+    
         file_mapping = {
             ("Harian", "Iterasi 1"): "eval_harian_iter1.pkl",
             ("Harian", "Iterasi 2"): "eval_harian_iter2.pkl",
@@ -894,27 +836,28 @@ def tabs():
             ("Bulanan", "Iterasi 2"): "eval_bulanan_iter2.pkl",
             ("Bulanan", "Iterasi 3"): "eval_bulanan_iter3.pkl"
         }
-
+    
         selected_file = file_mapping[(mode, iterasi)]
         df_eval = load_pkl_data(selected_file)
-
-        # TAMPILKAN TABEL EVALUASI
-        st.subheader(f"Tabel Evaluasi Model ({mode} - {iterasi})")
+    
+        st.markdown(f"""
+        <div style="background:rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft); margin-bottom:16px;">
+            <h4 style="color:var(--text-primary); margin-top:0;">📊 Tabel Evaluasi Model ({mode} - {iterasi})</h4>
+        """, unsafe_allow_html=True)
         if df_eval is not None:
             st.dataframe(df_eval, use_container_width=True, hide_index=True)
-            st.caption("Tabel menampilkan data aktual vs prediksi model. Kolom error menunjukkan perbedaan prediksi dengan data nyata.")
+            st.caption("📌 Tabel menampilkan data aktual vs prediksi model. Kolom error menunjukkan perbedaan prediksi dengan data nyata.")
         else:
             st.warning("Data evaluasi belum tersedia untuk kombinasi tersebut.")
-
-        st.divider()
-
-        # VISUALISASI PREDIKSI
-        st.title("Visualisasi Hasil Prediksi (Harian & Bulanan)")
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+        # --- GRAFIK ---
         st.markdown("""
-        Grafik berikut menampilkan hasil **perbandingan prediksi model** terhadap **data aktual**.
-        Gunakan dropdown di atas untuk memilih mode dan iterasi.
-        """)
-
+        <div class="model-section-title">
+            <span class="icon">📉</span> Visualisasi Hasil Prediksi
+        </div>
+        """, unsafe_allow_html=True)
+    
         grafik_file_mapping = {
             ("Harian", "Iterasi 1"): "perbandingan_harian_iter1.pkl",
             ("Harian", "Iterasi 2"): "perbandingan_harian_iter2.pkl",
@@ -923,33 +866,29 @@ def tabs():
             ("Bulanan", "Iterasi 2"): "perbandingan_bulanan_iter2.pkl",
             ("Bulanan", "Iterasi 3"): "perbandingan_bulanan_iter3.pkl"
         }
-
+    
         selected_grafik_file = grafik_file_mapping.get((mode, iterasi))
         df_plot = load_pkl_data(selected_grafik_file)
-
-        # ===============================
-        # 🔧 FUNGSI MEMBUAT GRAFIK
-        # ===============================
+    
         def create_multi_model_chart(df_plot, title, file_name):
-            """Buat grafik garis untuk RF, SVR, dan Stacking."""
             if df_plot is None or len(df_plot) <= 1:
                 st.warning(f"Data tidak cukup untuk membuat grafik dari {file_name}.")
                 return
-
+    
             rf_keywords = ('rf', 'randomforest')
             svr_keywords = ('svr', 'supportvector')
             stacking_keywords = ('stacking', 'ensemble')
             ignore_keywords = ('error', 'selisih', 'mape', 'rmse', 'diff', 'aktual', 'actual', 'y_true')
-
+    
             clean_numeric_cols = [
                 col for col in df_plot.select_dtypes(include=['number']).columns
                 if not any(k in col.lower() for k in ignore_keywords)
             ]
-
+    
             rf_cols = [c for c in clean_numeric_cols if any(k in c.lower() for k in rf_keywords)]
             svr_cols = [c for c in clean_numeric_cols if any(k in c.lower() for k in svr_keywords)]
             stacking_cols = [c for c in clean_numeric_cols if any(k in c.lower() for k in stacking_keywords)]
-
+    
             columns_to_plot, series_names = [], {}
             if rf_cols:
                 columns_to_plot.append(rf_cols[0])
@@ -960,28 +899,22 @@ def tabs():
             if stacking_cols:
                 columns_to_plot.append(stacking_cols[0])
                 series_names[stacking_cols[0]] = 'Prediksi Stacking'
-
+    
             if not columns_to_plot:
                 st.error(f"Tidak ditemukan kolom prediksi model yang valid dalam {file_name}.")
                 return
-
+    
             df_chart = df_plot[columns_to_plot].copy()
             if not isinstance(df_chart.index, pd.DatetimeIndex):
                 df_chart.index = pd.to_datetime(df_chart.index, errors='coerce')
-
+    
             fig = go.Figure()
             color_map = {
-                # Biru Elektrik: Terlihat stabil, teknis, dan sangat umum di dunia IT
-                'Prediksi RF': '#00D4FF',       
-                
-                # Ungu Medium: Warna transisi yang elegan, sering dipakai di dashboard high-end
-                'Prediksi SVR': '#9D50BB',      
-                
-                # Soft Neon Pink: Pink yang muda/cerah tapi punya kesan "Electric" (bukan pink mainan)
-                # Ini sangat cocok untuk menunjukkan "Meta-Model" sebagai hasil akhir yang paling menonjol
-                'Prediksi Stacking': '#FF8AD8'  
+                'Prediksi RF': '#00D4FF',
+                'Prediksi SVR': '#9D50BB',
+                'Prediksi Stacking': '#FF8AD8'
             }
-
+    
             for col, label in series_names.items():
                 fig.add_trace(go.Scatter(
                     x=df_chart.index.astype(str),
@@ -991,167 +924,129 @@ def tabs():
                     line=dict(width=3, color=color_map[label]),
                     marker=dict(size=6)
                 ))
-
+    
             fig.update_layout(
                 title=title,
                 xaxis_title='Tanggal' if mode == "Harian" else 'Bulan',
                 yaxis_title='Nilai Prediksi',
-                template='plotly_white',
-                hovermode='x unified'
+                template='plotly_dark',
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='#D4CCE8'),
+                hovermode='x unified',
+                height=400
             )
-
+    
             st.plotly_chart(fig, use_container_width=True)
-            st.caption("Grafik menampilkan prediksi: **RF (biru)**, **SVR (ungu)**, **Stacking (pink)**.")
-
-        # --- Tampilkan Grafik ---
+            st.caption("📌 Grafik menampilkan prediksi: **RF (biru)**, **SVR (ungu)**, **Stacking (pink)**.")
+    
         if df_plot is not None:
-            st.subheader(f"Grafik Perbandingan Model ({mode} - {iterasi})")
+            st.markdown(f"""
+            <div style="background:rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft);">
+                <h4 style="color:var(--text-primary); margin-top:0;">📈 Grafik Perbandingan Model ({mode} - {iterasi})</h4>
+            """, unsafe_allow_html=True)
             create_multi_model_chart(
                 df_plot,
                 f"Perbandingan Model {mode} - {iterasi}",
                 selected_grafik_file
             )
+            st.markdown("</div>", unsafe_allow_html=True)
         else:
-            st.info("File grafik belum tersedia atau gagal dimuat.")
-
+            st.info("📭 File grafik belum tersedia atau gagal dimuat.")
+    
         st.divider()
-        st.info("Gunakan dropdown di atas untuk mengubah mode dan iterasi, tabel dan grafik akan otomatis menyesuaikan.")
-
-        # =========================================================
-        # MENAMPILKAN SHAP SESUAI MODE
-        # =========================================================
+    
+        # ============================================================
+        # SHAP GLOBAL RANKING
+        # ============================================================
+        st.markdown("""
+        <div class="model-card">
+            <h3><span class="icon">🎯</span> Ranking Global SHAP (Fitur Paling Berpengaruh)</h3>
+            <p>Interpretabilitas global model menggunakan SHAP untuk mengetahui kontribusi setiap fitur.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
         if st.session_state.mode == "Harian":
-            st.title("Ranking Global SHAP (Fitur Paling Berpengaruh)")
-
             data_harian = {
                 "Iterasi 1": {
-                    "Feature": [
-                        "pred_RF", "pred_SVR", "RR_roll_mean_3", "RH_avg", "RR_lag1", "Tx", "RR_lag3",
-                        "RR_roll_std_3", "ss", "Tn", "Tavg", "RR_lag7", "ff_x", "Month_sin",
-                        "ddd_car_C", "Month_cos", "ddd_car_E", "ddd_car_NW", "ddd_car_NE"
-                    ],
-                    "MeanAbsSHAP": [
-                        0.369961, 0.307085, 0.116306, 0.092874, 0.041539, 0.017468, 0.016122, 0.011935,
-                        0.009003, 0.002798, 0.002284, 0.001306, 0.001053, 0.000857, 0.000775,
-                        0.000759, 0.000742, 0.000617
-                    ],
+                    "Feature": ["pred_RF", "pred_SVR", "RR_roll_mean_3", "RH_avg", "RR_lag1", "Tx", "RR_lag3", "RR_roll_std_3", "ss", "Tn", "Tavg", "RR_lag7", "ff_x", "Month_sin", "ddd_car_C", "Month_cos", "ddd_car_E", "ddd_car_NW", "ddd_car_NE"],
+                    "MeanAbsSHAP": [0.369961, 0.307085, 0.116306, 0.092874, 0.041539, 0.017468, 0.016122, 0.011935, 0.009003, 0.002798, 0.002284, 0.001306, 0.001053, 0.000857, 0.000775, 0.000759, 0.000742, 0.000617],
                     "Image": "shap harian iterasi 1.png"
                 },
                 "Iterasi 2": {
-                    "Feature": [
-                        "pred_SVR", "pred_RF", "RR_roll_mean_3", "RH_avg", "RR_lag1", "Tx", "RR_lag3", "ss",
-                        "Tn", "RR_roll_std_3", "Tavg", "RR_lag7", "Month_sin", "ff_x",
-                        "ddd_car_C", "Month_cos", "ddd_car_NW", "ddd_car_N", "ddd_car_W", "ddd_car_SE"
-                    ],
-                    "MeanAbsSHAP": [
-                        0.362691, 0.340595, 0.111834, 0.067776, 0.049368, 0.033535, 0.018021, 0.018007,
-                        0.014736, 0.013519, 0.009987, 0.006380, 0.003674, 0.001912, 0.001349,
-                        0.001131, 0.001030, 0.000544, 0.000525, 0.000137
-                    ],
+                    "Feature": ["pred_SVR", "pred_RF", "RR_roll_mean_3", "RH_avg", "RR_lag1", "Tx", "RR_lag3", "ss", "Tn", "RR_roll_std_3", "Tavg", "RR_lag7", "Month_sin", "ff_x", "ddd_car_C", "Month_cos", "ddd_car_NW", "ddd_car_N", "ddd_car_W", "ddd_car_SE"],
+                    "MeanAbsSHAP": [0.362691, 0.340595, 0.111834, 0.067776, 0.049368, 0.033535, 0.018021, 0.018007, 0.014736, 0.013519, 0.009987, 0.006380, 0.003674, 0.001912, 0.001349, 0.001131, 0.001030, 0.000544, 0.000525, 0.000137],
                     "Image": "shap harian iterasi 2.png"
                 },
                 "Iterasi 3": {
-                    "Feature": [
-                        "pred_SVR", "RR_roll_mean_3", "pred_RF", "RR_lag1", "RR_roll_std_3", "Tn", "RH_avg",
-                        "Tx", "Tavg", "ss", "RR_lag3", "RR_lag7", "Month_sin", "ff_x", "Month_cos",
-                        "ddd_car_SW", "ddd_car_C", "ddd_car_E", "ddd_car_SE", "ddd_car_NW"
-                    ],
-                    "MeanAbsSHAP": [
-                        0.554547, 0.148408, 0.107397, 0.074029, 0.032047, 0.025279, 0.020609, 0.018558,
-                        0.012468, 0.011615, 0.009714, 0.007842, 0.004482, 0.003162, 0.002573,
-                        0.000282, 0.000242, 0.000219, 0.000165, 0.000088
-                    ],
+                    "Feature": ["pred_SVR", "RR_roll_mean_3", "pred_RF", "RR_lag1", "RR_roll_std_3", "Tn", "RH_avg", "Tx", "Tavg", "ss", "RR_lag3", "RR_lag7", "Month_sin", "ff_x", "Month_cos", "ddd_car_SW", "ddd_car_C", "ddd_car_E", "ddd_car_SE", "ddd_car_NW"],
+                    "MeanAbsSHAP": [0.554547, 0.148408, 0.107397, 0.074029, 0.032047, 0.025279, 0.020609, 0.018558, 0.012468, 0.011615, 0.009714, 0.007842, 0.004482, 0.003162, 0.002573, 0.000282, 0.000242, 0.000219, 0.000165, 0.000088],
                     "Image": "shap harian iterasi 3.png"
                 }
             }
-
-        data_bulanan = {
-            "Iterasi 1": {
-                "Feature": [
-                    "RR_roll_mean_1", "pred_RF", "ss", "pred_SVR", "wind_sin", "Tavg", "RH_avg",
-                    "RR_lag2", "ff_x", "wind_cos", "RR_roll_mean_2", "Tn", "RR_lag1", "Tx", "ff_avg"
-                ],
-                "MeanAbsSHAP": [
-                    7.032736, 4.253529, 0.627390, 0.254886, 0.167924, 0.144375, 0.052845,
-                    0.026213, 0.017272, 0.016410, 0.014398, 0.007407, 0.006738, 0.005833, 0.000000
-                ],
-                "Image": "shap bulanan iterasi 1.png"
-            },
-            "Iterasi 2": {
-                "Feature": [
-                    "RR_roll_mean_1", "pred_RF", "ss", "wind_sin", "pred_SVR", "RH_avg",
-                    "RR_roll_mean_2", "ff_x", "RR_lag2", "wind_cos", "RR_lag1",
-                    "Tn", "Tavg", "Tx", "ff_avg"
-                ],
-                "MeanAbsSHAP": [
-                    7.160813, 4.647531, 0.934135, 0.232169, 0.231016, 0.133048,
-                    0.130600, 0.089729, 0.034465, 0.030409, 0.025554,
-                    0.023247, 0.011572, 0.010862, 0.000000
-                ],
-                "Image": "shap bulanan iterasi 2.png"
-            },
-            "Iterasi 3": {
-                "Feature": [
-                    "RR_roll_mean_1", "pred_SVR", "ss", "wind_sin", "ff_x", "Tn", "RR_lag1",
-                    "Tx", "Tavg", "RH_avg", "RR_lag2", "wind cos", "ff_avg", "RR_roll_mean_2"
-                ],
-                "MeanAbsSHAP": [
-                    7.421799, 3.186305, 2.155816, 0.974181, 0.217292, 0.109770,
-                    0.035889, 0.023535, 0.023105, 0.019142, 0.018460,
-                    0.007580, 0.000000, 0.000000
-                ],
-                "Image": "shap bulanan iterasi 3.png"
+            data = data_harian[iterasi]
+        else:
+            data_bulanan = {
+                "Iterasi 1": {
+                    "Feature": ["RR_roll_mean_1", "pred_RF", "ss", "pred_SVR", "wind_sin", "Tavg", "RH_avg", "RR_lag2", "ff_x", "wind_cos", "RR_roll_mean_2", "Tn", "RR_lag1", "Tx", "ff_avg"],
+                    "MeanAbsSHAP": [7.032736, 4.253529, 0.627390, 0.254886, 0.167924, 0.144375, 0.052845, 0.026213, 0.017272, 0.016410, 0.014398, 0.007407, 0.006738, 0.005833, 0.000000],
+                    "Image": "shap bulanan iterasi 1.png"
+                },
+                "Iterasi 2": {
+                    "Feature": ["RR_roll_mean_1", "pred_RF", "ss", "wind_sin", "pred_SVR", "RH_avg", "RR_roll_mean_2", "ff_x", "RR_lag2", "wind_cos", "RR_lag1", "Tn", "Tavg", "Tx", "ff_avg"],
+                    "MeanAbsSHAP": [7.160813, 4.647531, 0.934135, 0.232169, 0.231016, 0.133048, 0.130600, 0.089729, 0.034465, 0.030409, 0.025554, 0.023247, 0.011572, 0.010862, 0.000000],
+                    "Image": "shap bulanan iterasi 2.png"
+                },
+                "Iterasi 3": {
+                    "Feature": ["RR_roll_mean_1", "pred_SVR", "ss", "wind_sin", "ff_x", "Tn", "RR_lag1", "Tx", "Tavg", "RH_avg", "RR_lag2", "wind cos", "ff_avg", "RR_roll_mean_2"],
+                    "MeanAbsSHAP": [7.421799, 3.186305, 2.155816, 0.974181, 0.217292, 0.109770, 0.035889, 0.023535, 0.023105, 0.019142, 0.018460, 0.007580, 0.000000, 0.000000],
+                    "Image": "shap bulanan iterasi 3.png"
+                }
             }
-        }
-
-        # =========================================================
-        # PILIH DATA
-        # =========================================================
-        data = data_harian[iterasi] if mode == "Harian" else data_bulanan[iterasi]
-
-        #PENGAMAN PANJANG DATA (TANPA UBAH INTI)
+            data = data_bulanan[iterasi]
+    
         n = min(len(data["Feature"]), len(data["MeanAbsSHAP"]))
-
-        df = pd.DataFrame({
+        df_shap = pd.DataFrame({
             "Feature": data["Feature"][:n],
             "MeanAbsSHAP": data["MeanAbsSHAP"][:n]
         })
-
-        col_left, col_right = st.columns([1, 1.3])
-        with col_left:
-            # TAMPILAN TABEL
-            st.header(f"Global SHAP {mode} — {iterasi}")
-
-            st.dataframe(
-                df,
-                use_container_width=True,
-                hide_index=True,
-                column_config={
-                    "MeanAbsSHAP": st.column_config.NumberColumn(
-                        "Mean |SHAP|",
-                        format="%.6f"
-                    )
-                }
-            )
-
-        with col_right:
-            with st.container():
-                # TAMPILAN GAMBAR
-                st.subheader(f"Global SHAP {mode} — Summary Plot ({iterasi})")
-                
-                try:
-                    # Mencari jalur file gambar secara fleksibel di seluruh folder
-                    img_path = resolve_path(data["Image"])
-        
-                    if img_path and img_path.exists():
-                        img = Image.open(img_path)
-                        img.thumbnail((1200, 1000))
-                        st.image(img, use_container_width=True)
-                    else:
-                        st.error(f"Gambar '{data['Image']}' tidak ditemukan.")
-                except Exception as e:
-                    st.error(f"Gagal memuat gambar '{data['Image']}': {e}")
-
+    
+        st.markdown(f"""
+        <div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:12px;">
+            <div style="flex:1; min-width:280px; background:rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft);">
+                <h5 style="color:var(--text-primary); margin-top:0;">📋 Global SHAP {mode} — {iterasi}</h5>
+        """, unsafe_allow_html=True)
+    
+        st.dataframe(
+            df_shap,
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "MeanAbsSHAP": st.column_config.NumberColumn(
+                    "Mean |SHAP|",
+                    format="%.6f"
+                )
+            }
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+        st.markdown("""
+            <div style="flex:1.3; min-width:300px; background:rgba(45,27,78,0.3); border-radius:16px; padding:16px; border:1px solid var(--border-soft);">
+                <h5 style="color:var(--text-primary); margin-top:0;">🖼️ Summary Plot ({iterasi})</h5>
+        """, unsafe_allow_html=True)
+    
+        try:
+            img_path = resolve_path(data["Image"])
+            if img_path and img_path.exists():
+                img = Image.open(img_path)
+                img.thumbnail((1200, 1000))
+                st.image(img, use_container_width=True)
+            else:
+                st.error(f"❌ Gambar '{data['Image']}' tidak ditemukan.")
+        except Exception as e:
+            st.error(f"❌ Gagal memuat gambar: {e}")
+    
+        st.markdown("</div></div>", unsafe_allow_html=True)
 
     # Tab About: Tentang sistem]
     with tab_about:
