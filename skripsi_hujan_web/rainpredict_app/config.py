@@ -582,9 +582,10 @@ def local_css():
         box-shadow: 0 12px 40px rgba(167, 139, 250, 0.2);
     }
     .logo-card img {
-        max-width: 100%;
-        height: auto;
-        display: block;
+    max-width: 80%;  
+    height: auto;
+    display: block;
+    margin: 0 auto;  
     }
 
     /* Tombol prediksi di home */
