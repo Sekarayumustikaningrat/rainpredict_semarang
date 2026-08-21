@@ -26,7 +26,7 @@ def local_css():
     st.markdown("""
     <style>
     :root {
-        --bg-primary: linear-gradient(135deg, #1A142F 0%, #2D1B4E 45%, #3D2A5C 100%);
+        --bg-primary: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important;
         --bg-secondary: #2D1B4E;
         --accent-primary: #A78BFA;
         --accent-secondary: #7DD3FC;
@@ -417,7 +417,7 @@ def local_css():
        SIDEBAR
        =============================== */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important;
+        background: linear-gradient(135deg, #1A142F 0%, #2D1B4E 45%, #3D2A5C 100%);
         border-right: 1px solid rgba(167, 139, 250, 0.30) !important;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
     }
