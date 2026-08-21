@@ -677,6 +677,123 @@ def local_css():
         accent-color: var(--accent-primary);
     }
 
+    /* ===============================
+       ABOUT TAB – CUSTOM STYLING
+       =============================== */
+    .about-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .about-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #F1F0F7, #C4B0F8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+    .about-header p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        margin-top: 0.5rem;
+    }
+    
+    .about-card {
+        background: rgba(45, 27, 78, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+    .about-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.15);
+    }
+    .about-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 0;
+    }
+    .about-card .icon {
+        font-size: 28px;
+        color: var(--accent-primary);
+    }
+    
+    .about-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(167, 139, 250, 0.06);
+    }
+    .about-step:last-child {
+        border-bottom: none;
+    }
+    .about-step .step-number {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+    .about-step .step-content {
+        flex: 1;
+    }
+    .about-step .step-content strong {
+        color: var(--text-primary);
+    }
+    .about-step .step-content p {
+        margin: 4px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+    
+    .about-warning {
+        border-left: 4px solid #F472B6;
+        background: rgba(244, 114, 182, 0.08);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 12px 0;
+    }
+    .about-success {
+        border-left: 4px solid #7DD3FC;
+        background: rgba(125, 211, 252, 0.08);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 12px 0;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* delay untuk tiap card */
+    .about-card:nth-child(1) { animation-delay: 0.1s; }
+    .about-card:nth-child(2) { animation-delay: 0.2s; }
+    .about-card:nth-child(3) { animation-delay: 0.3s; }
+    .about-card:nth-child(4) { animation-delay: 0.4s; }
+    .about-card:nth-child(5) { animation-delay: 0.5s; }
+
     </style>
     """, unsafe_allow_html=True)
 
