@@ -39,7 +39,6 @@ def local_css():
         --drop-color-1: rgba(167, 139, 250, 0.25);
         --drop-color-2: rgba(125, 211, 252, 0.20);
         --drop-color-3: rgba(244, 114, 182, 0.15);
-        --footer-height: 70px;
     }
 
     /* ===============================
@@ -47,15 +46,13 @@ def local_css():
        =============================== */
     .block-container {
         padding: 0 3rem !important;      /* margin kiri-kanan */
-        padding-bottom: calc(var(--footer-height) + 2rem) !important; /* ruang untuk footer */
+        padding-bottom: 2rem !important;
     }
 
-    /* Untuk konten di dalam tab agar lebih rapi */
     .stTabs [data-baseweb="tab-panel"] {
         padding: 0.5rem 0.5rem !important;
     }
 
-    /* App Background & Font */
     .stApp {
         background: var(--bg-primary);
         font-family: 'Poppins', sans-serif;
@@ -66,10 +63,6 @@ def local_css():
        HERO HEADER — tanpa border bawah
        =============================== */
     .hero-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
         background: var(--bg-primary);
         padding: 1.5rem 2rem;
         border-radius: 0;
@@ -86,7 +79,7 @@ def local_css():
         transition: box-shadow 0.3s ease;
         overflow: hidden;
         min-height: 120px;
-        margin-left: -3rem;  /* offset karena container padding */
+        margin-left: -3rem;
         padding-left: 3rem;
         padding-right: 3rem;
         width: calc(100% + 6rem);
@@ -503,23 +496,18 @@ def local_css():
     }
 
     /* ===============================
-       FOOTER — menempel di paling bawah 
+       FOOTER — normal di bawah (tidak fixed)
        =============================== */
     .site-footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        padding: 10px 2rem;
+        margin-top: 48px;
+        padding: 18px 2rem;
         text-align: center;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         color: var(--text-muted) !important;
         border-top: 1px solid var(--border-soft);
-        background: rgba(26, 20, 47, 0.85);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        position: relative;
+        clear: both;
+        background: transparent;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -552,9 +540,64 @@ def local_css():
         opacity: 0.5;
     }
 
-    /* Tambahan padding bawah pada konten agar tidak tertutup footer */
-    .main .block-container {
-        padding-bottom: calc(var(--footer-height) + 2rem) !important;
+    /* ===============================
+       HOME TAB – CUSTOM STYLING
+       =============================== */
+    .home-hero h1, .home-hero h3, .home-hero p {
+        color: var(--text-primary) !important;
+    }
+
+    .section-title {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Card untuk poin-poin penting */
+    .home-card {
+        background: rgba(45, 27, 78, 0.5);
+        backdrop-filter: blur(4px);
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 16px 20px;
+        transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .home-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(167, 139, 250, 0.15);
+    }
+
+    /* Logo card */
+    .logo-card {
+        background: white;
+        border-radius: 20px;
+        padding: 16px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .logo-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.2);
+    }
+    .logo-card img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    /* Tombol prediksi di home */
+    .stButton > button {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm)) !important;
+        color: white !important;
+        font-weight: 600 !important;
+        padding: 14px 32px !important;
+        font-size: 1.2rem !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 25px rgba(167, 139, 250, 0.4) !important;
+        transition: all 0.3s ease !important;
+        border: none !important;
+    }
+    .stButton > button:hover {
+        transform: scale(1.03) !important;
+        box-shadow: 0 8px 40px rgba(167, 139, 250, 0.6) !important;
     }
 
     /* ===============================
@@ -633,12 +676,42 @@ def local_css():
     """, unsafe_allow_html=True)
 
 
+# ============================================================
+# SESSION STATE INITIALIZATION (HANYA SATU DEFINISI)
+# ============================================================
 def initialize_session_state():
     if 'mode' not in st.session_state:
         st.session_state.mode = "Harian"
-    # Tambahkan inisialisasi state lainnya jika diperlukan
+    if 'models' not in st.session_state:
+        st.session_state.models = {}
+    if 'metrics' not in st.session_state:
+        st.session_state.metrics = {}
+    if 'feature_names' not in st.session_state:
+        st.session_state.feature_names = None
+    if 'preprocessor' not in st.session_state:
+        st.session_state.preprocessor = None
+    if 'last_loaded_mode' not in st.session_state:
+        st.session_state.last_loaded_mode = None
+    if 'detected_mode' not in st.session_state:
+        st.session_state.detected_mode = None
+    if 'df_raw' not in st.session_state:
+        st.session_state.df_raw = None
+    if 'df_idx' not in st.session_state:
+        st.session_state.df_idx = None
+    if 'total_rain' not in st.session_state:
+        st.session_state.total_rain = 0.0
+    if 'avg_rain' not in st.session_state:
+        st.session_state.avg_rain = 0.0
+    if 'dataset_info' not in st.session_state:
+        st.session_state.dataset_info = '<span style="color:#F472B6;">Tidak ada dataset yang diunggah, mohon unggah terlebih dahulu pada sidebar.</span>'
+    if 'narration' not in st.session_state:
+        st.session_state.narration = ""
+    os.makedirs("predictions", exist_ok=True)
 
-# Mappings
+
+# ============================================================
+# MAPPINGS & KONSTANTA
+# ============================================================
 MODEL_MAPPING = {
     "Harian": {
         "Iterasi 1": "stacking_model_harian_iter1.pkl",
@@ -683,36 +756,6 @@ EVAL_PATH_MAP = {
 DATA_DEFAULT = "data iklim harian - Semarang (2020-2023).xlsx"
 PREPROCESSOR_PATH = "preprocessor.pkl"
 
-def initialize_session_state():
-    if 'mode' not in st.session_state:
-        st.session_state.mode = "Harian"
-    if 'models' not in st.session_state:
-        st.session_state.models = {}
-    if 'metrics' not in st.session_state:
-        st.session_state.metrics = {}
-    if 'feature_names' not in st.session_state:
-        st.session_state.feature_names = None
-    if 'preprocessor' not in st.session_state:
-        st.session_state.preprocessor = None
-    if 'last_loaded_mode' not in st.session_state:
-        st.session_state.last_loaded_mode = None
-    if 'detected_mode' not in st.session_state:
-        st.session_state.detected_mode = None
-    if 'df_raw' not in st.session_state:
-        st.session_state.df_raw = None
-    if 'df_idx' not in st.session_state:
-        st.session_state.df_idx = None
-    if 'total_rain' not in st.session_state:
-        st.session_state.total_rain = 0.0
-    if 'avg_rain' not in st.session_state:
-        st.session_state.avg_rain = 0.0
-    if 'dataset_info' not in st.session_state:
-        st.session_state.dataset_info = '<span style="color:#F472B6;">Tidak ada dataset yang diunggah, mohon unggah terlebih dahulu pada sidebar.</span>'
-    if 'narration' not in st.session_state:
-        st.session_state.narration = ""
-    os.makedirs("predictions", exist_ok=True)
-
-# config.py
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PREDICTIONS_DIR = os.path.join(BASE_DIR, "predictions")
 ARTIFACTS_DIR = os.path.join(BASE_DIR, "artifacts")
@@ -720,73 +763,7 @@ os.makedirs(PREDICTIONS_DIR, exist_ok=True)
 os.makedirs(ARTIFACTS_DIR, exist_ok=True)
 PKL_NAME = os.path.join(ARTIFACTS_DIR, "implementasi_penelitian.pkl")
 
-
-# Default names that are commonly present. The loader will try to pick a date column.
 DATE_CANDIDATES = ["date","tanggal","time","waktu","tgl"]
 RR_CANDIDATES = ["rr","curah","precip","precipitation","rain","rainfall"]
 
-
-# Training defaults
 RANDOM_STATE = 42
-
-
-
-/* ===============================
-   HOME TAB – CUSTOM STYLING
-   =============================== */
-.home-hero h1, .home-hero h3, .home-hero p {
-    color: var(--text-primary) !important;
-}
-
-.section-title {
-    margin-bottom: 0.5rem;
-}
-
-/* Card untuk poin-poin penting */
-.home-card {
-    background: rgba(45, 27, 78, 0.5);
-    backdrop-filter: blur(4px);
-    border: 1px solid var(--border-soft);
-    border-radius: 16px;
-    padding: 16px 20px;
-    transition: transform 0.2s, box-shadow 0.3s;
-}
-.home-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(167, 139, 250, 0.15);
-}
-
-/* Logo card */
-.logo-card {
-    background: white;
-    border-radius: 20px;
-    padding: 16px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.logo-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 12px 40px rgba(167, 139, 250, 0.2);
-}
-.logo-card img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-/* Tombol prediksi */
-.stButton > button {
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm)) !important;
-    color: white !important;
-    font-weight: 600 !important;
-    padding: 14px 32px !important;
-    font-size: 1.2rem !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 25px rgba(167, 139, 250, 0.4) !important;
-    transition: all 0.3s ease !important;
-    border: none !important;
-}
-.stButton > button:hover {
-    transform: scale(1.03) !important;
-    box-shadow: 0 8px 40px rgba(167, 139, 250, 0.6) !important;
-}
