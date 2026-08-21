@@ -1,3 +1,5 @@
+# config.py
+# jangan ubah apapun kecuali ganti warna — plus animasi header biar cute ✨
 """
 File ini berisi konfigurasi halaman misal: set_page_config, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
 """
@@ -39,6 +41,7 @@ def local_css():
         --drop-color-1: rgba(167, 139, 250, 0.25);
         --drop-color-2: rgba(125, 211, 252, 0.20);
         --drop-color-3: rgba(244, 114, 182, 0.15);
+        --footer-height: 70px;
     }
 
     /* ===============================
@@ -46,13 +49,15 @@ def local_css():
        =============================== */
     .block-container {
         padding: 0 3rem !important;      /* margin kiri-kanan */
-        padding-bottom: 2rem !important; /* ruang bawah normal */
+        padding-bottom: calc(var(--footer-height) + 2rem) !important; /* ruang untuk footer */
     }
 
+    /* Untuk konten di dalam tab agar lebih rapi */
     .stTabs [data-baseweb="tab-panel"] {
         padding: 0.5rem 0.5rem !important;
     }
 
+    /* App Background & Font */
     .stApp {
         background: var(--bg-primary);
         font-family: 'Poppins', sans-serif;
@@ -63,6 +68,10 @@ def local_css():
        HERO HEADER — tanpa border bawah
        =============================== */
     .hero-header {
+        position: fixed;
+        up: 0;
+        left: 0;
+        right: 0;
         background: var(--bg-primary);
         padding: 1.5rem 2rem;
         border-radius: 0;
@@ -79,7 +88,7 @@ def local_css():
         transition: box-shadow 0.3s ease;
         overflow: hidden;
         min-height: 120px;
-        margin-left: -3rem;
+        margin-left: -3rem;  /* offset karena container padding */
         padding-left: 3rem;
         padding-right: 3rem;
         width: calc(100% + 6rem);
@@ -496,18 +505,19 @@ def local_css():
     }
 
     /* ===============================
-       FOOTER — normal di bawah (tidak fixed)
+       FOOTER — menempel di paling bawah 
        =============================== */
     .site-footer {
-        margin-top: 48px;
-        padding: 18px 2rem;
+        z-index: 1000;
+        padding: 10px 2rem;
         text-align: center;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         color: var(--text-muted) !important;
         border-top: 1px solid var(--border-soft);
-        position: relative;
-        clear: both;
-        background: transparent;
+        background: rgba(26, 20, 47, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -538,6 +548,11 @@ def local_css():
     .footer-divider {
         color: var(--border-soft);
         opacity: 0.5;
+    }
+
+    /* Tambahan padding bawah pada konten agar tidak tertutup footer */
+    .main .block-container {
+        padding-bottom: calc(var(--footer-height) + 2rem) !important;
     }
 
     /* ===============================
