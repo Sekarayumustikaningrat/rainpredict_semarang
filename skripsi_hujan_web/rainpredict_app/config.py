@@ -23,13 +23,13 @@ def local_css():
     st.markdown("""
     <style>
     :root {
-        --bg-primary: linear-gradient(135deg, #1a1a2e 0%, #2a1a3e 45%, #3d2c5a 100%);
-        --bg-secondary: #2a1a3a;
-        --accent-primary: #8e44ad;
-        --accent-secondary: #9b59b6;
-        --card-bg: rgba(40, 30, 60, 0.8);
-        --text-primary: #ecf0f1;
-        --text-muted: #bdc3c7;
+        --bg-primary: linear-gradient(135deg, #0b1a30 0%, #1c3a5c 45%, #2a4a6e 100%);
+        --bg-secondary: #1a365d;
+        --accent-primary: #4a9eff;
+        --accent-secondary: #63b3ed;
+        --card-bg: rgba(20, 40, 70, 0.8);
+        --text-primary: #e2e8f0;
+        --text-muted: #a0aec0;
     }
 
     /* FIX: Menghilangkan space kosong di atas header */
@@ -115,43 +115,43 @@ def local_css():
         color: white !important;
         padding: 9px 20px;             /* 🔧 tidak pres teks */
         border-radius: 14px;           /* atas-bawah-kiri-kanan rounded */
-        box-shadow: 0 4px 12px rgba(142,68,173,0.35);
+        box-shadow: 0 4px 12px rgba(74,158,255,0.35);
         border: 1px solid rgba(255,255,255,0.15);
     }
                 
     /* =============================== SIDEBAR – SOFT, JELAS TERPISAH HANYA GANTI WARNA =============================== */ 
     [data-testid="stSidebar"] { 
-        background: linear-gradient(180deg, #2c1a4a 0%, #4a2c6a 100%) !important; 
-        border-right: 1px solid #6c4a8a !important; } 
+        background: linear-gradient(180deg, #0f2742 0%, #1a3d63 100%) !important; 
+        border-right: 1px solid #2a4a6e !important; } 
     
-    [data-testid="stSidebar"] * { color: #e8d5f5 !important; } 
+    [data-testid="stSidebar"] * { color: #e2e8f0 !important; } 
     
     /* Heading sidebar */ 
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3, 
     [data-testid="stSidebar"] h4, 
-    [data-testid="stSidebar"] h5 { color: #c39bd3 !important; /* soft lavender */ } 
+    [data-testid="stSidebar"] h5 { color: #90cdf4 !important; /* soft light blue */ } 
     
     /* Text biasa */ 
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] span, 
-    [data-testid="stSidebar"] label { color: #e8d5f5 !important; } 
+    [data-testid="stSidebar"] label { color: #e2e8f0 !important; } 
     
     /* Link */ 
-    [data-testid="stSidebar"] a { color: #bda0d1 !important; } 
-    [data-testid="stSidebar"] a:hover { color: #d7bde2 !important; } 
+    [data-testid="stSidebar"] a { color: #63b3ed !important; } 
+    [data-testid="stSidebar"] a:hover { color: #90cdf4 !important; } 
     
     /* =============================== SIDEBAR CARD =============================== */ 
     .sidebar-card { 
-        background: linear-gradient(135deg, #4a2c6a 0%, #6c4a8a 100%) !important; 
-        border-left: 5px solid #c39bd3; 
-        color: #e8d5f5; } 
-    .sidebar-card p { color: #e8d5f5 !important; } 
-    .sidebar-card h4, .sidebar-card h5 { color: #c39bd3 !important; } 
+        background: linear-gradient(135deg, #1a3d63 0%, #2a4a6e 100%) !important; 
+        border-left: 5px solid #63b3ed; 
+        color: #e2e8f0; } 
+    .sidebar-card p { color: #e2e8f0 !important; } 
+    .sidebar-card h4, .sidebar-card h5 { color: #90cdf4 !important; } 
     
     /* =============================== ICON =============================== */ 
-    .material-icons-inline { color: #c39bd3; }
+    .material-icons-inline { color: #63b3ed; }
 
     /* Buttons */ 
     .stButton > button { 
@@ -161,12 +161,12 @@ def local_css():
         padding: 12px 20px; 
         border-radius: 12px; 
         font-weight: 500; 
-        box-shadow: 0 4px 15px rgba(142,68,173,0.3); 
+        box-shadow: 0 4px 15px rgba(74,158,255,0.3); 
         transition: transform 0.2s, box-shadow 0.2s; } 
     
     .stButton > button:hover { 
         transform: translateY(-2px); 
-        box-shadow: 0 6px 20px rgba(142,68,173,0.5); } 
+        box-shadow: 0 6px 20px rgba(74,158,255,0.5); } 
                 
     /* Small text muted */ 
     .small-muted { 
@@ -185,7 +185,7 @@ def local_css():
 
     .footer-note {
         margin-top: 4px;
-        color: #c39bd3;
+        color: #90cdf4;
         font-weight: 500;
     }
 
