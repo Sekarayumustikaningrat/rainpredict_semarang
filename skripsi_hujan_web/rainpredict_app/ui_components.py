@@ -236,119 +236,152 @@ def tabs():
             predict,
             generate_narration
         )
-
-        st.title("Mulai Prediksi Sekarang")
-
-        # ======================================================
-        # UPLOAD DATA & INSTRUKSI
-        # ======================================================
+    
+        # ============================================================
+        # HEADER
+        # ============================================================
         st.markdown("""
-        ### Petunjuk Unggah Data
-        Untuk mendapatkan hasil prediksi yang akurat dan konsisten, harap perhatikan ketentuan dataset berikut:
-
-        1. **Format File**  
-        Sistem mendukung format **.xlsx (Excel)** dan **.csv**.
-
-        2. **Struktur Data (Time Series)**  
-        Dataset harus berupa data deret waktu (*time series*) yang tersusun secara kronologis dan berkelanjutan, baik dalam skala **harian, bulanan, maupun tahunan**.
-
-        3. **Penggabungan Data (Wajib)**  
-        Seluruh data **harus digabungkan terlebih dahulu menjadi satu file** sebelum diunggah.  
-        Sistem **tidak memproses banyak file secara terpisah**, sehingga penggabungan data dilakukan di sisi pengguna untuk menjaga konsistensi pemodelan.
-
-        4. **Kecukupan Data Historis**  
-        Hindari mengunggah data dalam rentang waktu yang terlalu pendek (misalnya hanya satu hari).  
-        Model membutuhkan data historis yang memadai untuk mempelajari pola tren, musiman, dan rata-rata bergerak secara optimal.
-
-        5. **Sumber Data (Direkomendasikan)**  
-        Untuk menjaga validitas dan keandalan hasil prediksi, sangat disarankan menggunakan data resmi dari **BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)** atau sumber terpercaya yang setara.
-        """)
-
-
-        uploaded_file = st.file_uploader("Pilih file dataset Anda", type=["xlsx", "csv"])
-
+        <div class="prediksi-header">
+            <h1>🚀 Mulai Prediksi Sekarang</h1>
+            <p>Unggah data iklim historis Anda dan dapatkan prediksi curah hujan instan</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+        # ============================================================
+        # PETUNJUK UNGGAH DATA – dalam card dengan ikon
+        # ============================================================
+        st.markdown("""
+        <div class="prediksi-card">
+            <h3><span class="icon">📋</span> Petunjuk Unggah Data</h3>
+            <div class="prediksi-step">
+                <span class="step-icon">📁</span>
+                <div class="step-content">
+                    <strong>Format File</strong><br>
+                    Sistem mendukung <strong>.xlsx (Excel)</strong> dan <strong>.csv</strong>.
+                </div>
+            </div>
+            <div class="prediksi-step">
+                <span class="step-icon">📅</span>
+                <div class="step-content">
+                    <strong>Struktur Data (Time Series)</strong><br>
+                    Dataset harus berupa deret waktu yang tersusun kronologis (harian, bulanan, atau tahunan).
+                </div>
+            </div>
+            <div class="prediksi-step">
+                <span class="step-icon">📂</span>
+                <div class="step-content">
+                    <strong>Penggabungan Data (Wajib)</strong><br>
+                    Seluruh data <strong>harus digabungkan menjadi satu file</strong> sebelum diunggah. Sistem tidak memproses banyak file terpisah.
+                </div>
+            </div>
+            <div class="prediksi-step">
+                <span class="step-icon">📊</span>
+                <div class="step-content">
+                    <strong>Kecukupan Data Historis</strong><br>
+                    Hindari data terlalu pendek (misal 1 hari). Model membutuhkan data historis yang memadai untuk menangkap pola musiman.
+                </div>
+            </div>
+            <div class="prediksi-step">
+                <span class="step-icon">🏛️</span>
+                <div class="step-content">
+                    <strong>Sumber Data (Direkomendasikan)</strong><br>
+                    Gunakan data resmi dari <strong>BMKG</strong> atau sumber terpercaya untuk validitas terbaik.
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+        # ============================================================
+        # UPLOAD AREA – lebih menarik
+        # ============================================================
+        st.markdown('<div class="upload-area">', unsafe_allow_html=True)
+        uploaded_file = st.file_uploader(
+            "📤 Pilih file dataset Anda",
+            type=["xlsx", "csv"],
+            help="Upload file Excel atau CSV berisi data iklim historis"
+        )
+        st.markdown('</div>', unsafe_allow_html=True)
+    
         if uploaded_file:
-            status_proses=st.empty()
-            status_proses.info("Sedang memproses data...")
-
-            # ======================================================
-            # PREPROCESSING & FEATURE ENGINEERING
-            # ======================================================
-            # 1. Preprocessing Awal
+            # Indikator proses dengan animasi
+            status_proses = st.empty()
+            status_proses.info("⏳ Sedang memproses data...")
+    
+            # ============================================================
+            # PREPROCESSING
+            # ============================================================
             df = preprocess_dataset(uploaded_file)
-
-            # 2. Penanganan Outlier 
-            # (Silakan uncomment bagian di bawah ini jika ingin mengaktifkan pembersihan outlier secara manual)
             df_before, df_after = handle_outliers(df)
-            
-            # --- Bagian Tabel Perbandingan Outlier (Uncomment untuk memanggil) ---
-            # st.subheader("Perbandingan Statistik Data")
-            # col_ot1, col_ot2 = st.columns(2)
-            # with col_ot1:
-            #     st.markdown("**Sebelum Outlier Handling**")
-            #     st.dataframe(df_before.describe())
-            # with col_ot2:
-            #     st.markdown("**Sesudah Outlier Handling**")
-            #     st.dataframe(df_after.describe())
-
-            # 3. Feature Engineering 
-            # (Wajib dijalankan karena model membutuhkan fitur ini)
             df_feat = add_time_features(df_after)
             df_feat = add_lag_rolling_features(df_feat)
-
-            # Menghilangkan pesan info setelah proses di atas selesai
+    
             status_proses.empty()
-
-            # ======================================================
-            # TAMPILKAN RINGKASAN PROSES (USER & PAKAR)
-            # ======================================================
-            with st.expander("Lihat Ringkasan Pra-pemrosesan Data"):
+            st.success("✅ Data berhasil diproses dan siap diprediksi.")
+    
+            # ============================================================
+            # RINGKASAN PROSES – dalam expander dengan ikon
+            # ============================================================
+            with st.expander("🔍 Lihat Ringkasan Pra-pemrosesan Data"):
                 st.markdown("""
-                Sistem telah melakukan serangkaian langkah teknis untuk memastikan data siap digunakan oleh model:
-                
-                1. **Pembersihan Data Awal**: Menyelaraskan format waktu dan menangani nilai kosong pada dataset.
-                2. **Penanganan Outlier**: Mengidentifikasi nilai ekstrem yang tidak wajar menggunakan metode statistik agar tidak mengganggu stabilitas prediksi.
-                3. **Transformasi Temporal**: Mengubah variabel waktu ke dalam fungsi matematis untuk menangkap pola siklus musiman iklim.
-                4. **Ekstraksi Fitur Historis**: Membuat fitur *Lag* (data sebelumnya) dan *Rolling Statistics* (rata-rata bergerak) guna menangkap tren jangka pendek dan jangka panjang.
-                """)
-
-            st.success("Data berhasil diproses dan siap diprediksi.")
-
-            # ======================================================
-            # PENGATURAN PREDIKSI
-            # ======================================================
-            st.subheader("Pengaturan Prediksi")
+                <div style="color: var(--text-muted); line-height: 1.8;">
+                    <p>✅ <strong>Pembersihan Data Awal</strong> – Menyelaraskan format waktu dan menangani nilai kosong.</p>
+                    <p>✅ <strong>Penanganan Outlier</strong> – Mengidentifikasi nilai ekstrem agar tidak mengganggu stabilitas prediksi.</p>
+                    <p>✅ <strong>Transformasi Temporal</strong> – Mengubah variabel waktu ke fungsi matematis untuk menangkap pola siklus.</p>
+                    <p>✅ <strong>Ekstraksi Fitur Historis</strong> – Membuat fitur <em>Lag</em> (data sebelumnya) dan <em>Rolling Statistics</em> (rata-rata bergerak).</p>
+                </div>
+                """, unsafe_allow_html=True)
+    
+            # ============================================================
+            # PENGATURAN PREDIKSI – dalam card
+            # ============================================================
+            st.markdown("""
+            <div class="prediksi-card">
+                <h3><span class="icon">⚙️</span> Pengaturan Prediksi</h3>
+            </div>
+            """, unsafe_allow_html=True)
+    
             mode = st.radio(
-                "Pilih skema prediksi:",
+                "📌 Pilih skema prediksi:",
                 ["Harian", "Bulanan"],
                 horizontal=True,
-                help="Harian untuk prediksi tiap hari, Bulanan untuk akumulasi total per bulan."
+                help="Harian untuk prediksi tiap hari, Bulanan untuk akumulasi total per bulan.",
+                key="prediksi_mode"
             )
-
-            # ======================================================
-            # EKSEKUSI PREDIKSI
-            # ======================================================
-            if st.button("Jalankan Prediksi"):
-                col1, col2 = st.columns([1, 1.2])
-
-                with col1:
-                    with st.spinner("Sistem sedang menghitung..."):
-                        result = predict(df=df_feat, mode=mode, iteration=2)
-
-                    st.success("Prediksi Selesai")
-                    st.dataframe(result.head(10), use_container_width=True)
-                    
-                    st.download_button(
-                        "Download Hasil Prediksi (CSV)",
-                        data=result.to_csv(index=False),
-                        file_name=f"hasil_prediksi_{mode.lower()}_iter1.csv",
-                        mime="text/csv"
-                    )
-
-                with col2:
-                    # Menampilkan narasi analisis gabungan (Umum & Pakar)
-                    generate_narration(result, mode)
-        
+    
+            # ============================================================
+            # EKSEKUSI PREDIKSI – tombol lebih mencolok
+            # ============================================================
+            col_btn = st.columns([1, 2, 1])
+            with col_btn[1]:
+                if st.button("⚡ Jalankan Prediksi", use_container_width=True, type="primary"):
+                    col1, col2 = st.columns([1, 1.2], gap="large")
+    
+                    with col1:
+                        with st.spinner("🔄 Sistem sedang menghitung..."):
+                            result = predict(df=df_feat, mode=mode, iteration=2)
+    
+                        st.markdown("""
+                        <div class="prediksi-result">
+                            <h4 style="color: var(--text-primary); margin-top: 0;">📊 Hasil Prediksi</h4>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        st.dataframe(result.head(10), use_container_width=True)
+    
+                        st.download_button(
+                            "💾 Download Hasil Prediksi (CSV)",
+                            data=result.to_csv(index=False),
+                            file_name=f"hasil_prediksi_{mode.lower()}_iter1.csv",
+                            mime="text/csv",
+                            use_container_width=True
+                        )
+    
+                    with col2:
+                        st.markdown("""
+                        <div class="prediksi-result">
+                            <h4 style="color: var(--text-primary); margin-top: 0;">📝 Analisis Narasi</h4>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        generate_narration(result, mode)        
 
     # Tab Model: Metode dan hasil
     with tab_model:
