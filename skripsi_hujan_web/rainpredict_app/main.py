@@ -46,17 +46,15 @@ tabs()
 
 
 # Footer
-st.markdown(
-    """
-    <footer class="site-footer">
-        <div>
-            © 2026 <b>RainPredict Semarang</b> ·
-            Implementasi Skripsi & Media Edukasi
-        </div>
-        <div class="footer-note">
-            Stacking Ensemble · XGBoostRegressor · SHAP Explainability
-        </div>
-    </footer>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown('''
+<div class="site-footer">
+    <div class="footer-left">
+        <span>© 2026 RainPredict Semarang</span>
+        <span class="footer-divider">·</span>
+        <span>Implementasi Skripsi & Media Edukasi</span>
+    </div>
+    <div class="footer-right">
+        <span class="footer-note">Stacking Ensemble · XGBoostRegressor · SHAP Explainability</span>
+    </div>
+</div>
+''', unsafe_allow_html=True)
