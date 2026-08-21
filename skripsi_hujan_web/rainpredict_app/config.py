@@ -678,6 +678,99 @@ def local_css():
     }
 
     /* ===============================
+       PREDIKSI TAB – CUSTOM STYLING
+       =============================== */
+    .prediksi-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    .prediksi-header h1 {
+        font-size: 2.4rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #F1F0F7, #C4B0F8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+    .prediksi-header p {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+    }
+    
+    .prediksi-card {
+        background: rgba(45, 27, 78, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+    .prediksi-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.12);
+    }
+    .prediksi-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 0;
+    }
+    .prediksi-card .icon {
+        font-size: 28px;
+    }
+    
+    .prediksi-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 8px 0;
+    }
+    .prediksi-step .step-icon {
+        font-size: 22px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    .prediksi-step .step-content {
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+    .prediksi-step .step-content strong {
+        color: var(--text-primary);
+    }
+    
+    .upload-area {
+        background: rgba(255,255,255,0.03);
+        border: 2px dashed var(--border-soft);
+        border-radius: 16px;
+        padding: 20px;
+        transition: border-color 0.3s;
+    }
+    .upload-area:hover {
+        border-color: var(--accent-primary);
+    }
+    
+    .prediksi-result {
+        background: rgba(45, 27, 78, 0.4);
+        border-radius: 16px;
+        padding: 16px 20px;
+        border: 1px solid var(--border-soft);
+    }
+    
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .prediksi-card:nth-child(1) { animation-delay: 0.1s; }
+    .prediksi-card:nth-child(2) { animation-delay: 0.2s; }
+    .prediksi-card:nth-child(3) { animation-delay: 0.3s; }
+
+    /* ===============================
        ABOUT TAB – CUSTOM STYLING
        =============================== */
     .about-header {
