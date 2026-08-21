@@ -1,7 +1,19 @@
-"File ini berisi komponen UI seperti sidebar, tabs, dan elemen interaktif (misalnya form input, grafik, dll). Memisahkan tampilan dari logika sehingga memudahkan utnuk menambahkan fitur UI tanpa mengganggu kode lain"
+# File ini berisi komponen UI seperti sidebar, tabs, dan elemen interaktif
+# (misalnya form input, grafik, dll). Memisahkan tampilan dari logika
+# sehingga memudahkan untuk menambahkan fitur UI tanpa mengganggu kode lain.
 
 import streamlit as st
-from config import set_page_config, local_css, initialize_session_state, MODEL_MAPPING, ...
+from config import (
+    set_page_config,
+    local_css,
+    initialize_session_state,
+    MODEL_MAPPING,
+    FEATURE_NAMES_MAP,
+    SHAP_PATH_MAP,
+    EVAL_PATH_MAP,
+    PREPROCESSOR_PATH,
+    DATA_DEFAULT
+)
 from loaders import load_all_for_mode
 from ui_components import sidebar, tabs
 
@@ -43,7 +55,6 @@ st.markdown(
 # Render sidebar dan tabs
 sidebar()
 tabs()
-
 
 # Footer
 st.markdown('''
