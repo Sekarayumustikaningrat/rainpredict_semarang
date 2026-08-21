@@ -107,7 +107,7 @@ def tabs():
                     padding: 8px;
                 ">
                     <img 
-                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzNlMTQyZjM4YzJkY2E2ZGYzYzE5YzU4N2Y5ZGM1NjE4ZjkzY2E4NyZlcD12MV9pbnRlcm5hbF9naWZzX2dpZiZjdD1n/3o6Zt1fG5gK5eU1h4g/giphy.gif"
+                        src="https://pixabay.com/id/gifs/hujan-rintik-hujan-awan-cuaca-22171/"
                         alt="Rain animation"
                         style="
                             width: 100%;
