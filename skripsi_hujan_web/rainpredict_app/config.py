@@ -541,68 +541,51 @@ def local_css():
     }
 
     /* ===============================
-   HOME TAB – CUSTOM STYLING
-   =============================== */
-.home-hero h1, .home-hero h3, .home-hero p {
-    color: var(--text-primary) !important;
-}
+       HOME TAB – CUSTOM STYLING
+       =============================== */
+    .home-hero h1, .home-hero h3, .home-hero p {
+        color: var(--text-primary) !important;
+    }
 
-.section-title {
-    margin-bottom: 0.5rem;
-}
+    .section-title {
+        margin-bottom: 0.5rem;
+    }
 
-/* Card untuk poin-poin penting */
-.home-card {
-    background: rgba(45, 27, 78, 0.5);
-    backdrop-filter: blur(4px);
-    border: 1px solid var(--border-soft);
-    border-radius: 16px;
-    padding: 16px 20px;
-    transition: transform 0.2s, box-shadow 0.3s;
-}
-.home-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(167, 139, 250, 0.15);
-}
+    /* Card untuk poin-poin penting */
+    .home-card {
+        background: rgba(45, 27, 78, 0.5);
+        backdrop-filter: blur(4px);
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 16px 20px;
+        transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .home-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(167, 139, 250, 0.15);
+    }
 
-/* Logo card – PERBAIKAN: padding, margin, alignment */
-.logo-card {
-    background: white !important;
-    border-radius: 20px !important;
-    padding: 24px 20px 16px 20px !important;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25) !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 8px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.logo-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 12px 40px rgba(167, 139, 250, 0.2);
-}
-.logo-card img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Tombol prediksi di home */
-.stButton > button {
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm)) !important;
-    color: white !important;
-    font-weight: 600 !important;
-    padding: 14px 32px !important;
-    font-size: 1.2rem !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 25px rgba(167, 139, 250, 0.4) !important;
-    transition: all 0.3s ease !important;
-    border: none !important;
-}
-.stButton > button:hover {
-    transform: scale(1.03) !important;
-    box-shadow: 0 8px 40px rgba(167, 139, 250, 0.6) !important;
-}
+    /* Logo card – PERBAIKAN: padding, margin, alignment */
+    .logo-card {
+        background: white !important;
+        border-radius: 20px !important;
+        padding: 24px 20px 16px 20px !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25) !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 8px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .logo-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.2);
+    }
+    .logo-card img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
 
     /* Tombol prediksi di home */
     .stButton > button {
