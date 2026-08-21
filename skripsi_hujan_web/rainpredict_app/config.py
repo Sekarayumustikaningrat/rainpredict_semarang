@@ -126,11 +126,12 @@ def local_css():
     }
 
     /* ===============================
-       SIDEBAR – soft, dreamy purple
+       SIDEBAR – kontras dengan nuansa ungu kebiruan
        =============================== */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1A142F 0%, #2D1B4E 100%) !important;
-        border-right: 1px solid rgba(167, 139, 250, 0.20) !important;
+        background: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important; /* biru-ungu lebih terang */
+        border-right: 1px solid rgba(167, 139, 250, 0.30) !important;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
     }
 
     [data-testid="stSidebar"] * {
