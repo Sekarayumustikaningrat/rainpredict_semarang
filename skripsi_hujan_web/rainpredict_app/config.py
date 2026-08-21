@@ -21,7 +21,7 @@ def local_css():
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     """, unsafe_allow_html=True)
 
-    # 2️⃣ CSS styling lokal — fresh, cute, soft-dark theme ✨
+    # 2️⃣ CSS styling lokal — fresh, cute, soft-dark theme + animasi header
     st.markdown("""
     <style>
     :root {
@@ -50,7 +50,7 @@ def local_css():
     }
 
     /* ===============================
-       HERO HEADER (TIDAK DISENTUH)
+       HERO HEADER — dengan animasi
        =============================== */
     .hero-header {
         background: var(--bg-primary);
@@ -65,8 +65,21 @@ def local_css():
         position: relative;
         width: 100%;
         box-shadow: 0 4px 30px rgba(167, 139, 250, 0.08);
+        /* Animasi glow lembut */
+        animation: softGlow 4s ease-in-out infinite alternate;
+        transition: box-shadow 0.3s ease;
+    }
+    .hero-header:hover {
+        box-shadow: 0 6px 40px rgba(167, 139, 250, 0.25);
     }
 
+    /* Animasi glow */
+    @keyframes softGlow {
+        0% { box-shadow: 0 4px 30px rgba(167, 139, 250, 0.08); }
+        100% { box-shadow: 0 4px 50px rgba(167, 139, 250, 0.20); }
+    }
+
+    /* Cloud icon melayang */
     .hero-header::after {
         content: 'cloudy_snowing';
         font-family: 'Material Symbols Rounded';
@@ -77,6 +90,39 @@ def local_css():
         font-size: 80px;
         color: rgba(167, 139, 250, 0.06);
         pointer-events: none;
+        animation: floatCloud 6s ease-in-out infinite;
+    }
+
+    @keyframes floatCloud {
+        0% { transform: translateY(-50%) scale(1); }
+        50% { transform: translateY(-60%) scale(1.05); }
+        100% { transform: translateY(-50%) scale(1); }
+    }
+
+    /* Judul utama bergoyang lembut */
+    .hero-header h1 {
+        animation: gentleWobble 3s ease-in-out infinite;
+        display: inline-block;
+    }
+    @keyframes gentleWobble {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(1deg); }
+        75% { transform: rotate(-1deg); }
+    }
+
+    /* Subtitle (jika ada) dengan efek gradasi warna */
+    .hero-header p, .hero-header .subtitle {
+        background: linear-gradient(135deg, #C4B0F8, #7DD3FC, #F472B6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: gradientShift 5s ease-in-out infinite;
+        font-weight: 500;
+    }
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 
     /* ===============================
@@ -129,7 +175,7 @@ def local_css():
        SIDEBAR – kontras dengan nuansa ungu kebiruan
        =============================== */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important; /* biru-ungu lebih terang */
+        background: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important;
         border-right: 1px solid rgba(167, 139, 250, 0.30) !important;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
     }
