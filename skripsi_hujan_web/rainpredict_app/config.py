@@ -771,6 +771,144 @@ def local_css():
     .prediksi-card:nth-child(3) { animation-delay: 0.3s; }
 
     /* ===============================
+       MODEL TAB – CUSTOM STYLING
+       =============================== */
+    .model-card {
+        background: rgba(45, 27, 78, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+    .model-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.12);
+    }
+    .model-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 0;
+    }
+    .model-card .icon {
+        font-size: 28px;
+    }
+    .model-card p, .model-card li {
+        color: var(--text-muted);
+        line-height: 1.7;
+    }
+    .model-card strong {
+        color: var(--text-primary);
+    }
+    
+    .model-section-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 1.5rem 0 0.8rem 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .model-section-title .icon {
+        font-size: 28px;
+    }
+    
+    /* Dataset info row */
+    .dataset-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 12px 0;
+    }
+    .dataset-info-item {
+        background: rgba(255,255,255,0.03);
+        border-radius: 12px;
+        padding: 12px 16px;
+        border: 1px solid var(--border-soft);
+    }
+    .dataset-info-item .label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .dataset-info-item .value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-top: 2px;
+    }
+    
+    /* Model iteration cards */
+    .iteration-card {
+        background: rgba(45, 27, 78, 0.3);
+        border-radius: 16px;
+        padding: 20px 24px;
+        border: 1px solid var(--border-soft);
+        margin: 12px 0;
+    }
+    .iteration-card h4 {
+        color: var(--accent-primary);
+        margin-top: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .iteration-card .badge {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
+        color: white;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 2px 12px;
+        border-radius: 20px;
+    }
+    
+    /* Tabs inside model */
+    .model-tabs .stTabs [data-baseweb="tab-list"] {
+        background: rgba(167, 139, 250, 0.04) !important;
+    }
+    .model-tabs .stTabs [data-baseweb="tab"] {
+        color: var(--text-muted) !important;
+    }
+    .model-tabs .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, var(--accent-primary), #8B6FE8) !important;
+        color: white !important;
+    }
+    
+    /* SHAP section */
+    .shap-container {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+    .shap-container .shap-table {
+        flex: 1;
+        min-width: 280px;
+    }
+    .shap-container .shap-image {
+        flex: 1.3;
+        min-width: 300px;
+    }
+    
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .model-card:nth-child(1) { animation-delay: 0.1s; }
+    .model-card:nth-child(2) { animation-delay: 0.2s; }
+    .model-card:nth-child(3) { animation-delay: 0.3s; }
+    .model-card:nth-child(4) { animation-delay: 0.4s; }
+    .model-card:nth-child(5) { animation-delay: 0.5s; }
+
+    /* ===============================
        ABOUT TAB – CUSTOM STYLING
        =============================== */
     .about-header {
