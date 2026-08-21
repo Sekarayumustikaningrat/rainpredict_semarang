@@ -63,57 +63,60 @@ def tabs():
     # Tab Home: Pembuka skripsi dengan judul, pentingnya curah hujan, dll.
         # Tab Home: Pembuka skripsi dengan judul, pentingnya curah hujan, dll.
     with tab_home:
-        # ============================================================
-        # HERO SECTION – Judul & Deskripsi + Logo
-        # ============================================================
-        col1, col2 = st.columns([2.2, 0.9], gap="large")
+        with tab_home:
+            # ============================================================
+            # HERO SECTION – Judul & Deskripsi + Logo (dengan jarak pas)
+            # ============================================================
+            col1, col2 = st.columns([2.4, 0.9], gap="large")  # rasio lebih lebar untuk teks
+        
+            with col1:
+                st.markdown("""
+                <div class="home-hero">
+                    <h1 style="font-size:2.6rem; font-weight:800; margin-bottom:0.2rem;">
+                        🌧️ Prediksi Curah Hujan
+                    </h1>
+                    <h3 style="font-weight:500; color:#C4B0F8; margin-top:0.2rem; line-height:1.4;">
+                        Stacking Ensemble dengan XGBoostRegressor<br>
+                        dan Interpretabilitas Global SHAP
+                    </h3>
+                    <p style="font-size:1rem; text-align:justify; margin-top:1rem; color:#E0D8F0; line-height:1.6;">
+                        Aplikasi web ini merupakan implementasi hasil skripsi yang bertujuan
+                        untuk memprediksi curah hujan di <b>Kota Semarang</b> menggunakan pendekatan
+                        <b>Stacking Ensemble Learning</b> dengan meta-model
+                        <b>XGBoostRegressor</b>, serta didukung oleh interpretabilitas global
+                        menggunakan <b>SHAP (SHapley Additive exPlanations)</b>.
+                        Pada implementasi website, sistem difokuskan untuk <b>menyajikan hasil prediksi</b>
+                        curah hujan harian dan bulanan secara efisien dan mudah digunakan.
+                        Visualisasi SHAP tidak ditampilkan pada aplikasi web karena bersifat
+                        analisis penelitian dan membutuhkan sumber daya komputasi yang tinggi.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+        
+            with col2:
+                # Logo UNNES dalam card putih dengan jarak yang pas
+                st.markdown('<div class="logo-card">', unsafe_allow_html=True)
+                try:
+                    from PIL import Image
+                    from loaders import resolve_path
+                    logo_path = resolve_path("skripsi_hujan_web/logounnes.png")
+                    if not (logo_path and logo_path.exists()):
+                        logo_path = resolve_path("logounnes.png")
+                    if logo_path and logo_path.exists():
+                        image = Image.open(logo_path)
+                        try:
+                            st.image(image, use_container_width=True)
+                        except TypeError:
+                            st.image(image, use_column_width=True)
+                    else:
+                        st.warning("File logounnes.png tidak ditemukan.")
+                except Exception as e:
+                    st.error(f"Gagal memuat logo: {e}")
+                st.markdown('</div>', unsafe_allow_html=True)
+        
+            st.divider()
 
-        with col1:
-            st.markdown("""
-            <div class="home-hero">
-                <h1 style="font-size:2.8rem; font-weight:800; margin-bottom:0;">
-                    🌧️ Prediksi Curah Hujan
-                </h1>
-                <h3 style="font-weight:500; color:#C4B0F8; margin-top:0; line-height:1.4;">
-                    Stacking Ensemble dengan XGBoostRegressor<br>
-                    dan Interpretabilitas Global SHAP
-                </h3>
-                <p style="font-size:1.05rem; text-align:justify; margin-top:1rem; color:#E0D8F0;">
-                    Aplikasi web ini merupakan implementasi hasil skripsi yang bertujuan
-                    untuk memprediksi curah hujan di <b>Kota Semarang</b> menggunakan pendekatan
-                    <b>Stacking Ensemble Learning</b> dengan meta-model
-                    <b>XGBoostRegressor</b>, serta didukung oleh interpretabilitas global
-                    menggunakan <b>SHAP (SHapley Additive exPlanations)</b>.
-                    Pada implementasi website, sistem difokuskan untuk <b>menyajikan hasil prediksi</b>
-                    curah hujan harian dan bulanan secara efisien dan mudah digunakan.
-                    Visualisasi SHAP tidak ditampilkan pada aplikasi web karena bersifat
-                    analisis penelitian dan membutuhkan sumber daya komputasi yang tinggi.
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-
-        with col2:
-            # Logo UNNES dalam card putih dengan bayangan
-            st.markdown('<div class="logo-card">', unsafe_allow_html=True)
-            try:
-                from PIL import Image
-                from loaders import resolve_path
-                logo_path = resolve_path("skripsi_hujan_web/logounnes.png")
-                if not (logo_path and logo_path.exists()):
-                    logo_path = resolve_path("logounnes.png")
-                if logo_path and logo_path.exists():
-                    image = Image.open(logo_path)
-                    try:
-                        st.image(image, use_container_width=True)
-                    except TypeError:
-                        st.image(image, use_column_width=True)
-                else:
-                    st.warning("File logounnes.png tidak ditemukan.")
-            except Exception as e:
-                st.error(f"Gagal memuat logo: {e}")
-            st.markdown('</div>', unsafe_allow_html=True)
-
-        st.divider()
+    # ... lanjutkan dengan bagian lainnya (Mengapa Prediksi Penting, dll.)
 
         # ============================================================
         # KENAPA PREDIKSI CURAH HUJAN PENTING – dengan ikon & card
