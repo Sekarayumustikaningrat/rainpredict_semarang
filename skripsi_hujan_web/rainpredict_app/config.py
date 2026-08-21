@@ -21,17 +21,17 @@ def local_css():
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     """, unsafe_allow_html=True)
 
-    # 2️⃣ CSS styling lokal — fresh, cute, soft-dark theme + animasi header
+    # 2️⃣ CSS styling — clean, profesional, estetik, dark dengan kontras lebih terang
     st.markdown("""
     <style>
     :root {
-        --bg-primary: linear-gradient(135deg, #1A142F 0%, #2D1B4E 45%, #3D2A5C 100%);
-        --bg-secondary: #2D1B4E;
+        --bg-primary: linear-gradient(135deg, #1E1A3A 0%, #2F2A5A 45%, #3D366B 100%);
+        --bg-secondary: #2F2A5A;
         --accent-primary: #A78BFA;
         --accent-secondary: #7DD3FC;
         --accent-warm: #F472B6;
         --accent-glow: rgba(167, 139, 250, 0.35);
-        --card-bg: rgba(45, 27, 78, 0.75);
+        --card-bg: rgba(47, 42, 90, 0.75);
         --text-primary: #F1F0F7;
         --text-muted: #B8B0D0;
         --border-soft: rgba(167, 139, 250, 0.15);
@@ -39,7 +39,9 @@ def local_css():
 
     /* FIX: Menghilangkan space kosong di atas header */
     .block-container {
-        padding: 0 !important;
+        padding: 0 2rem !important;
+        max-width: 1400px;
+        margin: 0 auto;
     }
 
     /* App Background & Font */
@@ -79,7 +81,7 @@ def local_css():
         100% { box-shadow: 0 4px 50px rgba(167, 139, 250, 0.20); }
     }
 
-    /* ----- Efek hujan lembut (background bergerak) ----- */
+    /* ----- Efek hujan lembut — sekarang lebih terlihat karena latar lebih terang ----- */
     .hero-header::before {
         content: '';
         position: absolute;
@@ -89,24 +91,23 @@ def local_css():
         height: 120%;
         pointer-events: none;
         background-image: 
-            /* Garis-garis miring sebagai hujan */
             repeating-linear-gradient(
                 45deg,
                 transparent,
                 transparent 8px,
-                rgba(167, 139, 250, 0.03) 8px,
-                rgba(167, 139, 250, 0.03) 9px
+                rgba(167, 139, 250, 0.08) 8px,
+                rgba(167, 139, 250, 0.08) 9px
             ),
             repeating-linear-gradient(
                 -45deg,
                 transparent,
                 transparent 12px,
-                rgba(125, 211, 252, 0.02) 12px,
-                rgba(125, 211, 252, 0.02) 13px
+                rgba(125, 211, 252, 0.05) 12px,
+                rgba(125, 211, 252, 0.05) 13px
             );
         background-size: 30px 30px, 40px 40px;
         animation: rainFall 3s linear infinite;
-        opacity: 0.6;
+        opacity: 0.8;
         z-index: 0;
     }
 
@@ -124,7 +125,7 @@ def local_css():
         top: 50%;
         transform: translateY(-50%);
         font-size: 80px;
-        color: rgba(167, 139, 250, 0.06);
+        color: rgba(167, 139, 250, 0.08);
         pointer-events: none;
         animation: floatCloud 6s ease-in-out infinite;
         z-index: 1;
@@ -201,7 +202,7 @@ def local_css():
         background-size: 200% 100%;
         animation: waveFlow 2.5s linear infinite;
         border-radius: 2px;
-        -webkit-text-fill-color: initial; /* reset untuk pseudo */
+        -webkit-text-fill-color: initial;
     }
 
     @keyframes waveFlow {
@@ -251,12 +252,11 @@ def local_css():
     }
 
     /* ===============================
-       NAVBAR / TABS (DIRAPIKAN)
+       NAVBAR / TABS — lebih rapi dan terpusat
        =============================== */
-
     .stTabs {
         margin-top: -0.75rem;
-        padding: 0 2rem;
+        padding: 0 0.5rem;
     }
 
     .stTabs [data-baseweb="tab-list"] {
@@ -267,6 +267,8 @@ def local_css():
         gap: 6px;
         align-items: center;
         border-bottom: 1px solid var(--border-soft);
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
     .stTabs [data-baseweb="tab"] {
@@ -299,6 +301,7 @@ def local_css():
         background: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important;
         border-right: 1px solid rgba(167, 139, 250, 0.30) !important;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+        padding: 2rem 0.5rem;
     }
 
     [data-testid="stSidebar"] * {
@@ -336,6 +339,8 @@ def local_css():
         border-radius: 12px;
         color: #F1F0F7;
         backdrop-filter: blur(4px);
+        padding: 0.8rem 1rem;
+        margin-bottom: 0.5rem;
     }
     .sidebar-card p {
         color: #D4CCE8 !important;
@@ -361,6 +366,8 @@ def local_css():
         font-weight: 500;
         box-shadow: 0 4px 20px rgba(167, 139, 250, 0.30);
         transition: transform 0.2s, box-shadow 0.2s;
+        width: 100%;
+        margin: 0.2rem 0;
     }
 
     .stButton > button:hover {
@@ -395,10 +402,10 @@ def local_css():
     }
 
     /* ===============================
-       EXTRA — selectbox, slider, dll.
+       EXTRA — selectbox, slider, dll. — lebih rapi
        =============================== */
     .stSelectbox [data-baseweb="select"] {
-        background: rgba(45, 27, 78, 0.5);
+        background: rgba(47, 42, 90, 0.6);
         border-radius: 10px;
         border: 1px solid var(--border-soft);
     }
@@ -408,31 +415,33 @@ def local_css():
     }
 
     [data-testid="metric-container"] {
-        background: rgba(45, 27, 78, 0.5);
+        background: rgba(47, 42, 90, 0.6);
         border-radius: 14px;
         padding: 12px 16px;
         border: 1px solid var(--border-soft);
         backdrop-filter: blur(4px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .stDataFrame {
-        background: rgba(45, 27, 78, 0.4);
+        background: rgba(47, 42, 90, 0.4);
         border-radius: 14px;
         border: 1px solid var(--border-soft);
+        padding: 0.5rem;
     }
 
     .streamlit-expanderHeader {
-        background: rgba(45, 27, 78, 0.4);
+        background: rgba(47, 42, 90, 0.5);
         border-radius: 12px;
         border: 1px solid var(--border-soft);
         color: var(--text-primary);
     }
     .streamlit-expanderHeader:hover {
-        background: rgba(167, 139, 250, 0.08);
+        background: rgba(167, 139, 250, 0.10);
     }
 
     .stFileUploader {
-        background: rgba(45, 27, 78, 0.4);
+        background: rgba(47, 42, 90, 0.4);
         border-radius: 14px;
         border: 2px dashed var(--border-soft);
         padding: 8px;
@@ -442,7 +451,7 @@ def local_css():
     }
 
     .stAlert {
-        background: rgba(45, 27, 78, 0.5) !important;
+        background: rgba(47, 42, 90, 0.6) !important;
         border-radius: 12px !important;
         border-left: 4px solid var(--accent-primary) !important;
         color: var(--text-primary) !important;
@@ -464,6 +473,27 @@ def local_css():
     }
     .stRadio input:checked + div {
         accent-color: var(--accent-primary);
+    }
+
+    /* ===============================
+       LAYOUT UTAMA — agar tidak melebar
+       =============================== */
+    .main > div {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Untuk semua kolom agar proporsional */
+    .row-widget.stColumns {
+        gap: 1rem;
+    }
+
+    .stColumn {
+        background: rgba(47, 42, 90, 0.3);
+        border-radius: 16px;
+        padding: 0.8rem;
+        border: 1px solid var(--border-soft);
+        backdrop-filter: blur(2px);
     }
 
     </style>
