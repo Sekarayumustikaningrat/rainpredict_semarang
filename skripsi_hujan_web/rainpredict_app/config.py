@@ -1,5 +1,3 @@
-# config.py
-# jangan ubah apapun kecuali ganti warna — plus animasi header biar cute ✨
 """
 File ini berisi konfigurasi halaman misal: set_page_config, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
 """
@@ -69,7 +67,7 @@ def local_css():
        =============================== */
     .hero-header {
         position: fixed;
-        up: 0;
+        top: 0;
         left: 0;
         right: 0;
         background: var(--bg-primary);
@@ -508,6 +506,9 @@ def local_css():
        FOOTER — menempel di paling bawah 
        =============================== */
     .site-footer {
+        bottom: 0;
+        left: 0;
+        right: 0;
         z-index: 1000;
         padding: 10px 2rem;
         text-align: center;
