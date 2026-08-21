@@ -1,4 +1,5 @@
 # config.py
+# jangan ubah apapun kecuali ganti warna — plus animasi header biar cute ✨
 """
 File ini berisi konfigurasi halaman misal: set_page_config, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
 """
@@ -23,35 +24,24 @@ def local_css():
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,0,0" rel="stylesheet">
     """, unsafe_allow_html=True)
 
-    # 2️⃣ CSS styling lokal — tema biru kalem + ungu elegan
+    # 2️⃣ CSS styling lokal — fresh, cute, soft-dark theme + animasi header
     st.markdown("""
     <style>
     :root {
-        /* Background utama: gradien biru kalem ke ungu */
-        --bg-primary: linear-gradient(135deg, #0E1A2B 0%, #1A3A5C 45%, #3D2A5C 100%);
-        --bg-secondary: #1A3A5C;
-        /* Warna aksen: ungu lembut, biru muda, pink soft */
+        /* BACKGROUND UTAMA: gradien biru keunguan (sebelumnya untuk sidebar) */
+        --bg-primary: linear-gradient(135deg, #1E2A4A 0%, #3A4B7A 100%);
+        --bg-secondary: #2D4A7A;
         --accent-primary: #A78BFA;
         --accent-secondary: #7DD3FC;
         --accent-warm: #F472B6;
         --accent-glow: rgba(167, 139, 250, 0.35);
-        /* Card dan elemen latar belakang dengan transparansi */
-        --card-bg: rgba(20, 40, 70, 0.7);
-        --card-bg-hover: rgba(30, 50, 90, 0.8);
-        /* Teks: putih dengan nuansa abu-abu terang */
+        --card-bg: rgba(30, 42, 74, 0.75);
         --text-primary: #F1F0F7;
-        --text-muted: #C8C0D8;
-        --text-light: #E8E4F0;
-        /* Border soft dengan warna ungu */
-        --border-soft: rgba(167, 139, 250, 0.2);
-        /* Warna tetesan hujan (drop) */
-        --drop-color-1: rgba(167, 139, 250, 0.3);
-        --drop-color-2: rgba(125, 211, 252, 0.25);
-        --drop-color-3: rgba(244, 114, 182, 0.2);
-        /* Warna sidebar */
-        --sidebar-bg: linear-gradient(180deg, #1A2A4A 0%, #2D1B4E 100%);
-        --sidebar-text: #E8E4F0;
-        --sidebar-heading: #C4B0F8;
+        --text-muted: #B8B0D0;
+        --border-soft: rgba(167, 139, 250, 0.15);
+        --drop-color-1: rgba(167, 139, 250, 0.25);
+        --drop-color-2: rgba(125, 211, 252, 0.20);
+        --drop-color-3: rgba(244, 114, 182, 0.15);
     }
 
     /* ===============================
@@ -385,7 +375,7 @@ def local_css():
         position: sticky !important;
         top: 0 !important;
         z-index: 999 !important;
-        background: rgba(20, 35, 60, 0.85) !important;
+        background: rgba(30, 42, 74, 0.85) !important;
         backdrop-filter: blur(14px) !important;
         -webkit-backdrop-filter: blur(14px) !important;
         padding: 6px 0 !important;
@@ -413,7 +403,7 @@ def local_css():
     }
 
     .stTabs [data-baseweb="tab"]:hover {
-        background: rgba(167, 139, 250, 0.12) !important;
+        background: rgba(167, 139, 250, 0.10) !important;
         color: var(--text-primary) !important;
     }
 
@@ -427,16 +417,16 @@ def local_css():
     }
 
     /* ===============================
-       SIDEBAR — warna keunguan kontras
+       SIDEBAR — sekarang menggunakan gradien ungu gelap (sebelumnya background utama)
        =============================== */
     [data-testid="stSidebar"] {
-        background: var(--sidebar-bg) !important;
-        border-right: 1px solid rgba(167, 139, 250, 0.25) !important;
+        background: linear-gradient(135deg, #1A142F 0%, #2D1B4E 45%, #3D2A5C 100%) !important;
+        border-right: 1px solid rgba(167, 139, 250, 0.30) !important;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
     }
 
     [data-testid="stSidebar"] * {
-        color: var(--sidebar-text) !important;
+        color: #F1F0F7 !important;
     }
 
     [data-testid="stSidebar"] h1,
@@ -444,7 +434,7 @@ def local_css():
     [data-testid="stSidebar"] h3,
     [data-testid="stSidebar"] h4,
     [data-testid="stSidebar"] h5 {
-        color: var(--sidebar-heading) !important;
+        color: #C4B0F8 !important;
         font-weight: 600;
     }
 
@@ -465,11 +455,11 @@ def local_css():
        SIDEBAR CARD
        =============================== */
     .sidebar-card {
-        background: rgba(167, 139, 250, 0.10) !important;
-        backdrop-filter: blur(4px);
+        background: linear-gradient(135deg, rgba(167, 139, 250, 0.12) 0%, rgba(125, 211, 252, 0.08) 100%) !important;
         border-left: 4px solid var(--accent-primary);
         border-radius: 12px;
         color: #F1F0F7;
+        backdrop-filter: blur(4px);
     }
     .sidebar-card p {
         color: #D4CCE8 !important;
@@ -479,54 +469,20 @@ def local_css():
     }
 
     /* ===============================
-       CARD UMUM — digunakan di berbagai tab
-       =============================== */
-    .home-card, .prediksi-card, .model-card, .about-card {
-        background: var(--card-bg) !important;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        border: 1px solid var(--border-soft);
-        border-radius: 20px;
-        padding: 24px 28px;
-        margin-bottom: 20px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-        animation: fadeInUp 0.6s ease forwards;
-        opacity: 0;
-        color: var(--text-primary);
-    }
-    .home-card:hover, .prediksi-card:hover, .model-card:hover, .about-card:hover {
-        transform: translateY(-4px);
-        background: var(--card-bg-hover) !important;
-        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.15);
-    }
-
-    .home-card h3, .prediksi-card h3, .model-card h3, .about-card h3 {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: var(--text-primary);
-        font-weight: 600;
-        margin-top: 0;
-    }
-    .home-card .icon, .prediksi-card .icon, .model-card .icon, .about-card .icon {
-        font-size: 28px;
-        color: var(--accent-primary);
-    }
-
-    /* ===============================
-       ICON & BUTTON
+       ICON
        =============================== */
     .material-icons-inline {
         color: var(--accent-primary);
     }
 
+    /* Buttons */
     .stButton > button {
         background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
-        color: white !important;
+        color: white;
         border: none;
         padding: 12px 20px;
         border-radius: 12px;
-        font-weight: 600;
+        font-weight: 500;
         box-shadow: 0 4px 20px rgba(167, 139, 250, 0.30);
         transition: transform 0.2s, box-shadow 0.2s;
     }
@@ -577,7 +533,7 @@ def local_css():
     }
 
     .footer-note {
-        color: var(--accent-secondary) !important;
+        color: #7DD3FC !important;
         font-weight: 500;
         letter-spacing: 0.3px;
     }
@@ -598,7 +554,19 @@ def local_css():
         margin-bottom: 0.5rem;
     }
 
-    /* Logo card – card putih dengan bayangan */
+    .home-card {
+        background: rgba(30, 42, 74, 0.5);
+        backdrop-filter: blur(4px);
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 16px 20px;
+        transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .home-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(167, 139, 250, 0.15);
+    }
+
     .logo-card {
         background: white !important;
         border-radius: 20px !important;
@@ -658,6 +626,34 @@ def local_css():
         font-size: 1.05rem;
     }
 
+    .prediksi-card {
+        background: rgba(30, 42, 74, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+    .prediksi-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.12);
+    }
+    .prediksi-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 0;
+    }
+    .prediksi-card .icon {
+        font-size: 28px;
+    }
+
     .prediksi-step {
         display: flex;
         align-items: flex-start;
@@ -689,15 +685,58 @@ def local_css():
     }
 
     .prediksi-result {
-        background: rgba(45, 27, 78, 0.4);
+        background: rgba(30, 42, 74, 0.4);
         border-radius: 16px;
         padding: 16px 20px;
         border: 1px solid var(--border-soft);
     }
 
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .prediksi-card:nth-child(1) { animation-delay: 0.1s; }
+    .prediksi-card:nth-child(2) { animation-delay: 0.2s; }
+    .prediksi-card:nth-child(3) { animation-delay: 0.3s; }
+
     /* ===============================
        MODEL TAB – CUSTOM STYLING
        =============================== */
+    .model-card {
+        background: rgba(30, 42, 74, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+    .model-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.12);
+    }
+    .model-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 0;
+    }
+    .model-card .icon {
+        font-size: 28px;
+    }
+    .model-card p, .model-card li {
+        color: var(--text-muted);
+        line-height: 1.7;
+    }
+    .model-card strong {
+        color: var(--text-primary);
+    }
+
     .model-section-title {
         font-size: 1.4rem;
         font-weight: 600;
@@ -737,7 +776,7 @@ def local_css():
     }
 
     .iteration-card {
-        background: rgba(45, 27, 78, 0.3);
+        background: rgba(30, 42, 74, 0.3);
         border-radius: 16px;
         padding: 20px 24px;
         border: 1px solid var(--border-soft);
@@ -759,19 +798,6 @@ def local_css():
         border-radius: 20px;
     }
 
-    /* Tabs inside model */
-    .model-tabs .stTabs [data-baseweb="tab-list"] {
-        background: rgba(167, 139, 250, 0.04) !important;
-    }
-    .model-tabs .stTabs [data-baseweb="tab"] {
-        color: var(--text-muted) !important;
-    }
-    .model-tabs .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, var(--accent-primary), #8B6FE8) !important;
-        color: white !important;
-    }
-
-    /* SHAP section */
     .shap-container {
         display: flex;
         gap: 24px;
@@ -785,6 +811,12 @@ def local_css():
         flex: 1.3;
         min-width: 300px;
     }
+
+    .model-card:nth-child(1) { animation-delay: 0.1s; }
+    .model-card:nth-child(2) { animation-delay: 0.2s; }
+    .model-card:nth-child(3) { animation-delay: 0.3s; }
+    .model-card:nth-child(4) { animation-delay: 0.4s; }
+    .model-card:nth-child(5) { animation-delay: 0.5s; }
 
     /* ===============================
        ABOUT TAB – CUSTOM STYLING
@@ -805,6 +837,35 @@ def local_css():
         color: var(--text-muted);
         font-size: 1.1rem;
         margin-top: 0.5rem;
+    }
+
+    .about-card {
+        background: rgba(30, 42, 74, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+    .about-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.15);
+    }
+    .about-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 0;
+    }
+    .about-card .icon {
+        font-size: 28px;
+        color: var(--accent-primary);
     }
 
     .about-step {
@@ -857,24 +918,6 @@ def local_css():
         margin: 12px 0;
     }
 
-    /* ===============================
-       ANIMASI FADE IN UNTUK CARD
-       =============================== */
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .home-card:nth-child(1) { animation-delay: 0.1s; }
-    .home-card:nth-child(2) { animation-delay: 0.2s; }
-    .home-card:nth-child(3) { animation-delay: 0.3s; }
-    .prediksi-card:nth-child(1) { animation-delay: 0.1s; }
-    .prediksi-card:nth-child(2) { animation-delay: 0.2s; }
-    .prediksi-card:nth-child(3) { animation-delay: 0.3s; }
-    .model-card:nth-child(1) { animation-delay: 0.1s; }
-    .model-card:nth-child(2) { animation-delay: 0.2s; }
-    .model-card:nth-child(3) { animation-delay: 0.3s; }
-    .model-card:nth-child(4) { animation-delay: 0.4s; }
-    .model-card:nth-child(5) { animation-delay: 0.5s; }
     .about-card:nth-child(1) { animation-delay: 0.1s; }
     .about-card:nth-child(2) { animation-delay: 0.2s; }
     .about-card:nth-child(3) { animation-delay: 0.3s; }
@@ -885,7 +928,7 @@ def local_css():
        ELEMEN LAINNYA
        =============================== */
     .stSelectbox [data-baseweb="select"] {
-        background: rgba(45, 27, 78, 0.5);
+        background: rgba(30, 42, 74, 0.5);
         border-radius: 10px;
         border: 1px solid var(--border-soft);
     }
@@ -895,7 +938,7 @@ def local_css():
     }
 
     [data-testid="metric-container"] {
-        background: rgba(45, 27, 78, 0.5);
+        background: rgba(30, 42, 74, 0.5);
         border-radius: 14px;
         padding: 12px 16px;
         border: 1px solid var(--border-soft);
@@ -903,13 +946,13 @@ def local_css():
     }
 
     .stDataFrame {
-        background: rgba(45, 27, 78, 0.4);
+        background: rgba(30, 42, 74, 0.4);
         border-radius: 14px;
         border: 1px solid var(--border-soft);
     }
 
     .streamlit-expanderHeader {
-        background: rgba(45, 27, 78, 0.4);
+        background: rgba(30, 42, 74, 0.4);
         border-radius: 12px;
         border: 1px solid var(--border-soft);
         color: var(--text-primary);
@@ -919,7 +962,7 @@ def local_css():
     }
 
     .stFileUploader {
-        background: rgba(45, 27, 78, 0.4);
+        background: rgba(30, 42, 74, 0.4);
         border-radius: 14px;
         border: 2px dashed var(--border-soft);
         padding: 8px;
@@ -929,7 +972,7 @@ def local_css():
     }
 
     .stAlert {
-        background: rgba(45, 27, 78, 0.5) !important;
+        background: rgba(30, 42, 74, 0.5) !important;
         border-radius: 12px !important;
         border-left: 4px solid var(--accent-primary) !important;
         color: var(--text-primary) !important;
@@ -958,7 +1001,7 @@ def local_css():
 
 
 # ============================================================
-# SESSION STATE INITIALIZATION
+# SESSION STATE INITIALIZATION (HANYA SATU DEFINISI)
 # ============================================================
 def initialize_session_state():
     if 'mode' not in st.session_state:
