@@ -78,7 +78,7 @@ def local_css():
         100% { box-shadow: 0 4px 50px rgba(167, 139, 250, 0.20); }
     }
 
-    /* ----- Efek hujan lembut (background bergerak) ----- */
+    /* ----- Efek latar: sel bergerak (grid/dot) bukan tetesan air ----- */
     .hero-header::before {
         content: '';
         position: absolute;
@@ -88,29 +88,30 @@ def local_css():
         height: 120%;
         pointer-events: none;
         background-image: 
+            /* Grid utama: kotak-kotak kecil */
             repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 8px,
-                rgba(167, 139, 250, 0.08) 8px,
-                rgba(167, 139, 250, 0.08) 9px
+                0deg,
+                rgba(167, 139, 250, 0.06) 0px,
+                rgba(167, 139, 250, 0.06) 1px,
+                transparent 1px,
+                transparent 12px
             ),
             repeating-linear-gradient(
-                -45deg,
-                transparent,
-                transparent 12px,
-                rgba(125, 211, 252, 0.05) 12px,
-                rgba(125, 211, 252, 0.05) 13px
+                90deg,
+                rgba(125, 211, 252, 0.04) 0px,
+                rgba(125, 211, 252, 0.04) 1px,
+                transparent 1px,
+                transparent 12px
             );
-        background-size: 30px 30px, 40px 40px;
-        animation: rainFall 3s linear infinite;
-        opacity: 1;
+        background-size: 12px 12px, 12px 12px;
+        animation: gridMove 4s linear infinite;
+        opacity: 0.8;
         z-index: 0;
     }
 
-    @keyframes rainFall {
+    @keyframes gridMove {
         0% { background-position: 0 0, 0 0; }
-        100% { background-position: 30px 60px, 40px 80px; }
+        100% { background-position: 12px 12px, 12px 12px; }
     }
 
     /* ----- Konten header: dua kolom (flex) ----- */
