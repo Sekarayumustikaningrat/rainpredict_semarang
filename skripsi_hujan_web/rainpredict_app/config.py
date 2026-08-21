@@ -1,3 +1,5 @@
+# config.py
+# jangan ubah apapun kecuali ganti warna — plus animasi header biar cute ✨
 """
 File ini berisi konfigurasi halaman misal: set_page_config, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
 """
@@ -41,9 +43,11 @@ def local_css():
         --drop-color-3: rgba(244, 114, 182, 0.15);
     }
 
-    /* FIX: Menghilangkan space kosong di atas header dan beri ruang footer */
+    /* ============================================
+       CONTAINER UTAMA — padding kiri/kanan untuk konten
+       ============================================ */
     .block-container {
-        padding: 0 !important;
+        padding: 0 2rem !important;   /* beri jarak kiri-kanan */
         padding-bottom: 4rem !important;
     }
 
@@ -55,25 +59,25 @@ def local_css():
     }
 
     /* ===============================
-       HERO HEADER — tanpa border bawah
+       HERO HEADER — full-width dengan margin negatif
        =============================== */
     .hero-header {
         background: var(--bg-primary);
         padding: 1.5rem 2rem;
         border-radius: 0;
         color: white;
-        border-bottom: none; /* garis header dihilangkan */
-        margin-bottom: 1rem;
+        border-bottom: none;
+        margin: 0 -2rem 1rem -2rem;   /* full-width melewati padding container */
         display: flex;
         align-items: center;
         justify-content: space-between;
         position: relative;
-        width: 100%;
         box-shadow: 0 4px 30px rgba(167, 139, 250, 0.08);
         animation: softGlow 4s ease-in-out infinite alternate;
         transition: box-shadow 0.3s ease;
         overflow: hidden;
         min-height: 120px;
+        width: auto; /* biar mengikuti lebar container */
     }
     .hero-header:hover {
         box-shadow: 0 6px 40px rgba(167, 139, 250, 0.25);
@@ -347,9 +351,8 @@ def local_css():
     }
 
     /* ===============================
-       NAVBAR / TABS — STICKY HANYA PADA TAB LIST, BUKAN SELURUH KOMPONEN
+       NAVBAR / TABS — sticky hanya tab-list, full-width
        =============================== */
-    /* Container tab — tidak sticky, hanya sebagai wadah */
     .stTabs {
         margin: 0 !important;
         padding: 0 !important;
@@ -359,7 +362,7 @@ def local_css():
         overflow: visible !important;
     }
 
-    /* Tab list — ini yang sticky */
+    /* Tab list — sticky dengan margin negatif untuk full-width */
     .stTabs [data-baseweb="tab-list"] {
         position: -webkit-sticky !important;
         position: sticky !important;
@@ -375,8 +378,8 @@ def local_css():
         align-items: center !important;
         border-bottom: 1px solid var(--border-soft) !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-        width: 100% !important;
-        margin: 0 !important;
+        width: auto !important;
+        margin: 0 -2rem !important;   /* full-width melewati padding */
         transition: box-shadow 0.3s;
     }
     .stTabs [data-baseweb="tab-list"]:hover {
@@ -490,24 +493,25 @@ def local_css():
     }
 
     /* ===============================
-       FOOTER — tetap muncul dengan teks jelas
+       FOOTER — rapi dengan padding dan margin
        =============================== */
     .site-footer {
-        margin-top: 48px;
-        padding: 18px 2rem;
+        margin: 48px -2rem 0 -2rem;   /* full-width, melewati padding */
+        padding: 1.5rem 2rem;
         text-align: center;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         color: var(--text-muted) !important;
         border-top: 1px solid var(--border-soft);
-        position: relative;
+        background: rgba(26, 20, 47, 0.3);
+        backdrop-filter: blur(4px);
         clear: both;
-        background: transparent;
     }
 
     .footer-note {
-        margin-top: 4px;
+        margin-top: 6px;
         color: #7DD3FC !important;
         font-weight: 500;
+        letter-spacing: 0.5px;
     }
 
     /* ===============================
