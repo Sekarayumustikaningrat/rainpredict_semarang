@@ -19,6 +19,7 @@ def local_css():
     st.markdown("""
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,0,0" rel="stylesheet">
     """, unsafe_allow_html=True)
 
     # 2️⃣ CSS styling lokal — fresh, cute, soft-dark theme + animasi header
@@ -35,6 +36,9 @@ def local_css():
         --text-primary: #F1F0F7;
         --text-muted: #B8B0D0;
         --border-soft: rgba(167, 139, 250, 0.15);
+        --drop-color-1: rgba(167, 139, 250, 0.25);
+        --drop-color-2: rgba(125, 211, 252, 0.20);
+        --drop-color-3: rgba(244, 114, 182, 0.15);
     }
 
     /* FIX: Menghilangkan space kosong di atas header */
@@ -68,6 +72,7 @@ def local_css():
         animation: softGlow 4s ease-in-out infinite alternate;
         transition: box-shadow 0.3s ease;
         overflow: hidden;
+        min-height: 120px;
     }
     .hero-header:hover {
         box-shadow: 0 6px 40px rgba(167, 139, 250, 0.25);
@@ -78,43 +83,116 @@ def local_css():
         100% { box-shadow: 0 4px 50px rgba(167, 139, 250, 0.20); }
     }
 
-    /* ----- Efek latar: sel bergerak (grid/dot) bukan tetesan air ----- */
+    /* ===== LAYER 1: Efek hujan (tetesan air detail) ===== */
     .hero-header::before {
         content: '';
         position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        /* 28 tetes air dengan bentuk oval/teardrop */
+        background-image:
+            /* Baris 1 - tetes besar (6px) */
+            radial-gradient(ellipse at 5% 10%, var(--drop-color-1) 0%, transparent 6px),
+            radial-gradient(ellipse at 15% 30%, var(--drop-color-2) 0%, transparent 4px),
+            radial-gradient(ellipse at 25% 5%, var(--drop-color-3) 0%, transparent 5px),
+            radial-gradient(ellipse at 35% 50%, var(--drop-color-1) 0%, transparent 7px),
+            radial-gradient(ellipse at 45% 15%, var(--drop-color-2) 0%, transparent 4px),
+            radial-gradient(ellipse at 55% 70%, var(--drop-color-3) 0%, transparent 5px),
+            radial-gradient(ellipse at 65% 8%, var(--drop-color-1) 0%, transparent 6px),
+            radial-gradient(ellipse at 75% 40%, var(--drop-color-2) 0%, transparent 4px),
+            radial-gradient(ellipse at 85% 25%, var(--drop-color-3) 0%, transparent 7px),
+            radial-gradient(ellipse at 95% 60%, var(--drop-color-1) 0%, transparent 5px),
+            /* Baris 2 - tetes sedang (4px) */
+            radial-gradient(ellipse at 8% 55%, var(--drop-color-2) 0%, transparent 4px),
+            radial-gradient(ellipse at 18% 80%, var(--drop-color-3) 0%, transparent 3px),
+            radial-gradient(ellipse at 28% 45%, var(--drop-color-1) 0%, transparent 4px),
+            radial-gradient(ellipse at 38% 85%, var(--drop-color-2) 0%, transparent 3px),
+            radial-gradient(ellipse at 48% 35%, var(--drop-color-3) 0%, transparent 4px),
+            radial-gradient(ellipse at 58% 95%, var(--drop-color-1) 0%, transparent 4px),
+            radial-gradient(ellipse at 68% 55%, var(--drop-color-2) 0%, transparent 3px),
+            radial-gradient(ellipse at 78% 75%, var(--drop-color-3) 0%, transparent 4px),
+            radial-gradient(ellipse at 88% 45%, var(--drop-color-1) 0%, transparent 3px),
+            radial-gradient(ellipse at 98% 85%, var(--drop-color-2) 0%, transparent 4px),
+            /* Baris 3 - tetes kecil (2-3px) */
+            radial-gradient(ellipse at 3% 90%, var(--drop-color-3) 0%, transparent 2px),
+            radial-gradient(ellipse at 12% 20%, var(--drop-color-1) 0%, transparent 3px),
+            radial-gradient(ellipse at 22% 65%, var(--drop-color-2) 0%, transparent 2px),
+            radial-gradient(ellipse at 32% 40%, var(--drop-color-3) 0%, transparent 3px),
+            radial-gradient(ellipse at 42% 10%, var(--drop-color-1) 0%, transparent 2px),
+            radial-gradient(ellipse at 52% 50%, var(--drop-color-2) 0%, transparent 3px),
+            radial-gradient(ellipse at 62% 30%, var(--drop-color-3) 0%, transparent 2px),
+            radial-gradient(ellipse at 72% 90%, var(--drop-color-1) 0%, transparent 3px),
+            radial-gradient(ellipse at 82% 70%, var(--drop-color-2) 0%, transparent 2px),
+            radial-gradient(ellipse at 92% 15%, var(--drop-color-3) 0%, transparent 3px);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        animation: rainDrops 2.8s linear infinite;
+        opacity: 0.9;
+    }
+
+    @keyframes rainDrops {
+        0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0,
+                             0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0,
+                             0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+        100% { background-position: 0 40px, 0 35px, 0 45px, 0 30px, 0 40px, 0 35px,
+                                   0 42px, 0 38px, 0 30px, 0 45px,
+                                   0 40px, 0 35px, 0 42px, 0 38px, 0 45px,
+                                   0 30px, 0 40px, 0 35px, 0 42px, 0 38px,
+                                   0 45px, 0 30px, 0 40px, 0 35px, 0 42px,
+                                   0 38px, 0 45px, 0 30px, 0 40px, 0 35px; }
+    }
+
+    /* ===== LAYER 2: Daun/bunga berjatuhan ===== */
+    .hero-header::after {
+        content: '🌸 🍃 🌸 🍃 🌸 🍃 🌸 🍃 🌸 🍃';
+        position: absolute;
         top: -10%;
-        left: -10%;
-        width: 120%;
+        left: 0;
+        width: 100%;
         height: 120%;
         pointer-events: none;
-        background-image: 
-            /* Grid utama: kotak-kotak kecil */
-            repeating-linear-gradient(
-                0deg,
-                rgba(167, 139, 250, 0.06) 0px,
-                rgba(167, 139, 250, 0.06) 1px,
-                transparent 1px,
-                transparent 12px
-            ),
-            repeating-linear-gradient(
-                90deg,
-                rgba(125, 211, 252, 0.04) 0px,
-                rgba(125, 211, 252, 0.04) 1px,
-                transparent 1px,
-                transparent 12px
-            );
-        background-size: 12px 12px, 12px 12px;
-        animation: gridMove 4s linear infinite;
-        opacity: 0.8;
+        z-index: 1;
+        font-size: 18px;
+        letter-spacing: 80px;
+        text-align: center;
+        opacity: 0.25;
+        animation: floatingLeaves 12s linear infinite;
+        white-space: nowrap;
+        filter: drop-shadow(0 0 4px rgba(244, 114, 182, 0.15));
+    }
+
+    @keyframes floatingLeaves {
+        0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.15; }
+        10% { opacity: 0.30; }
+        50% { transform: translateY(60px) translateX(-30px) rotate(15deg); opacity: 0.35; }
+        90% { opacity: 0.20; }
+        100% { transform: translateY(120px) translateX(30px) rotate(-10deg); opacity: 0.10; }
+    }
+
+    /* ===== LAYER 3: Elemen tambahan (glow & kilat) ===== */
+    .hero-header .rain-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60%;
+        height: 80%;
+        background: radial-gradient(ellipse at center, rgba(167, 139, 250, 0.04) 0%, transparent 70%);
+        pointer-events: none;
         z-index: 0;
+        animation: glowPulse 4s ease-in-out infinite alternate;
     }
 
-    @keyframes gridMove {
-        0% { background-position: 0 0, 0 0; }
-        100% { background-position: 12px 12px, 12px 12px; }
+    @keyframes glowPulse {
+        0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.9); }
+        100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
     }
 
-    /* ----- Konten header: dua kolom (flex) ----- */
+    /* ===== Konten header (di atas efek) ===== */
     .hero-content {
         position: relative;
         z-index: 2;
@@ -123,33 +201,36 @@ def local_css():
         justify-content: space-between;
         width: 100%;
         flex-wrap: wrap;
+        gap: 16px;
     }
 
     /* Kolom kiri: teks */
     .hero-text {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 2px;
         flex: 1;
+        min-width: 200px;
     }
 
     /* Kolom kanan: visual animasi (ikon) */
     .hero-visual {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         margin-left: auto;
         flex-shrink: 0;
     }
 
     /* Icon awan di kiri (dalam kolom kiri) */
     .hero-icon {
-        font-size: 48px;
+        font-size: 42px;
         color: var(--accent-primary);
         animation: floatIcon 3s ease-in-out infinite;
-        filter: drop-shadow(0 0 12px rgba(167, 139, 250, 0.3));
+        filter: drop-shadow(0 0 16px rgba(167, 139, 250, 0.3));
         flex-shrink: 0;
-        margin-right: 10px;
+        margin-right: 8px;
+        display: inline-block;
     }
 
     @keyframes floatIcon {
@@ -159,7 +240,7 @@ def local_css():
 
     /* Judul utama */
     .header-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: 700;
         background: linear-gradient(135deg, #F1F0F7, #C4B0F8);
         -webkit-background-clip: text;
@@ -167,16 +248,17 @@ def local_css():
         animation: gentleWobble 3s ease-in-out infinite;
         display: inline-block;
         margin: 0;
+        line-height: 1.2;
     }
     @keyframes gentleWobble {
         0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(1deg); }
-        75% { transform: rotate(-1deg); }
+        25% { transform: rotate(0.8deg); }
+        75% { transform: rotate(-0.8deg); }
     }
 
     /* Subtitle dengan gradasi bergerak dan garis air */
     .header-subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: 400;
         background: linear-gradient(135deg, #C4B0F8, #7DD3FC, #F472B6);
         background-size: 200% 200%;
@@ -188,7 +270,6 @@ def local_css():
         display: inline-block;
         padding-bottom: 4px;
     }
-    /* Garis bawah bergelombang (air mengalir) */
     .header-subtitle::after {
         content: '';
         position: absolute;
@@ -214,29 +295,29 @@ def local_css():
         100% { background-position: 0% 50%; }
     }
 
-    /* ----- Visual animasi di kanan: awan + petir + hujan ----- */
+    /* ----- Visual animasi di kanan: ikon ----- */
     .hero-visual .material-symbols-rounded {
-        font-size: 40px;
+        font-size: 32px;
         transition: transform 0.3s;
     }
 
     /* Awan besar di kanan */
     .hero-visual .cloud-big {
-        color: rgba(167, 139, 250, 0.3);
-        font-size: 60px;
+        color: rgba(167, 139, 250, 0.30);
+        font-size: 52px;
         animation: floatCloudBig 5s ease-in-out infinite;
-        filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.1));
+        filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.10));
     }
     @keyframes floatCloudBig {
         0%, 100% { transform: translateY(0) scale(1); }
-        50% { transform: translateY(-8px) scale(1.05); }
+        50% { transform: translateY(-6px) scale(1.04); }
     }
 
     /* Petir berdenyut */
     .hero-visual .thunder-icon {
-        color: rgba(244, 114, 182, 0.6);
+        color: rgba(244, 114, 182, 0.5);
         animation: thunderPulse 3s ease-in-out infinite;
-        filter: drop-shadow(0 0 12px rgba(244, 114, 182, 0.2));
+        filter: drop-shadow(0 0 12px rgba(244, 114, 182, 0.15));
         position: relative;
     }
     .hero-visual .thunder-icon::after {
@@ -246,15 +327,15 @@ def local_css():
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
         opacity: 0;
         animation: lightningFlash 4s ease-in-out infinite;
         pointer-events: none;
         border-radius: 50%;
     }
     @keyframes thunderPulse {
-        0%, 90%, 100% { transform: scale(1); opacity: 0.6; }
-        95% { transform: scale(1.2); opacity: 1; }
+        0%, 90%, 100% { transform: scale(1); opacity: 0.5; }
+        95% { transform: scale(1.15); opacity: 1; }
     }
     @keyframes lightningFlash {
         0%, 80%, 100% { opacity: 0; }
@@ -262,19 +343,19 @@ def local_css():
         90% { opacity: 0; }
     }
 
-    /* Tetesan hujan (emoticon atau icon) */
-    .hero-visual .rain-drop {
-        color: rgba(125, 211, 252, 0.4);
-        font-size: 24px;
-        animation: rainDrop 1.5s linear infinite;
+    /* Tetesan hujan (icon) */
+    .hero-visual .rain-drop-icon {
+        color: rgba(125, 211, 252, 0.35);
+        font-size: 20px;
+        animation: rainDropIcon 1.8s linear infinite;
     }
-    .hero-visual .rain-drop:nth-child(2) { animation-delay: 0.5s; }
-    .hero-visual .rain-drop:nth-child(3) { animation-delay: 1s; }
+    .hero-visual .rain-drop-icon:nth-child(2) { animation-delay: 0.6s; }
+    .hero-visual .rain-drop-icon:nth-child(3) { animation-delay: 1.2s; }
 
-    @keyframes rainDrop {
-        0% { transform: translateY(-20px) scale(0.5); opacity: 0; }
-        50% { opacity: 1; }
-        100% { transform: translateY(20px) scale(1); opacity: 0; }
+    @keyframes rainDropIcon {
+        0% { transform: translateY(-16px) scale(0.5); opacity: 0; }
+        40% { opacity: 1; }
+        100% { transform: translateY(16px) scale(1); opacity: 0; }
     }
 
     /* ===============================
