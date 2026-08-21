@@ -1120,101 +1120,175 @@ def tabs():
                     st.error(f"Gagal memuat gambar '{data['Image']}': {e}")
 
 
-    # Tab About: Tentang sistem
+    # Tab About: Tentang sistem]
     with tab_about:
-        st.markdown('<div class="card"><h3>Tentang Sistem RainPredict Semarang</h3></div>', unsafe_allow_html=True)
-        st.caption("Informasi pengembang, tujuan penelitian, dan panduan penggunaan aplikasi")
-
-
+        # ============================================================
+        # HEADER
+        # ============================================================
+        st.markdown("""
+        <div class="about-header">
+            <h1>ℹ️ Tentang RainPredict Semarang</h1>
+            <p>Informasi pengembang, tujuan penelitian, dan panduan penggunaan aplikasi</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
         # ============================================================
         # TENTANG DEVELOPER
         # ============================================================
-        st.header("Tentang Developer")
-
         st.markdown("""
-        Website RainPredict Semarang ini dikembangkan sebagai bagian dari penyusunan skripsi oleh Sekar Ayu Mustika Ningrat yang berjudul:
-
-        > **“PREDIKSI CURAH HUJAN DENGAN STACKING ENSEMBLE BERBASIS META-MODEL XGBOOSTREGRESSOR DAN INTERPRETABILITAS GLOBAL SHAP: STUDI KASUS KOTA SEMARANG”**
-
-        Pengembangan website ini bertujuan untuk menerapkan hasil penelitian
-        ke dalam bentuk sistem prediksi curah hujan berbasis web yang bersifat interaktif, transparan,
-        dan mudah digunakan. Website ini dirancang agar dapat dimanfaatkan oleh berbagai kalangan, sebagai sarana pendukung dalam memahami dan memprediksi pola curah hujan secara lebih informatif.
-        
-        Untuk informasi lebih lanjut, silakan menghubungi melalui email sekarayuning8121@students.unnes.ac.id
-        """)
-        st.divider()
-
-        # TUJUAN PENELITIAN / OBJECTIVE
-        st.header("Tujuan Penelitian")
-
-        st.markdown("""
-        Aplikasi ini dikembangkan untuk mendukung penelitian prediksi curah hujan
-        dengan pendekatan **machine learning berbasis stacking ensemble**.
-
-        Secara umum, tujuan penelitian dan pengembangan aplikasi ini adalah:
-
-        - Mengembangkan model prediksi curah hujan **harian dan bulanan**
-        menggunakan kombinasi beberapa algoritma *machine learning*.
-        - Menerapkan **Stacking Ensemble Learning**, dengan:
-            - **Random Forest Regressor** dan **Support Vector Regression (SVR)** sebagai *Base learners*.
-            - **XGBoost Regressor** sebagai *Meta learner*.
-        - Menganalisis pengaruh **tuning hyperparameter** terhadap performa model
-        melalui beberapa iterasi eksperimen.
-        - Menyediakan interpretasi global model menggunakan **SHAP (SHapley Additive exPlanations)** untuk memahami kontribusi fitur
-        terhadap hasil prediksi.
-        - Menyajikan hasil penelitian dalam bentuk **aplikasi website interaktif**
-        yang mudah dipahami dan dapat direplikasi.
-        """)
-
-        st.info("""
-        Singkatnya, aplikasi ini tidak hanya menampilkan hasil prediksi,
-        tetapi juga menjelaskan proses ilmiah di balik pengembangan model prediksi curah hujan.
-        """)
-
-        st.divider()
-
+        <div class="about-card">
+            <h3><span class="icon">👩‍💻</span> Tentang Developer</h3>
+            <p style="color: var(--text-primary); line-height: 1.7;">
+                Website RainPredict Semarang ini dikembangkan sebagai bagian dari penyusunan skripsi oleh 
+                <strong>Sekar Ayu Mustika Ningrat</strong> yang berjudul:
+            </p>
+            <blockquote style="
+                background: rgba(167,139,250,0.06);
+                border-left: 4px solid var(--accent-primary);
+                padding: 12px 20px;
+                border-radius: 8px;
+                margin: 12px 0;
+                font-style: italic;
+                color: var(--text-muted);
+            ">
+                “PREDIKSI CURAH HUJAN DENGAN STACKING ENSEMBLE BERBASIS META-MODEL XGBOOSTREGRESSOR 
+                DAN INTERPRETABILITAS GLOBAL SHAP: STUDI KASUS KOTA SEMARANG”
+            </blockquote>
+            <p style="color: var(--text-muted);">
+                Pengembangan website ini bertujuan untuk menerapkan hasil penelitian ke dalam bentuk sistem 
+                prediksi curah hujan berbasis web yang bersifat interaktif, transparan, dan mudah digunakan. 
+                Website ini dirancang agar dapat dimanfaatkan oleh berbagai kalangan, sebagai sarana pendukung 
+                dalam memahami dan memprediksi pola curah hujan secara lebih informatif.
+            </p>
+            <p style="color: var(--text-muted); margin-top: 12px;">
+                📧 <strong>Kontak:</strong> 
+                <a href="mailto:sekarayuning8121@students.unnes.ac.id" style="color: var(--accent-secondary);">
+                    sekarayuning8121@students.unnes.ac.id
+                </a>
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
         # ============================================================
-        # CARA PENGGUNAAN APLIKASI
+        # TUJUAN PENELITIAN
         # ============================================================
-        st.header("Cara Menggunakan Aplikasi (How to Use)")
-
         st.markdown("""
-        Berikut adalah prosedur penggunaan aplikasi prediksi curah hujan:
-        """)
-
+        <div class="about-card">
+            <h3><span class="icon">🎯</span> Tujuan Penelitian</h3>
+            <p style="color: var(--text-primary); line-height: 1.7;">
+                Aplikasi ini dikembangkan untuk mendukung penelitian prediksi curah hujan
+                dengan pendekatan <strong>machine learning berbasis stacking ensemble</strong>.
+            </p>
+            <p style="color: var(--text-muted); margin-top: 12px; font-weight: 500;">Secara umum, tujuan penelitian dan pengembangan aplikasi ini adalah:</p>
+            <ul style="
+                list-style: none;
+                padding: 0;
+                margin: 12px 0;
+                color: var(--text-muted);
+                line-height: 1.8;
+            ">
+                <li>🌧️ <strong>Mengembangkan model prediksi</strong> curah hujan harian dan bulanan menggunakan kombinasi beberapa algoritma machine learning.</li>
+                <li>🧩 <strong>Menerapkan Stacking Ensemble Learning</strong>, dengan:
+                    <ul style="padding-left: 24px; margin: 4px 0;">
+                        <li>🌲 Random Forest Regressor dan 📊 Support Vector Regression (SVR) sebagai <em>Base learners</em>.</li>
+                        <li>⚡ XGBoost Regressor sebagai <em>Meta learner</em>.</li>
+                    </ul>
+                </li>
+                <li>🔧 <strong>Menganalisis pengaruh tuning hyperparameter</strong> terhadap performa model melalui beberapa iterasi eksperimen.</li>
+                <li>📈 <strong>Menyediakan interpretasi global model</strong> menggunakan SHAP (SHapley Additive exPlanations) untuk memahami kontribusi fitur terhadap hasil prediksi.</li>
+                <li>🌐 <strong>Menyajikan hasil penelitian</strong> dalam bentuk aplikasi website interaktif yang mudah dipahami dan dapat direplikasi.</li>
+            </ul>
+            <div style="
+                background: rgba(167,139,250,0.06);
+                border-radius: 12px;
+                padding: 12px 16px;
+                margin-top: 12px;
+                border-left: 3px solid var(--accent-primary);
+            ">
+                <p style="color: var(--text-muted); margin: 0;">
+                    💡 Singkatnya, aplikasi ini tidak hanya menampilkan hasil prediksi, 
+                    tetapi juga menjelaskan proses ilmiah di balik pengembangan model prediksi curah hujan.
+                </p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+        # ============================================================
+        # CARA PENGGUNAAN
+        # ============================================================
         st.markdown("""
-        **Langkah-langkah penggunaan:**
-
-        1. Buka tab **Prediksi Curah Hujan** pada menu aplikasi.
-        2. Unggah file dataset dalam format yang telah ditentukan (misalnya `.csv` atau `.xlsx`).
-        3. Pastikan dataset berisi data iklim yang lengkap dan tersusun dengan benar.
-        4. Pilih jenis prediksi:
-        - **Prediksi Harian**, atau
-        - **Prediksi Bulanan**.
-        5. Klik tombol **Jalankan Prediksi**.
-        6. Sistem akan memproses data dan menampilkan hasil prediksi sesuai dengan pilihan pengguna.
-        """)
-
-        st.warning("""
-        **Perhatian Penting untuk Pengguna:**
-
-        - Pastikan file yang diunggah memiliki **struktur kolom yang sesuai**
-        dengan data pelatihan model.
-        - Disarankan menggunakan **data terbaru** agar hasil prediksi lebih relevan.
-        - Dataset yang tidak sesuai format atau mengandung nilai kosong yang berlebihan
-        dapat menyebabkan proses prediksi gagal atau kurang akurat.
-        """)
-
-        st.success("""
-        Dengan mengikuti prosedur di atas, pengguna dapat memanfaatkan aplikasi ini
-        sebagai alat bantu prediksi curah hujan berbasis pembelajaran mesin.
-        """)
-
-        st.divider()
-
+        <div class="about-card">
+            <h3><span class="icon">📖</span> Cara Menggunakan Aplikasi</h3>
+            <p style="color: var(--text-muted); margin-bottom: 16px;">
+                Ikuti langkah-langkah berikut untuk menggunakan aplikasi prediksi curah hujan:
+            </p>
+            <div class="about-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <strong>Buka tab Prediksi</strong>
+                    <p>Klik tab <strong>Prediksi</strong> di menu navigasi atas.</p>
+                </div>
+            </div>
+            <div class="about-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <strong>Unggah file dataset</strong>
+                    <p>Upload file dalam format <code>.csv</code> atau <code>.xlsx</code> yang berisi data iklim historis.</p>
+                </div>
+            </div>
+            <div class="about-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <strong>Pilih jenis prediksi</strong>
+                    <p>Pilih <strong>Harian</strong> untuk prediksi per hari, atau <strong>Bulanan</strong> untuk akumulasi bulanan.</p>
+                </div>
+            </div>
+            <div class="about-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <strong>Jalankan prediksi</strong>
+                    <p>Klik tombol <strong>Jalankan Prediksi</strong> dan sistem akan memproses data.</p>
+                </div>
+            </div>
+            <div class="about-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <strong>Lihat hasil</strong>
+                    <p>Hasil prediksi akan ditampilkan dalam bentuk tabel dan grafik.</p>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+        # ============================================================
+        # PERHATIAN & PESAN SUKSES
+        # ============================================================
+        st.markdown("""
+        <div class="about-card">
+            <h3><span class="icon">⚠️</span> Perhatian Penting</h3>
+            <div class="about-warning">
+                <p style="margin: 0; color: var(--text-muted);">
+                    <strong>🔴 Pastikan file yang diunggah</strong> memiliki struktur kolom yang sesuai dengan data pelatihan model.
+                    Disarankan menggunakan <strong>data terbaru</strong> agar hasil prediksi lebih relevan.
+                    Dataset yang tidak sesuai format atau mengandung nilai kosong yang berlebihan dapat menyebabkan proses prediksi gagal atau kurang akurat.
+                </p>
+            </div>
+            <div class="about-success">
+                <p style="margin: 0; color: var(--text-muted);">
+                    <strong>✅ Dengan mengikuti prosedur di atas,</strong> Anda dapat memanfaatkan aplikasi ini
+                    sebagai alat bantu prediksi curah hujan berbasis pembelajaran mesin.
+                </p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+        # ============================================================
         # PENUTUP
-        st.caption(
-            "Aplikasi ini dikembangkan sebagai bagian dari penelitian akademik "
-            "dan diharapkan dapat menjadi referensi dalam penerapan machine learning "
-            "untuk bidang klimatologi dan hidrologi."
-        )
+        # ============================================================
+        st.markdown("""
+        <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 20px 0 10px 0; border-top: 1px solid var(--border-soft); margin-top: 20px;">
+            🌱 Aplikasi ini dikembangkan sebagai bagian dari penelitian akademik 
+            dan diharapkan dapat menjadi referensi dalam penerapan machine learning 
+            untuk bidang klimatologi dan hidrologi.
+        </div>
+        """, unsafe_allow_html=True)
