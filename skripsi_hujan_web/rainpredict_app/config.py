@@ -1,4 +1,4 @@
-"File ini berisi konfigurasi halaman misal:set_page_cofig, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna)."
+# File ini berisi konfigurasi halaman misal:set_page_cofig, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
 
 import streamlit as st
 import os
@@ -23,7 +23,7 @@ def local_css():
     st.markdown("""
     <style>
     :root {
-        --bg-primary: linear-gradient(135deg,#0A192F 0%,#102A43 45%,#1B3A5B 100%);
+        --bg-primary: linear-gradient(135deg, #0B132B 0%, #1C2541 100%);
         --bg-secondary: #1E2A38;
         --accent-primary: #20B2AA;
         --accent-secondary: #4682B4;
@@ -95,8 +95,8 @@ def local_css():
 
     /* Tab default (tidak aktif) */
     .stTabs [data-baseweb="tab"] {
-        padding: 8px 18px;             /* 🔧 ruang napas */
-        border-radius: 12px;           /* rounded rapi */
+        padding: 8px 18px;              /* 🔧 ruang napas */
+        border-radius: 12px;            /* rounded rapi */
         font-weight: 500;
         color: var(--text-muted);
         background: transparent;
@@ -113,15 +113,15 @@ def local_css():
     .stTabs [aria-selected="true"] {
         background: linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));
         color: white !important;
-        padding: 9px 20px;             /* 🔧 tidak pres teks */
-        border-radius: 14px;           /* atas-bawah-kiri-kanan rounded */
+        padding: 9px 20px;              /* 🔧 tidak pres teks */
+        border-radius: 14px;            /* atas-bawah-kiri-kanan rounded */
         box-shadow: 0 4px 12px rgba(32,178,170,0.35);
         border: 1px solid rgba(255,255,255,0.15);
     }
                 
     /* =============================== SIDEBAR – SOFT, JELAS TERPISAH HANYA GANTI WARNA =============================== */ 
     [data-testid="stSidebar"] { 
-        background: linear-gradient(180deg, #0F2742 0%, #1A3D63 100%) !important; 
+        background: linear-gradient(180deg, #070D19 0%, #0F1C2E 100%) !important; 
         border-right: 1px solid #3F6A8F !important; } 
     
     [data-testid="stSidebar"] * { color: #F2F7FB !important; } 
@@ -144,7 +144,7 @@ def local_css():
     
     /* =============================== SIDEBAR CARD =============================== */ 
     .sidebar-card { 
-        background: linear-gradient(135deg, #1A3D63 0%, #24507F 100%) !important; 
+        background: linear-gradient(135deg, #102030 0%, #1A3048 100%) !important; 
         border-left: 5px solid #7DD3FC; 
         color: #F2F7FB; } 
     .sidebar-card p { color: #E2EEF7 !important; } 
@@ -172,7 +172,7 @@ def local_css():
     .small-muted { 
         color: var(--text-muted); 
         font-size: 14px; 
-        font-weight: 300; }
+        font-weight: 300; } 
                 
     .site-footer {
     margin-top: 48px;
