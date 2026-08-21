@@ -1,5 +1,3 @@
-# config.py
-# jangan ubah apapun kecuali ganti warna — plus animasi header biar cute ✨
 """
 File ini berisi konfigurasi halaman misal: set_page_config, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
 """
@@ -46,7 +44,7 @@ def local_css():
     /* FIX: Menghilangkan space kosong di atas header dan beri ruang footer */
     .block-container {
         padding: 0 !important;
-        padding-bottom: 3rem !important;
+        padding-bottom: 4rem !important;
     }
 
     /* App Background & Font */
@@ -57,15 +55,15 @@ def local_css():
     }
 
     /* ===============================
-       HERO HEADER — layout dua kolom, clean, profesional
+       HERO HEADER — tanpa border bawah
        =============================== */
     .hero-header {
         background: var(--bg-primary);
         padding: 1.5rem 2rem;
         border-radius: 0;
         color: white;
-        border-bottom: 1px solid var(--border-soft);
-        margin-bottom: 1.5rem;
+        border-bottom: none; /* garis header dihilangkan */
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -96,7 +94,6 @@ def local_css():
         height: 100%;
         pointer-events: none;
         z-index: 0;
-        /* 28 tetes air dengan bentuk oval/teardrop */
         background-image:
             radial-gradient(ellipse at 5% 10%, var(--drop-color-1) 0%, transparent 6px),
             radial-gradient(ellipse at 15% 30%, var(--drop-color-2) 0%, transparent 4px),
@@ -350,10 +347,20 @@ def local_css():
     }
 
     /* ===============================
-       NAVBAR / TABS — STICKY (FIX)
+       NAVBAR / TABS — STICKY HANYA PADA TAB LIST, BUKAN SELURUH KOMPONEN
        =============================== */
-    /* Target utama container tab agar sticky */
+    /* Container tab — tidak sticky, hanya sebagai wadah */
     .stTabs {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+    }
+
+    /* Tab list — ini yang sticky */
+    .stTabs [data-baseweb="tab-list"] {
         position: -webkit-sticky !important;
         position: sticky !important;
         top: 0 !important;
@@ -361,30 +368,22 @@ def local_css():
         background: rgba(26, 20, 47, 0.80) !important;
         backdrop-filter: blur(14px) !important;
         -webkit-backdrop-filter: blur(14px) !important;
-        padding: 0.6rem 2rem !important;
-        margin: 0 !important;
-        border-bottom: 1px solid var(--border-soft) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-        transition: box-shadow 0.3s;
-        width: 100%;
-        overflow: visible !important;
-    }
-    .stTabs:hover {
-        box-shadow: 0 4px 30px rgba(167, 139, 250, 0.15) !important;
-    }
-
-    .stTabs [data-baseweb="tab-list"] {
-        background: rgba(167, 139, 250, 0.06) !important;
-        padding: 6px !important;
-        border-radius: 14px !important;
+        padding: 6px 2rem !important;
+        border-radius: 0 !important;
         display: flex !important;
         gap: 6px !important;
         align-items: center !important;
-        border-bottom: none !important;
-        width: fit-content;
-        margin: 0 auto; /* center tab */
+        border-bottom: 1px solid var(--border-soft) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        width: 100% !important;
+        margin: 0 !important;
+        transition: box-shadow 0.3s;
+    }
+    .stTabs [data-baseweb="tab-list"]:hover {
+        box-shadow: 0 4px 30px rgba(167, 139, 250, 0.15) !important;
     }
 
+    /* Tab buttons */
     .stTabs [data-baseweb="tab"] {
         padding: 8px 18px !important;
         border-radius: 12px !important;
@@ -491,7 +490,7 @@ def local_css():
     }
 
     /* ===============================
-       FOOTER — pastikan muncul dan terbaca
+       FOOTER — tetap muncul dengan teks jelas
        =============================== */
     .site-footer {
         margin-top: 48px;
@@ -509,11 +508,6 @@ def local_css():
         margin-top: 4px;
         color: #7DD3FC !important;
         font-weight: 500;
-    }
-
-    /* Tambahan padding bawah agar footer tidak terpotong */
-    .main .block-container {
-        padding-bottom: 4rem !important;
     }
 
     /* ===============================
