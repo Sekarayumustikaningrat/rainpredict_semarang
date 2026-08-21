@@ -1,5 +1,5 @@
 "File ini berisi konfigurasi halaman misal:set_page_cofig, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna)."
-# config.py
+
 import streamlit as st
 import os
 
@@ -11,55 +11,48 @@ def set_page_config():
         initial_sidebar_state="expanded"
     )
 
+
 def local_css():
+    # 1️⃣ Import font & icon Google di luar <style>
     st.markdown("""
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     """, unsafe_allow_html=True)
 
+    # 2️⃣ CSS styling lokal
     st.markdown("""
     <style>
     :root {
-        /* TEMA DARK SOFT – HUJAN ELEGAN DENGAN KONTRAS TINGGI */
-        --bg-primary: linear-gradient(145deg, #0f1f2d 0%, #1a3345 100%);
-        --bg-secondary: #1c2f3f;
-        --accent-primary: #4fc3f7;      /* biru cerah */
-        --accent-secondary: #26c6da;    /* teal cerah */
-        --card-bg: rgba(24, 44, 60, 0.75);
-        --text-primary: #f0f6fc;
-        --text-muted: #a0bccd;
-        --sidebar-bg-start: #0a1a2b;
-        --sidebar-bg-end: #1a3a55;
-        --sidebar-border: #2a4a6a;
-        --sidebar-heading: #8ecae6;
-        --sidebar-text: #d4e8f5;
-        --sidebar-link: #b0d0e6;
-        --sidebar-link-hover: #cce4f5;
-        --sidebar-card-bg: linear-gradient(145deg, #1a3a55, #2a5a7a);
-        --sidebar-card-border: #8ecae6;
-        --footer-accent: #8ecae6;
-        --tab-active-shadow: rgba(79, 195, 247, 0.35);
-        --button-shadow: rgba(79, 195, 247, 0.3);
-        --button-hover-shadow: rgba(79, 195, 247, 0.5);
+        --bg-primary: linear-gradient(135deg, #0B132B 0%, #1C2E4A 45%, #2A4A6A 100%);
+        --bg-secondary: #1A2A3A;
+        --accent-primary: #00E5FF;
+        --accent-secondary: #2979FF;
+        --card-bg: rgba(20, 35, 55, 0.85);
+        --text-primary: #E8F0FE;
+        --text-muted: #A0BBD0;
     }
 
+    /* FIX: Menghilangkan space kosong di atas header */
     .block-container {
         padding: 0 !important;
     }
 
+    /* App Background & Font */
     .stApp {
         background: var(--bg-primary);
         font-family: 'Poppins', sans-serif;
         color: var(--text-primary);
     }
 
-    /* HERO HEADER */
+    /* ===============================
+       HERO HEADER (TIDAK DISENTUH)
+       =============================== */
     .hero-header {
         background: var(--bg-primary);
         padding: 1.5rem 2rem;
         border-radius: 0;
         color: white;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
         margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
@@ -76,13 +69,17 @@ def local_css():
         top: 50%;
         transform: translateY(-50%);
         font-size: 80px;
-        color: rgba(255,255,255,0.04);
+        color: rgba(255,255,255,0.05);
         pointer-events: none;
     }
 
-    /* TABS */
+    /* ===============================
+       NAVBAR / TABS (DIRAPIKAN)
+       =============================== */
+
+    /* Container tab */
     .stTabs {
-        margin-top: -0.75rem;
+        margin-top: -0.75rem;          /* nempel header */
         padding: 0 2rem;
     }
 
@@ -93,125 +90,161 @@ def local_css():
         display: flex;
         gap: 6px;
         align-items: center;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
+    /* Tab default (tidak aktif) */
     .stTabs [data-baseweb="tab"] {
-        padding: 8px 18px;
-        border-radius: 12px;
+        padding: 8px 18px;             /* 🔧 ruang napas */
+        border-radius: 12px;           /* rounded rapi */
         font-weight: 500;
         color: var(--text-muted);
         background: transparent;
         transition: all 0.2s ease;
     }
 
+    /* Hover */
     .stTabs [data-baseweb="tab"]:hover {
         background: rgba(255,255,255,0.06);
         color: var(--text-primary);
     }
 
+    /* Tab aktif */
     .stTabs [aria-selected="true"] {
         background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
         color: white !important;
-        padding: 9px 20px;
-        border-radius: 14px;
-        box-shadow: 0 4px 12px var(--tab-active-shadow);
-        border: 1px solid rgba(255,255,255,0.12);
+        padding: 9px 20px;             /* 🔧 tidak pres teks */
+        border-radius: 14px;           /* atas-bawah-kiri-kanan rounded */
+        box-shadow: 0 4px 12px rgba(0, 229, 255, 0.35);
+        border: 1px solid rgba(255,255,255,0.15);
     }
 
-    /* SIDEBAR – selaras dengan UNNES (biru tua) */
+    /* =============================== SIDEBAR – SOFT, JELAS TERPISAH HANYA GANTI WARNA =============================== */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%) !important;
-        border-right: 1px solid var(--sidebar-border) !important;
-    }
+        background: linear-gradient(180deg, #0F1A2E 0%, #1C3A5A 100%) !important;
+        border-right: 1px solid #2979FF !important; }
 
-    [data-testid="stSidebar"] * {
-        color: var(--sidebar-text) !important;
-    }
+    [data-testid="stSidebar"] * { color: #F0F8FB !important; }
 
+    /* Heading sidebar */
     [data-testid="stSidebar"] h1,
     [data-testid="stSidebar"] h2,
     [data-testid="stSidebar"] h3,
     [data-testid="stSidebar"] h4,
-    [data-testid="stSidebar"] h5 {
-        color: var(--sidebar-heading) !important;
-    }
+    [data-testid="stSidebar"] h5 { color: #00E5FF !important; /* bright cyan */ }
 
+    /* Text biasa */
     [data-testid="stSidebar"] p,
     [data-testid="stSidebar"] span,
-    [data-testid="stSidebar"] label {
-        color: var(--sidebar-text) !important;
-    }
+    [data-testid="stSidebar"] label { color: #D6E6F2 !important; }
 
-    [data-testid="stSidebar"] a {
-        color: var(--sidebar-link) !important;
-    }
-    [data-testid="stSidebar"] a:hover {
-        color: var(--sidebar-link-hover) !important;
-    }
+    /* Link */
+    [data-testid="stSidebar"] a { color: #64B5F6 !important; }
+    [data-testid="stSidebar"] a:hover { color: #B3E5FC !important; }
 
-    /* SIDEBAR CARD */
+    /* =============================== SIDEBAR CARD =============================== */
     .sidebar-card {
-        background: var(--sidebar-card-bg) !important;
-        border-left: 5px solid var(--sidebar-card-border);
-        color: var(--sidebar-text);
-    }
-    .sidebar-card p {
-        color: var(--sidebar-text) !important;
-    }
-    .sidebar-card h4, .sidebar-card h5 {
-        color: var(--sidebar-heading) !important;
-    }
+        background: linear-gradient(135deg, #1C3A5A 0%, #2A5A7A 100%) !important;
+        border-left: 5px solid #00E5FF;
+        color: #F2F7FB; }
+    .sidebar-card p { color: #E2EEF7 !important; }
+    .sidebar-card h4, .sidebar-card h5 { color: #00E5FF !important; }
 
-    /* ICON */
-    .material-icons-inline {
-        color: var(--sidebar-heading);
-    }
+    /* =============================== ICON =============================== */
+    .material-icons-inline { color: #00E5FF; }
 
-    /* BUTTONS – kontras tinggi */
+    /* Buttons */
     .stButton > button {
         background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        color: #0a1a2b !important;  /* teks gelap agar kontras */
+        color: white;
         border: none;
         padding: 12px 20px;
         border-radius: 12px;
-        font-weight: 600;
-        box-shadow: 0 4px 15px var(--button-shadow);
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s; }
 
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px var(--button-hover-shadow);
-        color: #0a1a2b !important;
-    }
+        box-shadow: 0 6px 20px rgba(0, 229, 255, 0.5); }
 
+    /* Small text muted */
     .small-muted {
         color: var(--text-muted);
         font-size: 14px;
-        font-weight: 300;
-    }
+        font-weight: 300; }
 
     .site-footer {
-        margin-top: 48px;
-        padding: 18px;
-        text-align: center;
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 48px;
+    padding: 18px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(255,255,255,0.08);
     }
 
     .footer-note {
         margin-top: 4px;
-        color: var(--footer-accent);
+        color: #00E5FF;
         font-weight: 500;
     }
+
     </style>
     """, unsafe_allow_html=True)
 
-# ------------------------------------------------------------
-# Satu definisi initialize_session_state (lengkap)
-# ------------------------------------------------------------
+
+
+
+def initialize_session_state():
+    if 'mode' not in st.session_state:
+        st.session_state.mode = "Harian"
+    # Tambahkan inisialisasi state lainnya jika diperlukan
+
+# Mappings
+MODEL_MAPPING = {
+    "Harian": {
+        "Iterasi 1": "stacking_model_harian_iter1.pkl",
+        "Iterasi 2": "stacking_model_harian_iter2.pkl",
+        "Iterasi 3": "stacking_model_harian_iter3.pkl"
+    },
+    "Bulanan": {
+        "Iterasi 1": "stacking_model_bulanan_iter1.pkl",
+        "Iterasi 2": "stacking_model_bulanan_iter2.pkl",
+        "Iterasi 3": "stacking_model_bulanan_iter3.pkl"
+    }
+}
+FEATURE_NAMES_MAP = {
+    "Harian": "model_feature_names_harian.pkl",
+    "Bulanan": "model_feature_names_bulanan.pkl"
+}
+SHAP_PATH_MAP = {
+    "Harian": {
+        "Iterasi 1": "shap_explainer_harian_iter1.pkl",
+        "Iterasi 2": "shap_explainer_harian_iter2.pkl",
+        "Iterasi 3": "shap_explainer_harian_iter3.pkl"
+    },
+    "Bulanan": {
+        "Iterasi 1": "shap_explainer_bulanan_iter1.pkl",
+        "Iterasi 2": "shap_explainer_bulanan_iter2.pkl",
+        "Iterasi 3": "shap_explainer_bulanan_iter3.pkl"
+    }
+}
+EVAL_PATH_MAP = {
+    "Harian": {
+        "Iterasi 1": "eval_harian_iter1.pkl",
+        "Iterasi 2": "eval_harian_iter2.pkl",
+        "Iterasi 3": "eval_harian_iter3.pkl",
+    },
+    "Bulanan": {
+        "Iterasi 1": "eval_bulanan_iter1.pkl",
+        "Iterasi 2": "eval_bulanan_iter2.pkl",
+        "Iterasi 3": "eval_bulanan_iter3.pkl",
+    }
+}
+
+DATA_DEFAULT = "data iklim harian - Semarang (2020-2023).xlsx"
+PREPROCESSOR_PATH = "preprocessor.pkl"
+
 def initialize_session_state():
     if 'mode' not in st.session_state:
         st.session_state.mode = "Harian"
@@ -241,56 +274,7 @@ def initialize_session_state():
         st.session_state.narration = ""
     os.makedirs("predictions", exist_ok=True)
 
-# ------------------------------------------------------------
-# MAPPINGS & KONSTANTA (tetap)
-# ------------------------------------------------------------
-MODEL_MAPPING = {
-    "Harian": {
-        "Iterasi 1": "stacking_model_harian_iter1.pkl",
-        "Iterasi 2": "stacking_model_harian_iter2.pkl",
-        "Iterasi 3": "stacking_model_harian_iter3.pkl"
-    },
-    "Bulanan": {
-        "Iterasi 1": "stacking_model_bulanan_iter1.pkl",
-        "Iterasi 2": "stacking_model_bulanan_iter2.pkl",
-        "Iterasi 3": "stacking_model_bulanan_iter3.pkl"
-    }
-}
-
-FEATURE_NAMES_MAP = {
-    "Harian": "model_feature_names_harian.pkl",
-    "Bulanan": "model_feature_names_bulanan.pkl"
-}
-
-SHAP_PATH_MAP = {
-    "Harian": {
-        "Iterasi 1": "shap_explainer_harian_iter1.pkl",
-        "Iterasi 2": "shap_explainer_harian_iter2.pkl",
-        "Iterasi 3": "shap_explainer_harian_iter3.pkl"
-    },
-    "Bulanan": {
-        "Iterasi 1": "shap_explainer_bulanan_iter1.pkl",
-        "Iterasi 2": "shap_explainer_bulanan_iter2.pkl",
-        "Iterasi 3": "shap_explainer_bulanan_iter3.pkl"
-    }
-}
-
-EVAL_PATH_MAP = {
-    "Harian": {
-        "Iterasi 1": "eval_harian_iter1.pkl",
-        "Iterasi 2": "eval_harian_iter2.pkl",
-        "Iterasi 3": "eval_harian_iter3.pkl",
-    },
-    "Bulanan": {
-        "Iterasi 1": "eval_bulanan_iter1.pkl",
-        "Iterasi 2": "eval_bulanan_iter2.pkl",
-        "Iterasi 3": "eval_bulanan_iter3.pkl",
-    }
-}
-
-DATA_DEFAULT = "data iklim harian - Semarang (2020-2023).xlsx"
-PREPROCESSOR_PATH = "preprocessor.pkl"
-
+# config.py
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PREDICTIONS_DIR = os.path.join(BASE_DIR, "predictions")
 ARTIFACTS_DIR = os.path.join(BASE_DIR, "artifacts")
@@ -298,6 +282,11 @@ os.makedirs(PREDICTIONS_DIR, exist_ok=True)
 os.makedirs(ARTIFACTS_DIR, exist_ok=True)
 PKL_NAME = os.path.join(ARTIFACTS_DIR, "implementasi_penelitian.pkl")
 
+
+# Default names that are commonly present. The loader will try to pick a date column.
 DATE_CANDIDATES = ["date","tanggal","time","waktu","tgl"]
 RR_CANDIDATES = ["rr","curah","precip","precipitation","rain","rainfall"]
+
+
+# Training defaults
 RANDOM_STATE = 42
