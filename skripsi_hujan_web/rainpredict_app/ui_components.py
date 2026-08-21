@@ -94,7 +94,6 @@ def tabs():
                 """, unsafe_allow_html=True)
         
             with col2:
-                # Logo UNNES dalam card putih dengan jarak yang pas
                 st.markdown('<div class="logo-card">', unsafe_allow_html=True)
                 try:
                     from PIL import Image
@@ -104,10 +103,7 @@ def tabs():
                         logo_path = resolve_path("logounnes.png")
                     if logo_path and logo_path.exists():
                         image = Image.open(logo_path)
-                        try:
-                            st.image(image, use_container_width=True)
-                        except TypeError:
-                            st.image(image, use_column_width=True)
+                        st.image(image, width=180)
                     else:
                         st.warning("File logounnes.png tidak ditemukan.")
                 except Exception as e:
