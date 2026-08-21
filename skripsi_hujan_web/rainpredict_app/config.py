@@ -19,13 +19,27 @@ def local_css():
     st.markdown("""
     <style>
     :root {
-        --bg-primary: linear-gradient(135deg, #0a1e2f 0%, #1b3a5c 45%, #2a4f73 100%);
-        --bg-secondary: #1a334a;
-        --accent-primary: #4a8db7;
-        --accent-secondary: #6baed6;
-        --card-bg: rgba(20, 40, 60, 0.8);
+        /* TEMA DARK SOFT – HUJAN ELEGAN */
+        --bg-primary: linear-gradient(145deg, #0b1a2e 0%, #142b44 45%, #1a3552 100%);
+        --bg-secondary: #1a2c40;
+        --accent-primary: #4f8a9e;      /* soft teal */
+        --accent-secondary: #6a9fb5;    /* lebih terang */
+        --card-bg: rgba(18, 34, 50, 0.75);
         --text-primary: #e8f0f8;
-        --text-muted: #b0c8dd;
+        --text-muted: #a0b8cc;
+        --sidebar-bg-start: #0d2137;
+        --sidebar-bg-end: #1e3b58;
+        --sidebar-border: #2e5577;
+        --sidebar-heading: #8fc1d9;
+        --sidebar-text: #d4e4f0;
+        --sidebar-link: #b0d0e6;
+        --sidebar-link-hover: #cce4f5;
+        --sidebar-card-bg: linear-gradient(145deg, #1e3b58, #2e5577);
+        --sidebar-card-border: #8fc1d9;
+        --footer-accent: #8fc1d9;
+        --tab-active-shadow: rgba(79, 138, 158, 0.35);
+        --button-shadow: rgba(79, 138, 158, 0.3);
+        --button-hover-shadow: rgba(79, 138, 158, 0.5);
     }
 
     .block-container {
@@ -38,12 +52,13 @@ def local_css():
         color: var(--text-primary);
     }
 
+    /* HERO HEADER */
     .hero-header {
         background: var(--bg-primary);
         padding: 1.5rem 2rem;
         border-radius: 0;
         color: white;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
         margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
@@ -60,10 +75,11 @@ def local_css():
         top: 50%;
         transform: translateY(-50%);
         font-size: 80px;
-        color: rgba(255,255,255,0.05);
+        color: rgba(255,255,255,0.04);
         pointer-events: none;
     }
 
+    /* TABS */
     .stTabs {
         margin-top: -0.75rem;
         padding: 0 2rem;
@@ -76,7 +92,7 @@ def local_css():
         display: flex;
         gap: 6px;
         align-items: center;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
     .stTabs [data-baseweb="tab"] {
@@ -98,18 +114,18 @@ def local_css():
         color: white !important;
         padding: 9px 20px;
         border-radius: 14px;
-        box-shadow: 0 4px 12px rgba(74, 141, 183, 0.35);
-        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 4px 12px var(--tab-active-shadow);
+        border: 1px solid rgba(255,255,255,0.12);
     }
 
-    /* Sidebar – biru tua pekat agar kontras dengan konten */
+    /* SIDEBAR – selaras dengan tema dan logo UNNES */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0a1a2a 0%, #1a3550 100%) !important;
-        border-right: 1px solid #2a4a6a !important;
+        background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%) !important;
+        border-right: 1px solid var(--sidebar-border) !important;
     }
 
     [data-testid="stSidebar"] * {
-        color: #d0e2f2 !important;
+        color: var(--sidebar-text) !important;
     }
 
     [data-testid="stSidebar"] h1,
@@ -117,39 +133,41 @@ def local_css():
     [data-testid="stSidebar"] h3,
     [data-testid="stSidebar"] h4,
     [data-testid="stSidebar"] h5 {
-        color: #8fc4e8 !important;  /* biru langit soft */
+        color: var(--sidebar-heading) !important;
     }
 
     [data-testid="stSidebar"] p,
     [data-testid="stSidebar"] span,
     [data-testid="stSidebar"] label {
-        color: #d0e2f2 !important;
+        color: var(--sidebar-text) !important;
     }
 
     [data-testid="stSidebar"] a {
-        color: #a8d0f0 !important;
+        color: var(--sidebar-link) !important;
     }
     [data-testid="stSidebar"] a:hover {
-        color: #c5e2ff !important;
+        color: var(--sidebar-link-hover) !important;
     }
 
+    /* SIDEBAR CARD */
     .sidebar-card {
-        background: linear-gradient(135deg, #1a3550 0%, #2a4a6a 100%) !important;
-        border-left: 5px solid #8fc4e8;
-        color: #d0e2f2;
+        background: var(--sidebar-card-bg) !important;
+        border-left: 5px solid var(--sidebar-card-border);
+        color: var(--sidebar-text);
     }
     .sidebar-card p {
-        color: #d0e2f2 !important;
+        color: var(--sidebar-text) !important;
     }
-    .sidebar-card h4,
-    .sidebar-card h5 {
-        color: #8fc4e8 !important;
+    .sidebar-card h4, .sidebar-card h5 {
+        color: var(--sidebar-heading) !important;
     }
 
+    /* ICON */
     .material-icons-inline {
-        color: #8fc4e8;
+        color: var(--sidebar-heading);
     }
 
+    /* BUTTONS */
     .stButton > button {
         background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
         color: white;
@@ -157,13 +175,13 @@ def local_css():
         padding: 12px 20px;
         border-radius: 12px;
         font-weight: 500;
-        box-shadow: 0 4px 15px rgba(74, 141, 183, 0.3);
+        box-shadow: 0 4px 15px var(--button-shadow);
         transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(74, 141, 183, 0.5);
+        box-shadow: 0 6px 20px var(--button-hover-shadow);
     }
 
     .small-muted {
@@ -178,18 +196,20 @@ def local_css():
         text-align: center;
         font-size: 0.75rem;
         color: var(--text-muted);
-        border-top: 1px solid rgba(255,255,255,0.08);
+        border-top: 1px solid rgba(255,255,255,0.06);
     }
 
     .footer-note {
         margin-top: 4px;
-        color: #8fc4e8;
+        color: var(--footer-accent);
         font-weight: 500;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Hanya satu definisi initialize_session_state (yang lengkap)
+# ------------------------------------------------------------
+# Satu definisi initialize_session_state (lengkap)
+# ------------------------------------------------------------
 def initialize_session_state():
     if 'mode' not in st.session_state:
         st.session_state.mode = "Harian"
@@ -219,7 +239,9 @@ def initialize_session_state():
         st.session_state.narration = ""
     os.makedirs("predictions", exist_ok=True)
 
-# Mapping dan konstanta (tidak diubah)
+# ------------------------------------------------------------
+# MAPPINGS & KONSTANTA (tetap)
+# ------------------------------------------------------------
 MODEL_MAPPING = {
     "Harian": {
         "Iterasi 1": "stacking_model_harian_iter1.pkl",
