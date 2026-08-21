@@ -26,13 +26,14 @@ def local_css():
     st.markdown("""
     <style>
     :root {
-        --bg-primary: linear-gradient(135deg, #1A142F 0%, #2D1B4E 45%, #3D2A5C 100%);
-        --bg-secondary: #2D1B4E;
+        /* Warna latar: biru dominan 60% + ungu 40% */
+        --bg-primary: linear-gradient(135deg, #0A1A2F 0%, #1A3D6B 35%, #2A5A8A 60%, #4A3A7A 100%);
+        --bg-secondary: #1A3D6B;
         --accent-primary: #A78BFA;
         --accent-secondary: #7DD3FC;
         --accent-warm: #F472B6;
         --accent-glow: rgba(167, 139, 250, 0.35);
-        --card-bg: rgba(45, 27, 78, 0.75);
+        --card-bg: rgba(26, 61, 107, 0.75);
         --text-primary: #F1F0F7;
         --text-muted: #B8B0D0;
         --border-soft: rgba(167, 139, 250, 0.15);
