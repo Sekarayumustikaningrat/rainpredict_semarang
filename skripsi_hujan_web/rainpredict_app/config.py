@@ -27,6 +27,7 @@ def local_css():
     <style>
     :root {
         --bg-primary: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important;
+        color: #FFFFFF !important;
         --bg-secondary: #2D1B4E;
         --accent-primary: #A78BFA;
         --accent-secondary: #7DD3FC;
