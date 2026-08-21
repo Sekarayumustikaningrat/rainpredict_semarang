@@ -96,40 +96,20 @@ def tabs():
             with col2:
                 st.markdown("""
                 <div style="
-                    background: #ffffff;
-                    border-radius: 20px;
-                    padding: 24px 16px;
-                    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    margin-top: 8px;
-                    transition: transform 0.3s, box-shadow 0.3s;
-                    min-height: 180px;
-                    border: 1px solid rgba(167, 139, 250, 0.1);
+                    background: rgba(255,255,255,0.05);
+                    border-radius: 28px;
+                    padding: 16px;
+                    border: 1px solid rgba(167,139,250,0.15);
+                    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+                    text-align: center;
                 ">
+                    <img src="https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif" 
+                         style="max-width:100%; height:auto; border-radius:16px;" 
+                         alt="Rain animation">
+                </div>
                 """, unsafe_allow_html=True)
-                
-                try:
-                    from PIL import Image
-                    from loaders import resolve_path
-                    logo_path = resolve_path("skripsi_hujan_web/logounnes.png")
-                    if not (logo_path and logo_path.exists()):
-                        logo_path = resolve_path("logounnes.png")
-                    if logo_path and logo_path.exists():
-                        image = Image.open(logo_path)
-                        # Ukuran logo disesuaikan agar proporsional di dalam card
-                        st.image(image, width=160)
-                    else:
-                        st.warning("File logounnes.png tidak ditemukan.")
-                except Exception as e:
-                    st.error(f"Gagal memuat logo: {e}")
-                
-                st.markdown("</div>", unsafe_allow_html=True)
         
             st.divider()
-
-    # ... lanjutkan dengan bagian lainnya (Mengapa Prediksi Penting, dll.)
 
         # ============================================================
         # KENAPA PREDIKSI CURAH HUJAN PENTING – dengan ikon & card
