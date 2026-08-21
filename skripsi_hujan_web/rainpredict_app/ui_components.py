@@ -94,34 +94,22 @@ def tabs():
                 """, unsafe_allow_html=True)
         
             with col2:
-                # Logo UNNES dengan card elegan - ukuran sedang, ada jarak
                 st.markdown("""
                 <div style="
+                    background: #ffffff;
+                    border-radius: 20px;
+                    padding: 24px 16px;
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
                     display: flex;
-                    flex-direction: column;
-                    align-items: center;
                     justify-content: center;
-                    background: rgba(255, 255, 255, 0.08);
-                    backdrop-filter: blur(8px);
-                    -webkit-backdrop-filter: blur(8px);
-                    border-radius: 24px;
-                    padding: 28px 20px 20px 20px;
-                    border: 1px solid rgba(167, 139, 250, 0.15);
-                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-                    margin-top: 12px;
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    align-items: center;
+                    margin-top: 8px;
+                    transition: transform 0.3s, box-shadow 0.3s;
+                    min-height: 180px;
+                    border: 1px solid rgba(167, 139, 250, 0.1);
                 ">
-                    <div style="
-                        width: 100%;
-                        max-width: 200px;
-                        margin: 0 auto;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        gap: 12px;
-                    ">
                 """, unsafe_allow_html=True)
-            
+                
                 try:
                     from PIL import Image
                     from loaders import resolve_path
@@ -130,31 +118,14 @@ def tabs():
                         logo_path = resolve_path("logounnes.png")
                     if logo_path and logo_path.exists():
                         image = Image.open(logo_path)
-                        # ⬇️ Ukuran logo diperkecil dengan width=180
-                        st.image(image, width=180)
+                        # Ukuran logo disesuaikan agar proporsional di dalam card
+                        st.image(image, width=160)
                     else:
                         st.warning("File logounnes.png tidak ditemukan.")
                 except Exception as e:
                     st.error(f"Gagal memuat logo: {e}")
-            
-                st.markdown("""
-                    </div>
-                    <!-- Nama UNNES di bawah logo -->
-                    <div style="
-                        margin-top: 14px;
-                        text-align: center;
-                        font-size: 0.85rem;
-                        font-weight: 600;
-                        color: #C4B0F8;
-                        letter-spacing: 1.5px;
-                        border-top: 1px solid rgba(167, 139, 250, 0.1);
-                        padding-top: 12px;
-                        width: 100%;
-                    ">
-                        UNIVERSITAS NEGERI SEMARANG
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                
+                st.markdown("</div>", unsafe_allow_html=True)
         
             st.divider()
 
