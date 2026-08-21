@@ -21,17 +21,18 @@ def local_css():
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     """, unsafe_allow_html=True)
 
-    # 2️⃣ CSS styling — clean, profesional, estetik, dark dengan kontras lebih terang
+    # 2️⃣ CSS styling lokal — fresh, cute, soft-dark theme + animasi header
     st.markdown("""
     <style>
     :root {
-        --bg-primary: linear-gradient(135deg, #1E1A3A 0%, #2F2A5A 45%, #3D366B 100%);
-        --bg-secondary: #2F2A5A;
+        /* Latar dibuat sedikit lebih terang agar efek hujan terlihat */
+        --bg-primary: linear-gradient(135deg, #2A1B4A 0%, #3D2A5C 45%, #4B3A6B 100%);
+        --bg-secondary: #3D2A5C;
         --accent-primary: #A78BFA;
         --accent-secondary: #7DD3FC;
         --accent-warm: #F472B6;
         --accent-glow: rgba(167, 139, 250, 0.35);
-        --card-bg: rgba(47, 42, 90, 0.75);
+        --card-bg: rgba(45, 27, 78, 0.75);
         --text-primary: #F1F0F7;
         --text-muted: #B8B0D0;
         --border-soft: rgba(167, 139, 250, 0.15);
@@ -39,9 +40,7 @@ def local_css():
 
     /* FIX: Menghilangkan space kosong di atas header */
     .block-container {
-        padding: 0 2rem !important;
-        max-width: 1400px;
-        margin: 0 auto;
+        padding: 0 !important;
     }
 
     /* App Background & Font */
@@ -52,24 +51,26 @@ def local_css():
     }
 
     /* ===============================
-       HERO HEADER — dengan animasi hujan & petir
+       HERO HEADER — dengan animasi hujan & petir (layout lebih terpusat)
        =============================== */
     .hero-header {
         background: var(--bg-primary);
-        padding: 1.5rem 2rem;
+        padding: 1.2rem 2rem;  /* dikurangi agar tidak terlalu kotak */
         border-radius: 0;
         color: white;
         border-bottom: 1px solid var(--border-soft);
         margin-bottom: 1.5rem;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;   /* elemen vertikal, tidak menyamping */
+        align-items: center;      /* terpusat */
+        justify-content: center;
         position: relative;
         width: 100%;
         box-shadow: 0 4px 30px rgba(167, 139, 250, 0.08);
         animation: softGlow 4s ease-in-out infinite alternate;
         transition: box-shadow 0.3s ease;
-        overflow: hidden;  /* agar efek hujan tidak keluar */
+        overflow: hidden;
+        text-align: center;
     }
     .hero-header:hover {
         box-shadow: 0 6px 40px rgba(167, 139, 250, 0.25);
@@ -81,7 +82,7 @@ def local_css():
         100% { box-shadow: 0 4px 50px rgba(167, 139, 250, 0.20); }
     }
 
-    /* ----- Efek hujan lembut — sekarang lebih terlihat karena latar lebih terang ----- */
+    /* ----- Efek hujan lembut (background bergerak) — diperkuat opacity ----- */
     .hero-header::before {
         content: '';
         position: absolute;
@@ -95,19 +96,19 @@ def local_css():
                 45deg,
                 transparent,
                 transparent 8px,
-                rgba(167, 139, 250, 0.08) 8px,
+                rgba(167, 139, 250, 0.08) 8px,   /* naik dari 0.03 */
                 rgba(167, 139, 250, 0.08) 9px
             ),
             repeating-linear-gradient(
                 -45deg,
                 transparent,
                 transparent 12px,
-                rgba(125, 211, 252, 0.05) 12px,
-                rgba(125, 211, 252, 0.05) 13px
+                rgba(125, 211, 252, 0.06) 12px, /* naik dari 0.02 */
+                rgba(125, 211, 252, 0.06) 13px
             );
         background-size: 30px 30px, 40px 40px;
         animation: rainFall 3s linear infinite;
-        opacity: 0.8;
+        opacity: 0.7;  /* tambah sedikit */
         z-index: 0;
     }
 
@@ -125,7 +126,7 @@ def local_css():
         top: 50%;
         transform: translateY(-50%);
         font-size: 80px;
-        color: rgba(167, 139, 250, 0.08);
+        color: rgba(167, 139, 250, 0.08); /* sedikit lebih terlihat */
         pointer-events: none;
         animation: floatCloud 6s ease-in-out infinite;
         z-index: 1;
@@ -137,22 +138,24 @@ def local_css():
         100% { transform: translateY(-50%) scale(1); }
     }
 
-    /* ----- Konten header (di atas efek) ----- */
+    /* ----- Konten header (di atas efek) — diatur vertikal & terpusat ----- */
     .hero-content {
         position: relative;
         z-index: 2;
         display: flex;
+        flex-direction: column;   /* vertikal */
         align-items: center;
-        gap: 14px;
-        flex-wrap: wrap;
+        gap: 8px;
+        max-width: 90%;
     }
 
-    /* Icon awan di kiri */
+    /* Icon awan di kiri (sekarang di atas) */
     .hero-icon {
         font-size: 48px;
         color: var(--accent-primary);
         animation: floatIcon 3s ease-in-out infinite;
         filter: drop-shadow(0 0 12px rgba(167, 139, 250, 0.3));
+        margin-bottom: -6px;
     }
 
     @keyframes floatIcon {
@@ -160,9 +163,9 @@ def local_css():
         50% { transform: translateY(-6px) rotate(2deg); }
     }
 
-    /* Judul utama */
+    /* Judul utama — lebih besar dan bersih */
     .header-title {
-        font-size: 2.2rem;
+        font-size: 2.4rem;
         font-weight: 700;
         background: linear-gradient(135deg, #F1F0F7, #C4B0F8);
         -webkit-background-clip: text;
@@ -170,31 +173,33 @@ def local_css():
         animation: gentleWobble 3s ease-in-out infinite;
         display: inline-block;
         margin: 0;
+        line-height: 1.2;
     }
     @keyframes gentleWobble {
         0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(1deg); }
-        75% { transform: rotate(-1deg); }
+        25% { transform: rotate(0.5deg); }
+        75% { transform: rotate(-0.5deg); }
     }
 
     /* Subtitle dengan gradasi bergerak dan garis air */
     .header-subtitle {
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 400;
         background: linear-gradient(135deg, #C4B0F8, #7DD3FC, #F472B6);
         background-size: 200% 200%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         animation: gradientShift 5s ease-in-out infinite;
-        margin: 0 0 0 8px;
+        margin: 0;
         position: relative;
         display: inline-block;
+        letter-spacing: 0.5px;
     }
     /* Garis bawah bergelombang (air mengalir) */
     .header-subtitle::after {
         content: '';
         position: absolute;
-        bottom: -4px;
+        bottom: -6px;
         left: 0;
         width: 100%;
         height: 3px;
@@ -216,24 +221,23 @@ def local_css():
         100% { background-position: 0% 50%; }
     }
 
-    /* ----- Ikon petir di kanan (Thunderstorm) ----- */
-    .hero-header > .material-symbols-rounded:last-child {
-        position: relative;
-        z-index: 2;
-        font-size: 40px !important;
-        opacity: 0.4 !important;
+    /* ----- Ikon petir kecil (sekarang di bawah subtitle) ----- */
+    .thunder-icon {
+        font-size: 28px !important;
+        opacity: 0.5 !important;
         animation: thunderPulse 3s ease-in-out infinite;
-        transition: opacity 0.3s;
         filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.2));
+        display: inline-block;
+        margin-top: 4px;
+        transition: opacity 0.3s;
     }
-    /* Kilatan lembut (flash) menggunakan pseudo pada ikon */
-    .hero-header > .material-symbols-rounded:last-child::after {
+    .thunder-icon::after {
         content: '';
         position: absolute;
-        top: -10px;
-        left: -10px;
-        right: -10px;
-        bottom: -10px;
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
         background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
         border-radius: 50%;
         opacity: 0;
@@ -242,21 +246,22 @@ def local_css():
     }
 
     @keyframes thunderPulse {
-        0%, 90%, 100% { transform: scale(1); opacity: 0.4; }
-        95% { transform: scale(1.1); opacity: 0.8; }
+        0%, 90%, 100% { transform: scale(1); opacity: 0.5; }
+        95% { transform: scale(1.15); opacity: 0.9; }
     }
     @keyframes lightningFlash {
         0%, 80%, 100% { opacity: 0; }
-        85% { opacity: 0.6; }
+        85% { opacity: 0.5; }
         90% { opacity: 0; }
     }
 
     /* ===============================
-       NAVBAR / TABS — lebih rapi dan terpusat
+       NAVBAR / TABS (DIRAPIKAN)
        =============================== */
+
     .stTabs {
         margin-top: -0.75rem;
-        padding: 0 0.5rem;
+        padding: 0 2rem;
     }
 
     .stTabs [data-baseweb="tab-list"] {
@@ -267,8 +272,6 @@ def local_css():
         gap: 6px;
         align-items: center;
         border-bottom: 1px solid var(--border-soft);
-        justify-content: center;
-        flex-wrap: wrap;
     }
 
     .stTabs [data-baseweb="tab"] {
@@ -301,7 +304,6 @@ def local_css():
         background: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important;
         border-right: 1px solid rgba(167, 139, 250, 0.30) !important;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
-        padding: 2rem 0.5rem;
     }
 
     [data-testid="stSidebar"] * {
@@ -339,8 +341,6 @@ def local_css():
         border-radius: 12px;
         color: #F1F0F7;
         backdrop-filter: blur(4px);
-        padding: 0.8rem 1rem;
-        margin-bottom: 0.5rem;
     }
     .sidebar-card p {
         color: #D4CCE8 !important;
@@ -366,8 +366,6 @@ def local_css():
         font-weight: 500;
         box-shadow: 0 4px 20px rgba(167, 139, 250, 0.30);
         transition: transform 0.2s, box-shadow 0.2s;
-        width: 100%;
-        margin: 0.2rem 0;
     }
 
     .stButton > button:hover {
@@ -402,10 +400,10 @@ def local_css():
     }
 
     /* ===============================
-       EXTRA — selectbox, slider, dll. — lebih rapi
+       EXTRA — selectbox, slider, dll.
        =============================== */
     .stSelectbox [data-baseweb="select"] {
-        background: rgba(47, 42, 90, 0.6);
+        background: rgba(45, 27, 78, 0.5);
         border-radius: 10px;
         border: 1px solid var(--border-soft);
     }
@@ -415,33 +413,31 @@ def local_css():
     }
 
     [data-testid="metric-container"] {
-        background: rgba(47, 42, 90, 0.6);
+        background: rgba(45, 27, 78, 0.5);
         border-radius: 14px;
         padding: 12px 16px;
         border: 1px solid var(--border-soft);
         backdrop-filter: blur(4px);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .stDataFrame {
-        background: rgba(47, 42, 90, 0.4);
+        background: rgba(45, 27, 78, 0.4);
         border-radius: 14px;
         border: 1px solid var(--border-soft);
-        padding: 0.5rem;
     }
 
     .streamlit-expanderHeader {
-        background: rgba(47, 42, 90, 0.5);
+        background: rgba(45, 27, 78, 0.4);
         border-radius: 12px;
         border: 1px solid var(--border-soft);
         color: var(--text-primary);
     }
     .streamlit-expanderHeader:hover {
-        background: rgba(167, 139, 250, 0.10);
+        background: rgba(167, 139, 250, 0.08);
     }
 
     .stFileUploader {
-        background: rgba(47, 42, 90, 0.4);
+        background: rgba(45, 27, 78, 0.4);
         border-radius: 14px;
         border: 2px dashed var(--border-soft);
         padding: 8px;
@@ -451,7 +447,7 @@ def local_css():
     }
 
     .stAlert {
-        background: rgba(47, 42, 90, 0.6) !important;
+        background: rgba(45, 27, 78, 0.5) !important;
         border-radius: 12px !important;
         border-left: 4px solid var(--accent-primary) !important;
         color: var(--text-primary) !important;
@@ -473,27 +469,6 @@ def local_css():
     }
     .stRadio input:checked + div {
         accent-color: var(--accent-primary);
-    }
-
-    /* ===============================
-       LAYOUT UTAMA — agar tidak melebar
-       =============================== */
-    .main > div {
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-
-    /* Untuk semua kolom agar proporsional */
-    .row-widget.stColumns {
-        gap: 1rem;
-    }
-
-    .stColumn {
-        background: rgba(47, 42, 90, 0.3);
-        border-radius: 16px;
-        padding: 0.8rem;
-        border: 1px solid var(--border-soft);
-        backdrop-filter: blur(2px);
     }
 
     </style>
