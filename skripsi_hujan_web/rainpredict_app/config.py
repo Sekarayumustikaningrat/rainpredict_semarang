@@ -1,4 +1,5 @@
-# File ini berisi konfigurasi halaman misal:set_page_cofig, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
+jangan ubah apapun kecuali ganti warna
+"File ini berisi konfigurasi halaman misal:set_page_cofig, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna)."
 
 import streamlit as st
 import os
@@ -23,13 +24,13 @@ def local_css():
     st.markdown("""
     <style>
     :root {
-        --bg-primary: linear-gradient(135deg, #0B132B 0%, #1C2541 100%);
-        --bg-secondary: #1E2A38;
-        --accent-primary: #20B2AA;
-        --accent-secondary: #4682B4;
-        --card-bg: rgba(30,40,60,0.8);
-        --text-primary: #E0ECF4;
-        --text-muted: #9DB2BF;
+        --bg-primary: linear-gradient(135deg, #1a1a2e 0%, #2a1a3e 45%, #3d2c5a 100%);
+        --bg-secondary: #2a1a3a;
+        --accent-primary: #8e44ad;
+        --accent-secondary: #9b59b6;
+        --card-bg: rgba(40, 30, 60, 0.8);
+        --text-primary: #ecf0f1;
+        --text-muted: #bdc3c7;
     }
 
     /* FIX: Menghilangkan space kosong di atas header */
@@ -95,8 +96,8 @@ def local_css():
 
     /* Tab default (tidak aktif) */
     .stTabs [data-baseweb="tab"] {
-        padding: 8px 18px;              /* 🔧 ruang napas */
-        border-radius: 12px;            /* rounded rapi */
+        padding: 8px 18px;             /* 🔧 ruang napas */
+        border-radius: 12px;           /* rounded rapi */
         font-weight: 500;
         color: var(--text-muted);
         background: transparent;
@@ -113,45 +114,45 @@ def local_css():
     .stTabs [aria-selected="true"] {
         background: linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));
         color: white !important;
-        padding: 9px 20px;              /* 🔧 tidak pres teks */
-        border-radius: 14px;            /* atas-bawah-kiri-kanan rounded */
-        box-shadow: 0 4px 12px rgba(32,178,170,0.35);
+        padding: 9px 20px;             /* 🔧 tidak pres teks */
+        border-radius: 14px;           /* atas-bawah-kiri-kanan rounded */
+        box-shadow: 0 4px 12px rgba(142,68,173,0.35);
         border: 1px solid rgba(255,255,255,0.15);
     }
                 
     /* =============================== SIDEBAR – SOFT, JELAS TERPISAH HANYA GANTI WARNA =============================== */ 
     [data-testid="stSidebar"] { 
-        background: linear-gradient(180deg, #070D19 0%, #0F1C2E 100%) !important; 
-        border-right: 1px solid #3F6A8F !important; } 
+        background: linear-gradient(180deg, #2c1a4a 0%, #4a2c6a 100%) !important; 
+        border-right: 1px solid #6c4a8a !important; } 
     
-    [data-testid="stSidebar"] * { color: #F2F7FB !important; } 
+    [data-testid="stSidebar"] * { color: #e8d5f5 !important; } 
     
     /* Heading sidebar */ 
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3, 
     [data-testid="stSidebar"] h4, 
-    [data-testid="stSidebar"] h5 { color: #7DD3FC !important; /* soft sky blue */ } 
+    [data-testid="stSidebar"] h5 { color: #c39bd3 !important; /* soft lavender */ } 
     
     /* Text biasa */ 
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] span, 
-    [data-testid="stSidebar"] label { color: #D6E6F2 !important; } 
+    [data-testid="stSidebar"] label { color: #e8d5f5 !important; } 
     
     /* Link */ 
-    [data-testid="stSidebar"] a { color: #93C5FD !important; } 
-    [data-testid="stSidebar"] a:hover { color: #BAE6FD !important; } 
+    [data-testid="stSidebar"] a { color: #bda0d1 !important; } 
+    [data-testid="stSidebar"] a:hover { color: #d7bde2 !important; } 
     
     /* =============================== SIDEBAR CARD =============================== */ 
     .sidebar-card { 
-        background: linear-gradient(135deg, #102030 0%, #1A3048 100%) !important; 
-        border-left: 5px solid #7DD3FC; 
-        color: #F2F7FB; } 
-    .sidebar-card p { color: #E2EEF7 !important; } 
-    .sidebar-card h4, .sidebar-card h5 { color: #7DD3FC !important; } 
+        background: linear-gradient(135deg, #4a2c6a 0%, #6c4a8a 100%) !important; 
+        border-left: 5px solid #c39bd3; 
+        color: #e8d5f5; } 
+    .sidebar-card p { color: #e8d5f5 !important; } 
+    .sidebar-card h4, .sidebar-card h5 { color: #c39bd3 !important; } 
     
     /* =============================== ICON =============================== */ 
-    .material-icons-inline { color: #7DD3FC; }
+    .material-icons-inline { color: #c39bd3; }
 
     /* Buttons */ 
     .stButton > button { 
@@ -161,18 +162,18 @@ def local_css():
         padding: 12px 20px; 
         border-radius: 12px; 
         font-weight: 500; 
-        box-shadow: 0 4px 15px rgba(32,178,170,0.3); 
+        box-shadow: 0 4px 15px rgba(142,68,173,0.3); 
         transition: transform 0.2s, box-shadow 0.2s; } 
     
     .stButton > button:hover { 
         transform: translateY(-2px); 
-        box-shadow: 0 6px 20px rgba(32,178,170,0.5); } 
+        box-shadow: 0 6px 20px rgba(142,68,173,0.5); } 
                 
     /* Small text muted */ 
     .small-muted { 
         color: var(--text-muted); 
         font-size: 14px; 
-        font-weight: 300; } 
+        font-weight: 300; }
                 
     .site-footer {
     margin-top: 48px;
@@ -185,7 +186,7 @@ def local_css():
 
     .footer-note {
         margin-top: 4px;
-        color: #7DD3FC;
+        color: #c39bd3;
         font-weight: 500;
     }
 
