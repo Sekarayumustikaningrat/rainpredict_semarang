@@ -26,8 +26,7 @@ def local_css():
     st.markdown("""
     <style>
     :root {
-        --bg-primary: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important;
-        color: #FFFFFF !important;
+        --bg-primary: linear-gradient(135deg, #0B132B 0%, #1C2541 45%, #2A3B5C 100%);
         --bg-secondary: #2D1B4E;
         --accent-primary: #A78BFA;
         --accent-secondary: #7DD3FC;
