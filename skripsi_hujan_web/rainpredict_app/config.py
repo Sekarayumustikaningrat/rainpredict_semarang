@@ -1,5 +1,3 @@
-# config.py
-# jangan ubah apapun kecuali ganti warna — plus animasi header biar cute ✨
 """
 File ini berisi konfigurasi halaman misal: set_page_config, CSS untuk styling (menampilkan yang menarik dan konsisten), mappings (MODEL_MAPPING, dll), dan pengaturan global lainnya. Ini memisahkan pengaturan dari logika utama agar mudah diubah (misalnya, jika ingin mengganti tema warna).
 """
@@ -28,14 +26,13 @@ def local_css():
     st.markdown("""
     <style>
     :root {
-        /* GRADIEN BARU: Biru 50% dark kalem + Ungu 50% */
-        --bg-primary: linear-gradient(135deg, #0A1628 0%, #1A3A5C 45%, #3D2A5C 100%);
-        --bg-secondary: #1A3A5C;
+        --bg-primary: linear-gradient(135deg, #1A142F 0%, #2D1B4E 45%, #3D2A5C 100%);
+        --bg-secondary: #1A3D6B;
         --accent-primary: #A78BFA;
         --accent-secondary: #7DD3FC;
         --accent-warm: #F472B6;
         --accent-glow: rgba(167, 139, 250, 0.35);
-        --card-bg: rgba(20, 40, 70, 0.75);
+        --card-bg: rgba(26, 61, 107, 0.75);
         --text-primary: #F1F0F7;
         --text-muted: #B8B0D0;
         --border-soft: rgba(167, 139, 250, 0.15);
@@ -420,7 +417,7 @@ def local_css():
        SIDEBAR
        =============================== */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1E2A4A 0%, #3A4B7A 100%) !important;
+        background: linear-gradient(135deg, #1A142F 0%, #2D1B4E 45%, #3D2A5C 100%);
         border-right: 1px solid rgba(167, 139, 250, 0.30) !important;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
     }
@@ -585,9 +582,10 @@ def local_css():
         box-shadow: 0 12px 40px rgba(167, 139, 250, 0.2);
     }
     .logo-card img {
-        max-width: 100%;
-        height: auto;
-        display: block;
+    max-width: 80%;  
+    height: auto;
+    display: block;
+    margin: 0 auto;  
     }
 
     /* Tombol prediksi di home */
@@ -606,308 +604,6 @@ def local_css():
         transform: scale(1.03) !important;
         box-shadow: 0 8px 40px rgba(167, 139, 250, 0.6) !important;
     }
-
-    /* ===============================
-       PREDIKSI TAB – CUSTOM STYLING
-       =============================== */
-    .prediksi-header {
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-    .prediksi-header h1 {
-        font-size: 2.4rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #F1F0F7, #C4B0F8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        display: inline-block;
-    }
-    .prediksi-header p {
-        color: var(--text-muted);
-        font-size: 1.05rem;
-    }
-
-    .prediksi-card {
-        background: rgba(45, 27, 78, 0.5);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid var(--border-soft);
-        border-radius: 20px;
-        padding: 24px 28px;
-        margin-bottom: 20px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        animation: fadeInUp 0.6s ease forwards;
-        opacity: 0;
-    }
-    .prediksi-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.12);
-    }
-    .prediksi-card h3 {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: var(--text-primary);
-        font-weight: 600;
-        margin-top: 0;
-    }
-    .prediksi-card .icon {
-        font-size: 28px;
-    }
-
-    .prediksi-step {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-        padding: 8px 0;
-    }
-    .prediksi-step .step-icon {
-        font-size: 22px;
-        flex-shrink: 0;
-        margin-top: 2px;
-    }
-    .prediksi-step .step-content {
-        color: var(--text-muted);
-        line-height: 1.6;
-    }
-    .prediksi-step .step-content strong {
-        color: var(--text-primary);
-    }
-
-    .upload-area {
-        background: rgba(255,255,255,0.03);
-        border: 2px dashed var(--border-soft);
-        border-radius: 16px;
-        padding: 20px;
-        transition: border-color 0.3s;
-    }
-    .upload-area:hover {
-        border-color: var(--accent-primary);
-    }
-
-    .prediksi-result {
-        background: rgba(45, 27, 78, 0.4);
-        border-radius: 16px;
-        padding: 16px 20px;
-        border: 1px solid var(--border-soft);
-    }
-
-    /* ===============================
-       MODEL TAB – CUSTOM STYLING
-       =============================== */
-    .model-card {
-        background: rgba(45, 27, 78, 0.5);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid var(--border-soft);
-        border-radius: 20px;
-        padding: 24px 28px;
-        margin-bottom: 20px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        animation: fadeInUp 0.6s ease forwards;
-        opacity: 0;
-    }
-    .model-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.12);
-    }
-    .model-card h3 {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: var(--text-primary);
-        font-weight: 600;
-        margin-top: 0;
-    }
-    .model-card .icon {
-        font-size: 28px;
-    }
-    .model-card p, .model-card li {
-        color: var(--text-muted);
-        line-height: 1.7;
-    }
-    .model-card strong {
-        color: var(--text-primary);
-    }
-
-    .model-section-title {
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin: 1.5rem 0 0.8rem 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .model-section-title .icon {
-        font-size: 28px;
-    }
-
-    .dataset-info-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin: 12px 0;
-    }
-    .dataset-info-item {
-        background: rgba(255,255,255,0.03);
-        border-radius: 12px;
-        padding: 12px 16px;
-        border: 1px solid var(--border-soft);
-    }
-    .dataset-info-item .label {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .dataset-info-item .value {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-top: 2px;
-    }
-
-    .iteration-card {
-        background: rgba(45, 27, 78, 0.3);
-        border-radius: 16px;
-        padding: 20px 24px;
-        border: 1px solid var(--border-soft);
-        margin: 12px 0;
-    }
-    .iteration-card h4 {
-        color: var(--accent-primary);
-        margin-top: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .iteration-card .badge {
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
-        color: white;
-        font-size: 0.7rem;
-        font-weight: 600;
-        padding: 2px 12px;
-        border-radius: 20px;
-    }
-
-    /* ===============================
-       ABOUT TAB – CUSTOM STYLING
-       =============================== */
-    .about-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .about-header h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #F1F0F7, #C4B0F8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        display: inline-block;
-    }
-    .about-header p {
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        margin-top: 0.5rem;
-    }
-
-    .about-card {
-        background: rgba(45, 27, 78, 0.5);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid var(--border-soft);
-        border-radius: 20px;
-        padding: 24px 28px;
-        margin-bottom: 20px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        animation: fadeInUp 0.6s ease forwards;
-        opacity: 0;
-    }
-    .about-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.15);
-    }
-    .about-card h3 {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: var(--text-primary);
-        font-weight: 600;
-        margin-top: 0;
-    }
-    .about-card .icon {
-        font-size: 28px;
-        color: var(--accent-primary);
-    }
-
-    .about-step {
-        display: flex;
-        align-items: flex-start;
-        gap: 16px;
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(167, 139, 250, 0.06);
-    }
-    .about-step:last-child {
-        border-bottom: none;
-    }
-    .about-step .step-number {
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
-        color: white;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 0.9rem;
-        flex-shrink: 0;
-    }
-    .about-step .step-content {
-        flex: 1;
-    }
-    .about-step .step-content strong {
-        color: var(--text-primary);
-    }
-    .about-step .step-content p {
-        margin: 4px 0 0 0;
-        color: var(--text-muted);
-        font-size: 0.95rem;
-    }
-
-    .about-warning {
-        border-left: 4px solid #F472B6;
-        background: rgba(244, 114, 182, 0.08);
-        border-radius: 12px;
-        padding: 16px 20px;
-        margin: 12px 0;
-    }
-    .about-success {
-        border-left: 4px solid #7DD3FC;
-        background: rgba(125, 211, 252, 0.08);
-        border-radius: 12px;
-        padding: 16px 20px;
-        margin: 12px 0;
-    }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .prediksi-card:nth-child(1) { animation-delay: 0.1s; }
-    .prediksi-card:nth-child(2) { animation-delay: 0.2s; }
-    .prediksi-card:nth-child(3) { animation-delay: 0.3s; }
-    .model-card:nth-child(1) { animation-delay: 0.1s; }
-    .model-card:nth-child(2) { animation-delay: 0.2s; }
-    .model-card:nth-child(3) { animation-delay: 0.3s; }
-    .model-card:nth-child(4) { animation-delay: 0.4s; }
-    .model-card:nth-child(5) { animation-delay: 0.5s; }
-    .about-card:nth-child(1) { animation-delay: 0.1s; }
-    .about-card:nth-child(2) { animation-delay: 0.2s; }
-    .about-card:nth-child(3) { animation-delay: 0.3s; }
-    .about-card:nth-child(4) { animation-delay: 0.4s; }
-    .about-card:nth-child(5) { animation-delay: 0.5s; }
 
     /* ===============================
        ELEMEN LAINNYA
@@ -980,6 +676,354 @@ def local_css():
     .stRadio input:checked + div {
         accent-color: var(--accent-primary);
     }
+
+    /* ===============================
+       PREDIKSI TAB – CUSTOM STYLING
+       =============================== */
+    .prediksi-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    .prediksi-header h1 {
+        font-size: 2.4rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #F1F0F7, #C4B0F8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+    .prediksi-header p {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+    }
+    
+    .prediksi-card {
+        background: rgba(45, 27, 78, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+    .prediksi-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.12);
+    }
+    .prediksi-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 0;
+    }
+    .prediksi-card .icon {
+        font-size: 28px;
+    }
+    
+    .prediksi-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 8px 0;
+    }
+    .prediksi-step .step-icon {
+        font-size: 22px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    .prediksi-step .step-content {
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+    .prediksi-step .step-content strong {
+        color: var(--text-primary);
+    }
+    
+    .upload-area {
+        background: rgba(255,255,255,0.03);
+        border: 2px dashed var(--border-soft);
+        border-radius: 16px;
+        padding: 20px;
+        transition: border-color 0.3s;
+    }
+    .upload-area:hover {
+        border-color: var(--accent-primary);
+    }
+    
+    .prediksi-result {
+        background: rgba(45, 27, 78, 0.4);
+        border-radius: 16px;
+        padding: 16px 20px;
+        border: 1px solid var(--border-soft);
+    }
+    
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .prediksi-card:nth-child(1) { animation-delay: 0.1s; }
+    .prediksi-card:nth-child(2) { animation-delay: 0.2s; }
+    .prediksi-card:nth-child(3) { animation-delay: 0.3s; }
+
+    /* ===============================
+       MODEL TAB – CUSTOM STYLING
+       =============================== */
+    .model-card {
+        background: rgba(45, 27, 78, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+    .model-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.12);
+    }
+    .model-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 0;
+    }
+    .model-card .icon {
+        font-size: 28px;
+    }
+    .model-card p, .model-card li {
+        color: var(--text-muted);
+        line-height: 1.7;
+    }
+    .model-card strong {
+        color: var(--text-primary);
+    }
+    
+    .model-section-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 1.5rem 0 0.8rem 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .model-section-title .icon {
+        font-size: 28px;
+    }
+    
+    /* Dataset info row */
+    .dataset-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 12px 0;
+    }
+    .dataset-info-item {
+        background: rgba(255,255,255,0.03);
+        border-radius: 12px;
+        padding: 12px 16px;
+        border: 1px solid var(--border-soft);
+    }
+    .dataset-info-item .label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .dataset-info-item .value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-top: 2px;
+    }
+    
+    /* Model iteration cards */
+    .iteration-card {
+        background: rgba(45, 27, 78, 0.3);
+        border-radius: 16px;
+        padding: 20px 24px;
+        border: 1px solid var(--border-soft);
+        margin: 12px 0;
+    }
+    .iteration-card h4 {
+        color: var(--accent-primary);
+        margin-top: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .iteration-card .badge {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
+        color: white;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 2px 12px;
+        border-radius: 20px;
+    }
+    
+    /* Tabs inside model */
+    .model-tabs .stTabs [data-baseweb="tab-list"] {
+        background: rgba(167, 139, 250, 0.04) !important;
+    }
+    .model-tabs .stTabs [data-baseweb="tab"] {
+        color: var(--text-muted) !important;
+    }
+    .model-tabs .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, var(--accent-primary), #8B6FE8) !important;
+        color: white !important;
+    }
+    
+    /* SHAP section */
+    .shap-container {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+    .shap-container .shap-table {
+        flex: 1;
+        min-width: 280px;
+    }
+    .shap-container .shap-image {
+        flex: 1.3;
+        min-width: 300px;
+    }
+    
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .model-card:nth-child(1) { animation-delay: 0.1s; }
+    .model-card:nth-child(2) { animation-delay: 0.2s; }
+    .model-card:nth-child(3) { animation-delay: 0.3s; }
+    .model-card:nth-child(4) { animation-delay: 0.4s; }
+    .model-card:nth-child(5) { animation-delay: 0.5s; }
+
+    /* ===============================
+       ABOUT TAB – CUSTOM STYLING
+       =============================== */
+    .about-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .about-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #F1F0F7, #C4B0F8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+    .about-header p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        margin-top: 0.5rem;
+    }
+    
+    .about-card {
+        background: rgba(45, 27, 78, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-soft);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+    }
+    .about-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(167, 139, 250, 0.15);
+    }
+    .about-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-top: 0;
+    }
+    .about-card .icon {
+        font-size: 28px;
+        color: var(--accent-primary);
+    }
+    
+    .about-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(167, 139, 250, 0.06);
+    }
+    .about-step:last-child {
+        border-bottom: none;
+    }
+    .about-step .step-number {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+    .about-step .step-content {
+        flex: 1;
+    }
+    .about-step .step-content strong {
+        color: var(--text-primary);
+    }
+    .about-step .step-content p {
+        margin: 4px 0 0 0;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+    
+    .about-warning {
+        border-left: 4px solid #F472B6;
+        background: rgba(244, 114, 182, 0.08);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 12px 0;
+    }
+    .about-success {
+        border-left: 4px solid #7DD3FC;
+        background: rgba(125, 211, 252, 0.08);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 12px 0;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* delay untuk tiap card */
+    .about-card:nth-child(1) { animation-delay: 0.1s; }
+    .about-card:nth-child(2) { animation-delay: 0.2s; }
+    .about-card:nth-child(3) { animation-delay: 0.3s; }
+    .about-card:nth-child(4) { animation-delay: 0.4s; }
+    .about-card:nth-child(5) { animation-delay: 0.5s; }
 
     </style>
     """, unsafe_allow_html=True)
