@@ -61,116 +61,160 @@ def tabs():
     tab_home, tab_prediksi, tab_model, tab_about = st.tabs(["Home", "Prediksi", "Model", "About"])
 
     # Tab Home: Pembuka skripsi dengan judul, pentingnya curah hujan, dll.
+        # Tab Home: Pembuka skripsi dengan judul, pentingnya curah hujan, dll.
     with tab_home:
-        # Menggunakan perbandingan kolom agar teks lebih luas dan gambar tetap proporsional
-        col1, col2 = st.columns([2, 0.45], gap="large") 
+        # ============================================================
+        # HERO SECTION – Judul & Deskripsi + Logo
+        # ============================================================
+        col1, col2 = st.columns([2.2, 0.9], gap="large")
 
         with col1:
             st.markdown("""
-            <h2 style='margin-bottom:5px;'>Prediksi Curah Hujan</h2>
-            <h4 style='margin-top:0; color:#ADF5FF;'>
-            Prediksi Curah Hujan dengan Stacking Ensemble Berbasis <br>
-            Meta-Model XGBoostRegressor dan Interpretabilitas Global SHAP: Studi Kasus Semarang
-            </h4>
-
-            <p style='font-size:16px; text-align:justify;'>
-            Aplikasi web ini merupakan implementasi hasil skripsi yang bertujuan
-            untuk memprediksi curah hujan di <b>Kota Semarang</b> menggunakan pendekatan
-            <b>Stacking Ensemble Learning</b> dengan meta-model
-            <b>XGBoostRegressor</b>, serta didukung oleh interpretabilitas global
-            menggunakan <b>SHAP (SHapley Additive exPlanations)</b>.
-            Pada implementasi website, sistem difokuskan untuk <b>menyajikan hasil prediksi</b>
-            curah hujan harian dan bulanan secara efisien dan mudah digunakan.
-            Visualisasi SHAP tidak ditampilkan pada aplikasi web karena bersifat
-            analisis penelitian dan membutuhkan sumber daya komputasi yang tinggi.
-            </p>
+            <div class="home-hero">
+                <h1 style="font-size:2.8rem; font-weight:800; margin-bottom:0;">
+                    🌧️ Prediksi Curah Hujan
+                </h1>
+                <h3 style="font-weight:500; color:#C4B0F8; margin-top:0; line-height:1.4;">
+                    Stacking Ensemble dengan XGBoostRegressor<br>
+                    dan Interpretabilitas Global SHAP
+                </h3>
+                <p style="font-size:1.05rem; text-align:justify; margin-top:1rem; color:#E0D8F0;">
+                    Aplikasi web ini merupakan implementasi hasil skripsi yang bertujuan
+                    untuk memprediksi curah hujan di <b>Kota Semarang</b> menggunakan pendekatan
+                    <b>Stacking Ensemble Learning</b> dengan meta-model
+                    <b>XGBoostRegressor</b>, serta didukung oleh interpretabilitas global
+                    menggunakan <b>SHAP (SHapley Additive exPlanations)</b>.
+                    Pada implementasi website, sistem difokuskan untuk <b>menyajikan hasil prediksi</b>
+                    curah hujan harian dan bulanan secara efisien dan mudah digunakan.
+                    Visualisasi SHAP tidak ditampilkan pada aplikasi web karena bersifat
+                    analisis penelitian dan membutuhkan sumber daya komputasi yang tinggi.
+                </p>
+            </div>
             """, unsafe_allow_html=True)
 
         with col2:
+            # Logo UNNES dalam card putih dengan bayangan
+            st.markdown('<div class="logo-card">', unsafe_allow_html=True)
             try:
-                # Bungkus logo dengan div class "logo-card"
-                st.markdown('<div class="logo-card">', unsafe_allow_html=True)
-                try:
-                    from PIL import Image
-                    from loaders import resolve_path
-                    logo_path = resolve_path("skripsi_hujan_web/logounnes.png")
-                    if not (logo_path and logo_path.exists()):
-                        logo_path = resolve_path("logounnes.png")
-                    if logo_path and logo_path.exists():
-                        image = Image.open(logo_path)
-                        try:
-                            st.image(image, use_container_width=True)
-                        except TypeError:
-                            st.image(image, use_column_width=True)
-                    else:
-                        st.warning("File logounnes.png tidak ditemukan.")
-                except Exception as e:
-                    st.error(f"Gagal memuat logo: {e}")
-                st.markdown('</div>', unsafe_allow_html=True)
+                from PIL import Image
+                from loaders import resolve_path
+                logo_path = resolve_path("skripsi_hujan_web/logounnes.png")
+                if not (logo_path and logo_path.exists()):
+                    logo_path = resolve_path("logounnes.png")
+                if logo_path and logo_path.exists():
+                    image = Image.open(logo_path)
+                    try:
+                        st.image(image, use_container_width=True)
+                    except TypeError:
+                        st.image(image, use_column_width=True)
+                else:
+                    st.warning("File logounnes.png tidak ditemukan.")
+            except Exception as e:
+                st.error(f"Gagal memuat logo: {e}")
+            st.markdown('</div>', unsafe_allow_html=True)
 
         st.divider()
 
         # ============================================================
-        # KENAPA PREDIKSI CURAH HUJAN PENTING
+        # KENAPA PREDIKSI CURAH HUJAN PENTING – dengan ikon & card
         # ============================================================
         st.markdown("""
-        ### Mengapa Prediksi Curah Hujan Penting?
+        <div class="section-title">
+            <h2 style="font-weight:700; margin-bottom:0.5rem;">
+                🌱 Mengapa Prediksi Curah Hujan Penting?
+            </h2>
+            <p style="color:#B8B0D0; font-size:1.05rem;">
+                Prediksi curah hujan memiliki peran strategis dalam berbagai sektor kehidupan,
+                khususnya di wilayah perkotaan seperti Semarang:
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
-        Prediksi curah hujan memiliki peran strategis dalam berbagai sektor kehidupan,
-        khususnya di wilayah perkotaan seperti Semarang:
-        """)
-
-        colA, colB = st.columns(2)
+        colA, colB = st.columns(2, gap="medium")
 
         with colA:
             st.markdown("""
-            - **Pertanian**  
-            Membantu perencanaan tanam dan panen serta mengurangi risiko gagal panen.
-
-            - **Transportasi**  
-            Mengantisipasi kemacetan dan kecelakaan akibat hujan deras.
-            """)
+            <div class="home-card">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+                    <span style="font-size:28px;">🌾</span>
+                    <h4 style="margin:0; font-weight:600;">Pertanian</h4>
+                </div>
+                <p style="margin:0 0 0 40px; color:#D4CCE8;">
+                    Membantu perencanaan tanam dan panen serta mengurangi risiko gagal panen.
+                </p>
+            </div>
+            <div class="home-card" style="margin-top:12px;">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+                    <span style="font-size:28px;">🚗</span>
+                    <h4 style="margin:0; font-weight:600;">Transportasi</h4>
+                </div>
+                <p style="margin:0 0 0 40px; color:#D4CCE8;">
+                    Mengantisipasi kemacetan dan kecelakaan akibat hujan deras.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
 
         with colB:
             st.markdown("""
-            - **Mitigasi Bencana**  
-            Mendukung kesiapsiagaan terhadap banjir yang sering terjadi di Semarang.
-
-            - **Kesehatan Masyarakat**  
-            Mengurangi risiko penyakit musiman yang meningkat saat musim hujan.
-            """)
-
-        st.divider()
-
-        # ============================================================
-        # PENJELASAN AWAM & PROFESIONAL
-        # ============================================================
-        st.info("""
-        **Untuk Masyarakat Umum:**  
-        Aplikasi ini membantu memperkirakan apakah akan terjadi hujan,
-        sehingga dapat digunakan untuk perencanaan aktivitas harian.
-
-        **Untuk Akademisi & Profesional:**  
-        Model dibangun menggunakan data historis iklim dan pendekatan
-        ensemble learning dengan performa tinggi, sehingga relevan
-        untuk penelitian dan analisis klimatologi.
-        """)
+            <div class="home-card">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+                    <span style="font-size:28px;">🌊</span>
+                    <h4 style="margin:0; font-weight:600;">Mitigasi Bencana</h4>
+                </div>
+                <p style="margin:0 0 0 40px; color:#D4CCE8;">
+                    Mendukung kesiapsiagaan terhadap banjir yang sering terjadi di Semarang.
+                </p>
+            </div>
+            <div class="home-card" style="margin-top:12px;">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+                    <span style="font-size:28px;">🏥</span>
+                    <h4 style="margin:0; font-weight:600;">Kesehatan Masyarakat</h4>
+                </div>
+                <p style="margin:0 0 0 40px; color:#D4CCE8;">
+                    Mengurangi risiko penyakit musiman yang meningkat saat musim hujan.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
 
         st.divider()
 
         # ============================================================
-        # CALL TO ACTION
+        # PENJELASAN AWAM & PROFESIONAL – dalam card terpisah
+        # ============================================================
+        st.markdown("""
+        <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin:20px 0;">
+            <div class="home-card" style="flex:1; min-width:220px; background:rgba(167,139,250,0.08); border-left:4px solid #A78BFA;">
+                <h4 style="margin-top:0;">👥 Untuk Masyarakat Umum</h4>
+                <p style="margin:0; color:#D4CCE8;">
+                    Aplikasi ini membantu memperkirakan apakah akan terjadi hujan,
+                    sehingga dapat digunakan untuk perencanaan aktivitas harian.
+                </p>
+            </div>
+            <div class="home-card" style="flex:1; min-width:220px; background:rgba(125,211,252,0.08); border-left:4px solid #7DD3FC;">
+                <h4 style="margin-top:0;">🔬 Untuk Akademisi & Profesional</h4>
+                <p style="margin:0; color:#D4CCE8;">
+                    Model dibangun menggunakan data historis iklim dan pendekatan
+                    ensemble learning dengan performa tinggi, sehingga relevan
+                    untuk penelitian dan analisis klimatologi.
+                </p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.divider()
+
+        # ============================================================
+        # CALL TO ACTION – tombol besar di tengah
         # ============================================================
         st.markdown(
-            "<h3 style='text-align:center;'>Mulai Prediksi Curah Hujan Anda</h3>",
+            "<h3 style='text-align:center; font-weight:600; margin-bottom:0.5rem;'>🚀 Mulai Prediksi Curah Hujan Anda</h3>",
             unsafe_allow_html=True
         )
 
-        col_btn = st.columns([1, 2, 1])
+        col_btn = st.columns([1, 1.5, 1])
         with col_btn[1]:
-            if st.button("Mulai Prediksi Sekarang", use_container_width=True):
+            if st.button("⚡ Prediksi Sekarang", use_container_width=True):
                 st.info("Klik tab **Prediksi** di bagian navbar/atas untuk melanjutkan.")
-
 
 
 
