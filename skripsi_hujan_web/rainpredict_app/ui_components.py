@@ -94,7 +94,6 @@ def tabs():
                 """, unsafe_allow_html=True)
         
             with col2:
-                with col2:
                     # Lottie Animation - Rain Weather
                     st.markdown("""
                     <div style="
