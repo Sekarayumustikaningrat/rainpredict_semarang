@@ -94,20 +94,29 @@ def tabs():
                 """, unsafe_allow_html=True)
         
             with col2:
-                st.markdown("""
-                <div style="
-                    background: rgba(255,255,255,0.05);
-                    border-radius: 28px;
-                    padding: 16px;
-                    border: 1px solid rgba(167,139,250,0.15);
-                    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-                    text-align: center;
-                ">
-                    <img src="https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif" 
-                         style="max-width:100%; height:auto; border-radius:16px;" 
-                         alt="Rain animation">
-                </div>
-                """, unsafe_allow_html=True)
+                with col2:
+                    # Lottie Animation - Rain Weather
+                    st.markdown("""
+                    <div style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-top: 10px;
+                        background: rgba(255,255,255,0.03);
+                        border-radius: 24px;
+                        padding: 12px;
+                    ">
+                        <lottie-player 
+                            src="https://assets10.lottiefiles.com/packages/lf20_2b9f3b1a.json" 
+                            background="transparent" 
+                            speed="1" 
+                            style="width: 280px; height: 280px;"
+                            loop 
+                            autoplay>
+                        </lottie-player>
+                    </div>
+                    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                    """, unsafe_allow_html=True)
         
             st.divider()
 
