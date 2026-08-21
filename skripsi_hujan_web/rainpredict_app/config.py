@@ -506,6 +506,7 @@ def local_css():
        FOOTER — menempel di paling bawah 
        =============================== */
     .site-footer {
+        position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
